@@ -20,7 +20,7 @@ public class NumArrayList implements NumList {
 	
 	/*
 	public int capacity() {
-		
+		a
 	}
 	*/
 	
