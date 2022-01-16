@@ -1,64 +1,59 @@
-import java.util.Random;
+
 
 public class NumArrayList implements NumList {
-	private double[] list;
-	private int size;
-	
-	public NumArrayList() {
-		list = new double[0];
-		size = 0;
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	
-	public NumArrayList(int size) {
-		list = new double[size];
-		this.size = size;
-	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	/*
+
+	@Override
 	public int capacity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void add(double value) {
+		// TODO Auto-generated method stub
 		
 	}
-	*/
-	
-	public void add(double value) {
-		if (size == 0)
-		{
-			size++;
-			list = new double[] { value };
-			return;
-		}
-		double[] newList = new double[++size];
-		for (int i = 0; i < size - 1; i++)
-			newList[i] = list[i];
-		newList[size-1] = value;
-		list = newList;
-	}
-	
-	
-	public double lookup(int index) {
-		return list[index];
-	}
-	
+
 	@Override
-	public String toString() {
-		if (size == 0)
-			return "";
-		String str = "";
-		for (double d : list)
-			str += " " + d;
-		return str.substring(1);
+	public void insert(int i, double value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean contains(double value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public double lookup(int i) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean equals(NumList otherList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void removeDuplicates() {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	public static void main(String[] args) {
-		Random rand = new Random();
-		NumArrayList n1 = new NumArrayList();
-		for (int i = 0; i < 5; i++)
-			n1.add(rand.nextInt(10));
-		System.out.println(n1);
-		System.out.println(n1.lookup(3));
-	}
 }
