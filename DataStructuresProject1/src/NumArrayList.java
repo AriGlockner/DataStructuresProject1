@@ -1,7 +1,7 @@
 
 
 public class NumArrayList implements NumList {
-
+	
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub

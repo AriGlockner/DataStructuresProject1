@@ -1,8 +1,9 @@
 /**
- * @author ari
  *
- *
+ * NumList is an abstract interface that can be used to represent an ordered
+ * sequence of double precision floating-point numbers.
  * 
+ * @author ari
  */
 
 public abstract interface NumList {
@@ -77,7 +78,8 @@ public abstract interface NumList {
 	 */
 	public void removeDuplicates();
 
-	/** Converts the contents of the list to a String
+	/**
+	 * Converts the contents of the list to a String
 	 * 
 	 * @return each element in the list seperated by a space
 	 */
