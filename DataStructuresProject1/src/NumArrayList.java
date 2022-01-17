@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * NumArrayList is
  * 
@@ -7,12 +9,14 @@
 public class NumArrayList implements NumList {
 	private int capacity;
 	private int size;
+	private double[] list;
 
 	/**
 	 * Initializes an empty NumArrayList of capacity 0
 	 */
 	public NumArrayList() {
-		capacity = 0;
+		capacity = size = 0;
+		list = new double[capacity];
 	}
 
 	/**
@@ -22,6 +26,8 @@ public class NumArrayList implements NumList {
 	 */
 	public NumArrayList(int capacity) {
 		this.capacity = capacity;
+		size = 0;
+		list = new double[0];
 	}
 
 	/**
@@ -47,7 +53,14 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void add(double value) {
-		// TODO Auto-generated method stub
+		// If size < capacity, increase size and add value to back
+		if (size < capacity) {
+			list = Arrays.copyOf(list, ++size);
+			list[size-1] = value;
+			
+		} else {
+			System.out.println("Unable to add " + value + " to the list due to the capacity being hit.");
+		}
 
 	}
 
@@ -62,7 +75,11 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void insert(int i, double value) {
-		// TODO Auto-generated method stub
+		if (i > size)
+		{
+			add(value);
+			return;
+		}
 
 	}
 
@@ -131,5 +148,19 @@ public class NumArrayList implements NumList {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// For test cases
+	private void printList() {
+		for (double d : list)
+			System.out.print(d + " ");
+	}
+	
+	// For test Cases
+	public static void main(String[] args) {
+		NumArrayList nal = new NumArrayList(5);
+		for (int i = 0; i < 10; i++)
+			nal.add(i);
+		nal.printList();
 	}
 }
