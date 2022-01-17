@@ -146,21 +146,22 @@ public class NumArrayList implements NumList {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		if (size == 0)
+			return "";
+		
+		String str = new String();
+		for (double d : list)
+			str += " " + d;
+		
+		return str.substring(1);
 	}
 	
-	// For test cases
-	private void printList() {
-		for (double d : list)
-			System.out.print(d + " ");
-	}
 	
 	// For test Cases
 	public static void main(String[] args) {
 		NumArrayList nal = new NumArrayList(5);
 		for (int i = 0; i < 10; i++)
 			nal.add(i);
-		nal.printList();
+		System.out.println(nal);
 	}
 }
