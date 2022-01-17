@@ -25,9 +25,9 @@ public class NumArrayList implements NumList {
 	 * @param capacity
 	 */
 	public NumArrayList(int capacity) {
-		this.capacity = capacity;
-		size = 0;
-		list = new double[0];
+		this.capacity = size = capacity;
+		list = new double[size];
+		Arrays.fill(list, Double.NaN);
 	}
 
 	/**
@@ -50,18 +50,23 @@ public class NumArrayList implements NumList {
 	 * Adds a new element to the end of the current list
 	 * 
 	 * @param value - the element to be added to the the list
+	 * @throws Exception 
 	 */
 	@Override
 	public void add(double value) {
 		// If size < capacity, increase size and add value to back
 		if (size < capacity) {
-			list = Arrays.copyOf(list, ++size);
-			list[size-1] = value;
-			
+			System.out.println("A");
+			list[size-capacity] = value;
+			System.out.println(this);
 		} else {
-			System.out.println("Unable to add " + value + " to the list due to the capacity being hit.");
+			System.out.println("B");
+			list = Arrays.copyOf(list, size + capacity);
+			list[size-capacity] = value;
+			Arrays.fill(list, size, size + capacity, Double.NaN);
+			System.out.println(this);
 		}
-
+		size++;
 	}
 
 	/**
@@ -82,7 +87,7 @@ public class NumArrayList implements NumList {
 		}
 
 	}
-
+	
 	/**
 	 * Removes the i-th element of the list (using 0 for the index of the first
 	 * element). For the case when the list has fewer elements, do nothing since the
@@ -92,8 +97,12 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void remove(int i) {
-		// TODO Auto-generated method stub
-
+		if (size <= 1)
+		{
+			list = new double[0];
+			return;
+		}
+		
 	}
 
 	/**
@@ -104,7 +113,9 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public boolean contains(double value) {
-		// TODO Auto-generated method stub
+		for (double d : list)
+			if (d == value)
+				return true;
 		return false;
 	}
 
@@ -115,8 +126,7 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public double lookup(int i) {
-		// TODO Auto-generated method stub
-		return 0;
+		return list[i];
 	}
 
 	/**
@@ -129,7 +139,11 @@ public class NumArrayList implements NumList {
 	public boolean equals(NumList otherList) {
 		if (this.capacity != otherList.capacity() || this.size != otherList.size())
 			return false;
-
+		
+		for (int i = 0; i < size; i++)
+			if (list[i] != otherList.lookup(i))
+				return false;
+		
 		return true;
 	}
 
@@ -151,7 +165,10 @@ public class NumArrayList implements NumList {
 		
 		String str = new String();
 		for (double d : list)
-			str += " " + d;
+			if (d == Double.NaN)
+				return str.substring(1);
+			else
+				str += " " + d;
 		
 		return str.substring(1);
 	}
@@ -162,6 +179,6 @@ public class NumArrayList implements NumList {
 		NumArrayList nal = new NumArrayList(5);
 		for (int i = 0; i < 10; i++)
 			nal.add(i);
-		System.out.println(nal);
+		//System.out.println(nal);
 	}
 }
