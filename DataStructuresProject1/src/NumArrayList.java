@@ -25,8 +25,9 @@ public class NumArrayList implements NumList {
 	 * @param capacity
 	 */
 	public NumArrayList(int capacity) {
-		this.capacity = size = capacity;
-		list = new double[size];
+		size = 0;
+		this.capacity = capacity;
+		list = new double[capacity];
 		Arrays.fill(list, Double.NaN);
 	}
 
@@ -50,23 +51,17 @@ public class NumArrayList implements NumList {
 	 * Adds a new element to the end of the current list
 	 * 
 	 * @param value - the element to be added to the the list
-	 * @throws Exception 
 	 */
 	@Override
 	public void add(double value) {
-		// If size < capacity, increase size and add value to back
-		if (size < capacity) {
-			System.out.println("A");
-			list[size-capacity] = value;
-			System.out.println(this);
-		} else {
-			System.out.println("B");
+		// If size has reached capacity, increase size
+		if (size % capacity == 0) {
 			list = Arrays.copyOf(list, size + capacity);
-			list[size-capacity] = value;
 			Arrays.fill(list, size, size + capacity, Double.NaN);
-			System.out.println(this);
 		}
-		size++;
+		
+		// Add value to back of list and increase size
+		list[size++] = value;
 	}
 
 	/**
@@ -177,8 +172,8 @@ public class NumArrayList implements NumList {
 	// For test Cases
 	public static void main(String[] args) {
 		NumArrayList nal = new NumArrayList(5);
-		for (int i = 0; i < 10; i++)
-			nal.add(i);
-		//System.out.println(nal);
+		for (int i = 0; i < 20; i++)
+			nal.add((double) i);
+		System.out.println(nal);
 	}
 }
