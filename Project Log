@@ -1,3 +1,4 @@
+10% Log:
 The interface NumList felt pretty straightforward. Create a bunch of abstract methods of the names provided in the instructions pdf. Not too sure what the instructions meant by 
 ordered sequence since the NumArrayList class has the add and insert methods which allows the user to break the order of the list.
 
@@ -12,3 +13,7 @@ skipping that and coming back to it later.
 The toString method was very straightforward. Return "" if the list size = 0, otherwise just create a temporary string and add " " + element for each element in the list, and then 
 return every character after the first character.
 
+30% Log:
+
+I realized I had the concept wrong on the project. I thought that the array size could not expand past the capacity and the capacity was a maximum size.
+I now realize that once the array is full, I must increase the size of the array by the capacity specified. I fixed that in the add method.
