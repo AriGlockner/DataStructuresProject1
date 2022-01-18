@@ -99,11 +99,51 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void remove(int i) {
-		if (size <= 1) {
-			list = new double[0];
+		// List is Empty or i is bigger than the size
+		if (size == 0 || size < 0 || size <= i)
+			return;
+		// List contains 1 value
+		if (size == 1) {
+			list = new double[--size];
 			return;
 		}
-
+		
+		if (i == size - 1) {
+			System.out.println("End Before: " + this);
+			list[size - capacity] = Double.NaN;
+			System.out.println(size--);
+			
+			if (size + 1 % capacity == 0)
+				list = Arrays.copyOf(list, size - capacity);
+			
+			System.out.println(size);
+			System.out.println("End After: " + this + "\n");
+			return;
+		}
+		
+		
+		// Used at end to determine if the size will need to be decreased
+		boolean decreaseSize = size % capacity == 0;
+		
+		// Remove Value
+		//System.out.println(i + " " + size);
+		list[i] = Double.NaN;
+		i++;
+		//System.out.println("Before: " + this);
+		while (i != size) {
+			list[i-1] = list[i];
+			i++;
+		}
+		//System.out.println("After: " + this);
+		// Decrease size of list if necessary
+		if (decreaseSize)
+		{
+			list = Arrays.copyOf(list, size - capacity);
+			System.out.println("After size: " + this);
+		}
+		size--;
+		//System.out.println(size);
+		//System.out.println();
 	}
 
 	/**
@@ -160,7 +200,12 @@ public class NumArrayList implements NumList {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	/**
+	 * Overrides toString method from the Object class.
+	 * 
+	 * @return a String containing each element in the list seperated by a space
+	 */
 	@Override
 	public String toString() {
 		if (size == 0)
@@ -186,14 +231,19 @@ public class NumArrayList implements NumList {
 
 	// For test Cases
 	public static void main(String[] args) {
-		NumArrayList nal = new NumArrayList(10);
+		NumArrayList nal = new NumArrayList(2);
 		for (int i = 0; i < 10; i++)
 			nal.add((double) i);
-		System.out.println(nal);
+		//System.out.println(nal);
 		for (int i = 0; i <= 18; i += 2)
 			nal.insert(i, 100 * i);
-		System.out.println(nal);
+		//System.out.println(nal);
 		nal.insert(100, 2000.0);
 		System.out.println(nal);
+		nal.remove(0);
+		nal.remove(4);
+		for (int i = 0; i < nal.capacity; i++)
+			nal.remove(nal.size - 1);
+		nal.remove(nal.size);
 	}
 }
