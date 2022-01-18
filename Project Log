@@ -1,3 +1,5 @@
+View Project: https://github.com/AriGlockner/DataStructuresProject1
+
 10% Log (~5 hours):
 The interface NumList felt pretty straightforward. Create a bunch of abstract methods of the names provided in the instructions pdf. Not too sure what the instructions meant by 
 ordered sequence since the NumArrayList class has the add and insert methods which allows the user to break the order of the list.
@@ -13,7 +15,24 @@ skipping that and coming back to it later.
 The toString method was very straightforward. Return "" if the list size = 0, otherwise just create a temporary string and add " " + element for each element in the list, and then 
 return every character after the first character.
 
-30% Log:
+30% Log (~10 hours):
 
 I realized I had the concept wrong on the project. I thought that the array size could not expand past the capacity and the capacity was a maximum size.
 I now realize that once the array is full, I must increase the size of the array by the capacity specified. I fixed that in the add method.
+
+I created a private helper method to increase the size for the add/insert methods. I adjusted the add method slightly to call the helper method.
+
+I struggled for a bit with the insert method. I very quickly realized if the index to insert the value was greater than the size, I could call the add method and return.
+After a lot of trial and error, I figured out I could use the Arrays.copyOfRange method to create a 2nd list of values that belong after the value to add.
+I then was able to add the value to insert in without worrying about losing the numbers that were suposed to add in afterwords. I then iterated through the list of numbers
+after i in the parameter and added them to the list. If I have time, I may decide to later go and find a way to make this faster than having a loop in both
+the function and in my code.
+
+The contains and lookup methods were both very easy for me.
+
+The remove method is challenging me. At this point in time it is not fully working. I have figured out for most cases how to get it to work. I am struggling to figure out how
+I am going to reduce the size of the list if necessary afterwords. At this point in time, I am going to take a break from this method and come back to it later so I can think
+about this with a fresh mindset.
+
+At this point, I have to clean up the remove method, do the removeDuplicates (which will call the remove method), setup my JUnit tests, and simplify/organize my code.
+I have not started JUnit tests yet because I personally prefer testing my code through a bunch of print lines.
