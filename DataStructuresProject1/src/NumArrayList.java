@@ -87,6 +87,7 @@ public class NumArrayList implements NumList {
 			i++;
 			list[i] = d;
 		}
+		size++;
 	}
 
 	/**
@@ -137,9 +138,11 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public boolean equals(NumList otherList) {
+		// Checks if size and capacity are equal to each other
 		if (this.capacity != otherList.capacity() || this.size != otherList.size())
 			return false;
 
+		// Iterates through each element of each list to compare if they're different
 		for (int i = 0; i < size; i++)
 			if (list[i] != otherList.lookup(i))
 				return false;
@@ -174,7 +177,7 @@ public class NumArrayList implements NumList {
 	}
 	
 	/**
-	 * Increases size of list by the capacity when called from add/insert method
+	 * Helper method for add/insert method that increases size of list by the capacity
 	 */
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
@@ -187,8 +190,10 @@ public class NumArrayList implements NumList {
 		for (int i = 0; i < 10; i++)
 			nal.add((double) i);
 		System.out.println(nal);
-		for (int i = 0; i <= 20; i += 2)
+		for (int i = 0; i <= 18; i += 2)
 			nal.insert(i, 100 * i);
+		System.out.println(nal);
+		nal.insert(100, 2000.0);
 		System.out.println(nal);
 	}
 }
