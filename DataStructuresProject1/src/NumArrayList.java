@@ -80,7 +80,55 @@ public class NumArrayList implements NumList {
 			add(value);
 			return;
 		}
-
+		
+		// Create newList
+		double[] newList;
+		
+		System.out.println(size + " " + capacity);
+		if (size % capacity == 0) {
+			newList = new double[size + capacity];
+		} else {
+			newList = new double[size];
+		}
+		
+		double[] preList = Arrays.copyOfRange(list, 0, Math.max(0, i-1));
+		double[] valueList = new double[] { value };
+		double[] postList = Arrays.copyOfRange(list, Math.min(0, i+1), size);
+		int index = 0;
+		//System.arraycopy(newList, 0, preList, preList.length, preList.length);
+		
+		
+		/*
+		// define size of newList
+		if (size % capacity == 0) {
+			newList = new double[size + capacity];
+			System.out.println("A: " + this);
+			Arrays.fill(list, size, size + capacity, Double.NaN);
+			System.out.println("A: " + this);
+		} else {
+			newList = new double[size];
+			System.out.println("B: " + this);
+		}
+		
+		// assign pre-i values
+		for (int index = 0; index < i; index++) {
+			newList[index] = list[index];
+			index++;
+		}
+		
+		// assign value
+		newList[i] = value;
+		
+		// assign post-i values
+		while (i < size) {
+			newList[i] = list[i-1];
+			i++;
+		}
+		
+		// Set list equal to the list created in this method
+		list = newList;
+		size++;
+		*/
 	}
 	
 	/**
@@ -172,8 +220,10 @@ public class NumArrayList implements NumList {
 	// For test Cases
 	public static void main(String[] args) {
 		NumArrayList nal = new NumArrayList(5);
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 			nal.add((double) i);
 		System.out.println(nal);
+		for (int i = 0; i <= 20; i+=2)
+			nal.insert(i, Math.PI * i);
 	}
 }
