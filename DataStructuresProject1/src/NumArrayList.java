@@ -55,11 +55,9 @@ public class NumArrayList implements NumList {
 	@Override
 	public void add(double value) {
 		// If size has reached capacity, increase size
-		if (size % capacity == 0) {
-			list = Arrays.copyOf(list, size + capacity);
-			Arrays.fill(list, size, size + capacity, Double.NaN);
-		}
-		
+		if (size % capacity == 0)
+			increaseListSize();
+
 		// Add value to back of list and increase size
 		list[size++] = value;
 	}
@@ -75,62 +73,22 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void insert(int i, double value) {
-		if (i > size)
-		{
+		if (i > size) {
 			add(value);
 			return;
 		}
-		
-		// Create newList
-		double[] newList;
-		
-		System.out.println(size + " " + capacity);
-		if (size % capacity == 0) {
-			newList = new double[size + capacity];
-		} else {
-			newList = new double[size];
-		}
-		
-		double[] preList = Arrays.copyOfRange(list, 0, Math.max(0, i-1));
-		double[] valueList = new double[] { value };
-		double[] postList = Arrays.copyOfRange(list, Math.min(0, i+1), size);
-		int index = 0;
-		//System.arraycopy(newList, 0, preList, preList.length, preList.length);
-		
-		
-		/*
-		// define size of newList
-		if (size % capacity == 0) {
-			newList = new double[size + capacity];
-			System.out.println("A: " + this);
-			Arrays.fill(list, size, size + capacity, Double.NaN);
-			System.out.println("A: " + this);
-		} else {
-			newList = new double[size];
-			System.out.println("B: " + this);
-		}
-		
-		// assign pre-i values
-		for (int index = 0; index < i; index++) {
-			newList[index] = list[index];
-			index++;
-		}
-		
-		// assign value
-		newList[i] = value;
-		
-		// assign post-i values
-		while (i < size) {
-			newList[i] = list[i-1];
+
+		if (size % capacity == 0)
+			increaseListSize();
+
+		double[] postIValues = Arrays.copyOfRange(list, i, size);
+		list[i] = value;
+		for (double d : postIValues) {
 			i++;
+			list[i] = d;
 		}
-		
-		// Set list equal to the list created in this method
-		list = newList;
-		size++;
-		*/
 	}
-	
+
 	/**
 	 * Removes the i-th element of the list (using 0 for the index of the first
 	 * element). For the case when the list has fewer elements, do nothing since the
@@ -140,12 +98,11 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void remove(int i) {
-		if (size <= 1)
-		{
+		if (size <= 1) {
 			list = new double[0];
 			return;
 		}
-		
+
 	}
 
 	/**
@@ -182,11 +139,11 @@ public class NumArrayList implements NumList {
 	public boolean equals(NumList otherList) {
 		if (this.capacity != otherList.capacity() || this.size != otherList.size())
 			return false;
-		
+
 		for (int i = 0; i < size; i++)
 			if (list[i] != otherList.lookup(i))
 				return false;
-		
+
 		return true;
 	}
 
@@ -200,30 +157,38 @@ public class NumArrayList implements NumList {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public String toString() {
 		if (size == 0)
 			return "";
-		
+
 		String str = new String();
 		for (double d : list)
 			if (d == Double.NaN)
 				return str.substring(1);
 			else
 				str += " " + d;
-		
+
 		return str.substring(1);
 	}
 	
-	
+	/**
+	 * Increases size of list by the capacity when called from add/insert method
+	 */
+	private void increaseListSize() {
+		list = Arrays.copyOf(list, size + capacity);
+		Arrays.fill(list, size, size + capacity, Double.NaN);
+	}
+
 	// For test Cases
 	public static void main(String[] args) {
-		NumArrayList nal = new NumArrayList(5);
+		NumArrayList nal = new NumArrayList(10);
 		for (int i = 0; i < 10; i++)
 			nal.add((double) i);
 		System.out.println(nal);
-		for (int i = 0; i <= 20; i+=2)
-			nal.insert(i, Math.PI * i);
+		for (int i = 0; i <= 20; i += 2)
+			nal.insert(i, 100 * i);
+		System.out.println(nal);
 	}
 }
