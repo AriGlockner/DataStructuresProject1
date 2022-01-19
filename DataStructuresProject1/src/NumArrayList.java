@@ -7,8 +7,11 @@ import java.util.Arrays;
  */
 
 public class NumArrayList implements NumList {
+	// Number to adjust size by when resizing is necessary
 	private int capacity;
+	// Number of values in the list
 	private int size;
+	// List containing values stored
 	private double[] list;
 
 	/**
@@ -108,42 +111,21 @@ public class NumArrayList implements NumList {
 			return;
 		}
 		
-		if (i == size - 1) {
-			System.out.println("End Before: " + this);
-			list[size - capacity] = Double.NaN;
-			System.out.println(size--);
-			
-			if (size + 1 % capacity == 0)
-				list = Arrays.copyOf(list, size - capacity);
-			
-			System.out.println(size);
-			System.out.println("End After: " + this + "\n");
-			return;
-		}
-		
-		
-		// Used at end to determine if the size will need to be decreased
-		boolean decreaseSize = size % capacity == 0;
-		
-		// Remove Value
-		//System.out.println(i + " " + size);
-		list[i] = Double.NaN;
+		// Iterate through list for each spot after i to replace past value with current value
 		i++;
-		//System.out.println("Before: " + this);
-		while (i != size) {
+		while (i < size) {
 			list[i-1] = list[i];
 			i++;
 		}
-		//System.out.println("After: " + this);
-		// Decrease size of list if necessary
-		if (decreaseSize)
-		{
-			list = Arrays.copyOf(list, size - capacity);
-			System.out.println("After size: " + this);
-		}
+		// Set last value equal to Not a Number
+		list[i-1] = Double.NaN;
+		
+		// Decrease variable containing number of values
 		size--;
-		//System.out.println(size);
-		//System.out.println();
+		
+		// Decrease list size as necessary
+		if (size % capacity == 0)
+			list = Arrays.copyOf(list, size);
 	}
 
 	/**
@@ -240,9 +222,10 @@ public class NumArrayList implements NumList {
 		//System.out.println(nal);
 		nal.insert(100, 2000.0);
 		System.out.println(nal);
+		nal.insert(0, 0.0);
 		nal.remove(0);
 		nal.remove(4);
-		for (int i = 0; i < nal.capacity; i++)
+		for (int i = 0; i < 5; i++)
 			nal.remove(nal.size - 1);
 		nal.remove(nal.size);
 	}
