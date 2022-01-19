@@ -207,11 +207,11 @@ public class NumArrayList implements NumList {
 			return "";
 
 		String str = new String();
-		for (double d : list)
-			if (d == Double.NaN)
+		for (int i = 0; i < size; i++)
+			if (list[i] == Double.NaN)
 				return str.substring(1);
 			else
-				str += " " + d;
+				str += " " + list[i];
 
 		return str.substring(1);
 	}
