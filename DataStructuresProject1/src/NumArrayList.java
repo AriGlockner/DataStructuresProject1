@@ -179,7 +179,8 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public void removeDuplicates() {
-		// TODO Auto-generated method stub
+		if (size < 2)
+			return;
 
 	}
 	
@@ -204,7 +205,7 @@ public class NumArrayList implements NumList {
 	}
 	
 	/**
-	 * Helper method for add/insert method that increases size of list by the capacity
+	 * Helper method for add/insert methods that increases size of list by the capacity
 	 */
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
