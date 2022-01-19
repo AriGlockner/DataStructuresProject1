@@ -182,10 +182,11 @@ public class NumArrayList implements NumList {
 	public void removeDuplicates() {
 		if (size < 2)
 			return;
-		
+
 		// Iterate from back to front to check if elements are duplicates
 		for (int i = size - 1; i > 0; i--)
-			// Iterate through prior elements to see if current element is a repeated element
+			// Iterate through prior elements to see if current element is a repeated
+			// element
 			for (int j = i - 1; j >= 0; j--)
 				// If element is a duplicate, removes that element
 				if (list[i] == list[j]) {
