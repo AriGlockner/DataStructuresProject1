@@ -110,19 +110,20 @@ public class NumArrayList implements NumList {
 			list = new double[--size];
 			return;
 		}
-		
-		// Iterate through list for each spot after i to replace past value with current value
+
+		// Iterate through list for each spot after i to replace past value with current
+		// value
 		i++;
 		while (i < size) {
-			list[i-1] = list[i];
+			list[i - 1] = list[i];
 			i++;
 		}
 		// Set last value equal to Not a Number
-		list[i-1] = Double.NaN;
-		
+		list[i - 1] = Double.NaN;
+
 		// Decrease variable containing number of values
 		size--;
-		
+
 		// Decrease list size as necessary
 		if (size % capacity == 0)
 			list = Arrays.copyOf(list, size);
@@ -181,9 +182,19 @@ public class NumArrayList implements NumList {
 	public void removeDuplicates() {
 		if (size < 2)
 			return;
+		
+		// Iterate from back to front to check if elements are duplicates
+		for (int i = size - 1; i > 0; i--)
+			// Iterate through prior elements to see if current element is a repeated element
+			for (int j = i - 1; j >= 0; j--)
+				// If element is a duplicate, removes that element
+				if (list[i] == list[j]) {
+					remove(i);
+					break;
+				}
 
 	}
-	
+
 	/**
 	 * Overrides toString method from the Object class.
 	 * 
@@ -203,9 +214,10 @@ public class NumArrayList implements NumList {
 
 		return str.substring(1);
 	}
-	
+
 	/**
-	 * Helper method for add/insert methods that increases size of list by the capacity
+	 * Helper method for add/insert methods that increases size of list by the
+	 * capacity
 	 */
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
@@ -217,17 +229,16 @@ public class NumArrayList implements NumList {
 		NumArrayList nal = new NumArrayList(2);
 		for (int i = 0; i < 10; i++)
 			nal.add((double) i);
-		//System.out.println(nal);
-		for (int i = 0; i <= 18; i += 2)
-			nal.insert(i, 100 * i);
-		//System.out.println(nal);
-		nal.insert(100, 2000.0);
+		/*
+		 * //System.out.println(nal); for (int i = 0; i <= 18; i += 2) nal.insert(i, 100
+		 * * i); //System.out.println(nal); nal.insert(100, 2000.0);
+		 * System.out.println(nal); nal.insert(0, 0.0); nal.remove(0); nal.remove(4);
+		 * for (int i = 0; i < 5; i++) nal.remove(nal.size - 1); nal.remove(nal.size);
+		 */
+		for (int i = 0; i < 10; i++)
+			nal.add((double) i);
 		System.out.println(nal);
-		nal.insert(0, 0.0);
-		nal.remove(0);
-		nal.remove(4);
-		for (int i = 0; i < 5; i++)
-			nal.remove(nal.size - 1);
-		nal.remove(nal.size);
+		nal.removeDuplicates();
+		System.out.println(nal);
 	}
 }
