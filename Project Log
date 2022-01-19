@@ -37,7 +37,9 @@ about this with a fresh mindset.
 At this point, I have to clean up the remove method, do the removeDuplicates (which will call the remove method), setup my JUnit tests, and simplify/organize my code.
 I have not started JUnit tests yet because I personally prefer testing my code through a bunch of print lines.
 
-90% Log:
+90% Log (~15 hours):
 The remove method was difficult for me. Most of the method was pretty straightforward, but the issue I ran into involved an IndexOutOfBounds Error due to resizing the array.
 Size % capacity was good at telling if I needed to resize the array, but the issue I had was when I went to resize the array, I needed to do just size cause the size variable
 was already at the size it needed to be resized to.
+
+After trying (and failing) to overcomplicate things, I completed the removeDuplicates method by having a nested for loop.
