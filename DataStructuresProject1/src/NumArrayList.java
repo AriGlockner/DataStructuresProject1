@@ -162,7 +162,7 @@ public class NumArrayList implements NumList {
 	@Override
 	public boolean equals(NumList otherList) {
 		// Checks if size and capacity are equal to each other
-		if (this.capacity != otherList.capacity() || this.size != otherList.size())
+		if (this.size != otherList.size())
 			return false;
 
 		// Iterates through each element of each list to compare if they're different

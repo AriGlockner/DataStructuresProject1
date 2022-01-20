@@ -16,12 +16,13 @@ public class TestNumArrayList {
 	// 2 Constructors -> tested when declaring NumArrayList objects
 	// size -> tested in add/insert/remove/removeDuplicates capacity
 	// add -> tested in insert method when i > size insert
+	// insert -> tested in testInsert method
 	// remove -> tested in testRemoveDuplicates method
-	// removeDuplicates
+	// removeDuplicates -> tested in removeDuplicates method
 	// toString -> tested in testInsert method
 	// increaseListSize -> tested in add/insert methods
-	// contains lookup -> tested in lookup method
-	// equals -> tested in lookup method
+	// contains/lookup -> tested in lookup method
+	// equals -> tested in testInsert method
 
 	@Test
 	public void testCapacity() {
@@ -59,7 +60,7 @@ public class TestNumArrayList {
 		}
 
 		// Test Equals & Lookup Methods
-		Assert.assertFalse(list1.equals(list2));
+		Assert.assertTrue(list1.equals(list2));
 
 		int size = list4.size();
 		NumArrayList foobar = new NumArrayList(list4.capacity());
@@ -69,7 +70,10 @@ public class TestNumArrayList {
 		Assert.assertTrue(list4.equals(foobar));
 		foobar.add(555555555.6);
 		Assert.assertFalse(list4.equals(foobar));
-
+		
+		Assert.assertTrue(lists[1].contains(lists[1].lookup(0)));
+		Assert.assertEquals(0.0, lists[1].lookup(0));
+		
 		// Return method so it can be used for other method
 		return lists;
 	}
