@@ -15,8 +15,8 @@ public class TestNumArrayList {
 	// contains/lookup -> tested in lookup method
 	// equals -> tested in testInsert method
 
-	@Test
-	public void testCapacity() {
+	// No @Test because method is called from testInsert method
+	public NumArrayList[] testCapacity() {
 		NumArrayList list1 = new NumArrayList(0);
 		NumArrayList list2 = new NumArrayList(1);
 		NumArrayList list3 = new NumArrayList(2);
@@ -27,15 +27,18 @@ public class TestNumArrayList {
 		Assert.assertEquals(2, list3.capacity());
 		Assert.assertEquals(5, list4.capacity());
 		Assert.assertEquals(10, list5.capacity());
+		return new NumArrayList[] { list2, list3, list4, list5 };
 	}
 
 	// No @Test because method is called from testRemoveDuplicates method
 	public NumArrayList[] testInsert() {
+		/*
 		NumArrayList list1 = new NumArrayList(1);
 		NumArrayList list2 = new NumArrayList(2);
 		NumArrayList list3 = new NumArrayList(5);
 		NumArrayList list4 = new NumArrayList(10);
-		NumArrayList[] lists = new NumArrayList[] { list1, list2, list3, list4 };
+		*/
+		NumArrayList[] lists = testCapacity();
 
 		for (NumArrayList l : lists) {
 			l.insert(0, 1.0);
@@ -51,16 +54,16 @@ public class TestNumArrayList {
 		}
 
 		// Test Equals & Lookup Methods
-		Assert.assertTrue(list1.equals(list2));
+		Assert.assertTrue(lists[0].equals(lists[1]));
 
-		int size = list4.size();
-		NumArrayList foobar = new NumArrayList(list4.capacity());
+		int size = lists[3].size();
+		NumArrayList foobar = new NumArrayList(lists[3].capacity());
 		for (int i = 0; i < size; i++)
-			foobar.add(list4.lookup(i));
+			foobar.add(lists[3].lookup(i));
 
-		Assert.assertTrue(list4.equals(foobar));
+		Assert.assertTrue(lists[3].equals(foobar));
 		foobar.add(555555555.6);
-		Assert.assertFalse(list4.equals(foobar));
+		Assert.assertFalse(lists[3].equals(foobar));
 
 		Assert.assertTrue(lists[1].contains(lists[1].lookup(0)));
 		//Assert.assertEquals(0.0, lists[1].lookup(0));
