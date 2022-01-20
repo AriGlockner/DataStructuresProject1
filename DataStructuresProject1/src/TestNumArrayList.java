@@ -1,14 +1,5 @@
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import junit.framework.Assert;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class TestNumArrayList {
 
@@ -38,7 +29,7 @@ public class TestNumArrayList {
 		Assert.assertEquals(10, list5.capacity());
 	}
 
-	// Commented out due to being called from testRemoveDuplicates method
+	// No @Test because method is called from testRemoveDuplicates method
 	public NumArrayList[] testInsert() {
 		NumArrayList list1 = new NumArrayList(1);
 		NumArrayList list2 = new NumArrayList(2);
@@ -70,9 +61,10 @@ public class TestNumArrayList {
 		Assert.assertTrue(list4.equals(foobar));
 		foobar.add(555555555.6);
 		Assert.assertFalse(list4.equals(foobar));
-		
+
 		Assert.assertTrue(lists[1].contains(lists[1].lookup(0)));
-		Assert.assertEquals(0.0, lists[1].lookup(0));
+		//Assert.assertEquals(0.0, lists[1].lookup(0));
+		Assert.assertEquals(0.0, 0.0, lists[1].lookup(0));
 		
 		// Return method so it can be used for other method
 		return lists;
@@ -81,7 +73,7 @@ public class TestNumArrayList {
 	@Test
 	public void removeDuplicates() {
 		NumArrayList[] lists = testInsert();
-		
+
 		// Test removeDuplicates method
 		for (NumArrayList l : lists) {
 			// Before adding duplicates
@@ -98,9 +90,8 @@ public class TestNumArrayList {
 			l.removeDuplicates();
 			Assert.assertEquals("0.0 1.0 2.0 3.0 4.0", l.toString());
 		}
-		
+
 		// Test remove method
-		// Prior
 		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0", lists[2].toString());
 		lists[2].remove(0);
 		Assert.assertEquals("1.0 2.0 3.0 4.0", lists[2].toString());
