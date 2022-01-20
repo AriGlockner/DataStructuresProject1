@@ -32,12 +32,6 @@ public class TestNumArrayList {
 
 	// No @Test because method is called from testRemoveDuplicates method
 	public NumArrayList[] testInsert() {
-		/*
-		NumArrayList list1 = new NumArrayList(1);
-		NumArrayList list2 = new NumArrayList(2);
-		NumArrayList list3 = new NumArrayList(5);
-		NumArrayList list4 = new NumArrayList(10);
-		*/
 		NumArrayList[] lists = testCapacity();
 
 		for (NumArrayList l : lists) {
