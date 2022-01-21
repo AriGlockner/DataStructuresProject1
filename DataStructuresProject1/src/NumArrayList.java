@@ -162,7 +162,7 @@ public class NumArrayList implements NumList {
 	@Override
 	public boolean equals(NumList otherList) {
 		// Checks if size and capacity are equal to each other
-		if (this.size != otherList.size())
+		if (this.capacity() != otherList.capacity() || this.size != otherList.size())
 			return false;
 
 		// Iterates through each element of each list to compare if they're different
@@ -223,23 +223,5 @@ public class NumArrayList implements NumList {
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
 		Arrays.fill(list, size, size + capacity, Double.NaN);
-	}
-
-	// For test Cases
-	public static void main(String[] args) {
-		NumArrayList nal = new NumArrayList(2);
-		for (int i = 0; i < 10; i++)
-			nal.add((double) i);
-		/*
-		 * //System.out.println(nal); for (int i = 0; i <= 18; i += 2) nal.insert(i, 100
-		 * * i); //System.out.println(nal); nal.insert(100, 2000.0);
-		 * System.out.println(nal); nal.insert(0, 0.0); nal.remove(0); nal.remove(4);
-		 * for (int i = 0; i < 5; i++) nal.remove(nal.size - 1); nal.remove(nal.size);
-		 */
-		for (int i = 0; i < 10; i++)
-			nal.add((double) i);
-		System.out.println(nal);
-		nal.removeDuplicates();
-		System.out.println(nal);
 	}
 }

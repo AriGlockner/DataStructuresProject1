@@ -59,7 +59,8 @@ public class TestNumArrayList {
 		}
 
 		// Test Equals & Lookup Methods
-		Assert.assertTrue(lists[0].equals(lists[1]));
+		Assert.assertTrue(lists[0].equals(lists[0]));
+		Assert.assertFalse(lists[0].equals(lists[1]));
 
 		// Create new NumArrayList with same elements as lists[3]
 		NumArrayList foobar = new NumArrayList(lists[3].capacity());
