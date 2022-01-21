@@ -31,7 +31,7 @@ public class NumArrayList implements NumList {
 		size = 0;
 		this.capacity = capacity;
 		list = new double[capacity];
-		Arrays.fill(list, Double.NaN);
+		Arrays.fill(list, 0.0);
 	}
 
 	/**
@@ -118,8 +118,8 @@ public class NumArrayList implements NumList {
 			list[i - 1] = list[i];
 			i++;
 		}
-		// Set last value equal to Not a Number
-		list[i - 1] = Double.NaN;
+		// Set last value equal to 0.0
+		list[i - 1] = 0.0;
 
 		// Decrease variable containing number of values
 		size--;
@@ -222,6 +222,6 @@ public class NumArrayList implements NumList {
 	 */
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
-		Arrays.fill(list, size, size + capacity, Double.NaN);
+		Arrays.fill(list, size, size + capacity, 0.0);
 	}
 }
