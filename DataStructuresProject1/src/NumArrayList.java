@@ -47,7 +47,7 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public int capacity() {
-		return capacity;
+		return list.length;
 	}
 
 	/**
