@@ -43,3 +43,7 @@ Size % capacity was good at telling if I needed to resize the array, but the iss
 was already at the size it needed to be resized to.
 
 After trying (and failing) to overcomplicate things, I completed the removeDuplicates method by having a nested for loop.
+
+100% Log (~17 hours):
+Throughout this project, I tested my code by creating a lot of temporary System.out.println()'s in my code. The instructions specifically want JUnit tests,
+I finished my JUnit tests by creating an additional class for all of the JUnit tests. I looked through my code, and I believe things are good to go.
