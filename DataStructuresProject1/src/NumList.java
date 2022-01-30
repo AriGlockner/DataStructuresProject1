@@ -85,4 +85,9 @@ public abstract interface NumList {
 	 */
 	@Override
 	public String toString();
+	
+	/**
+	 * @return true if the list is in increasing sorted order
+	 */
+	public boolean isSorted();
 }

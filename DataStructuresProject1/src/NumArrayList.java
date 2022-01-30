@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * NumArrayList is
@@ -223,5 +224,13 @@ public class NumArrayList implements NumList {
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
 		Arrays.fill(list, size, size + capacity, 0.0);
+	}
+	
+	@Override
+	public boolean isSorted() {
+		for (int i = 1; i < size; i++)
+			if (list[i-1] > list[i])
+				return false;		
+		return true;
 	}
 }
