@@ -89,5 +89,11 @@ public class NumLinkedList implements NumList {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean isSorted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
 
