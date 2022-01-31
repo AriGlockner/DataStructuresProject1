@@ -1,6 +1,6 @@
+import java.util.Iterator;
 
-
-public class NumLinkedList implements NumList {
+public class NumLinkedList implements NumList, Iterable<Double> {
 	private NumNode front;
 	private NumNode back;
 	private int size;
@@ -9,7 +9,15 @@ public class NumLinkedList implements NumList {
 		size = 0;
 		front = back = null;
 	}
-
+	
+	NumNode getFront() {
+		return front;
+	}
+	
+	NumNode getBack() {
+		return back;
+	}
+	
 	@Override
 	public int size() {
 		return size;
@@ -18,7 +26,7 @@ public class NumLinkedList implements NumList {
 	@Override
 	public int capacity() {
 		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
@@ -62,14 +70,45 @@ public class NumLinkedList implements NumList {
 
 	@Override
 	public void remove(int i) {
-		// TODO Auto-generated method stub
+		if (i >= size || i < 0)
+			return;
+		
+		if (--size == 0) {
+			front = back = null;
+			return;
+		}
+		
+		if (i == 0) {
+			front = front.getNext();
+			front.setPrevious(null);
+			return;
+		} else if (i == size) {
+			back = back.getPrevious();
+			back.setNext(null);
+			return;
+		}
+		
+		NumNode ptr = front;
+		while (ptr.hasNext() && i > 0) {
+			ptr = ptr.getNext();
+			i--;
+		}
+		ptr.getNext().setPrevious(ptr.getPrevious());
+		ptr.getPrevious().setNext(ptr.getNext());
 		
 	}
-
+	
 	@Override
 	public boolean contains(double value) {
-		// TODO Auto-generated method stub
-		return false;
+		NumNode ptr = front;
+		
+		while (ptr.hasNext()) {
+			if (ptr.getElement() == value)
+				return true;
+			ptr = ptr.getNext();
+		}
+		
+		return ptr.getElement() == value;
 	}
 
 	@Override
@@ -89,11 +128,112 @@ public class NumLinkedList implements NumList {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/*
+	@Override
+	public String toString() {
+		if (size == 0)
+			return "";
+		String s = "";
+		for (double d : list)
+		
+		return s;
+	}
+	*/
+	
 	@Override
 	public boolean isSorted() {
+		if (size < 2)
+			return true;
+		
+		NumNode ptr = front;
+		while (ptr.hasNext()) {
+			if (ptr.getElement() > ptr.getNext().getElement())
+				return false;
+			
+			ptr = ptr.getNext();
+		}
+		
+		return true;
+	}
+
+	@Override
+	public Iterator<Double> iterator() {
 		// TODO Auto-generated method stub
-		return false;
+		return new ListIterator(this);
 	}
 }
 
+class ListIterator implements Iterator<Double> {
+	// Current node in list
+	private NumNode current;
+
+	// initialize pointer to head of the list for iteration
+	public ListIterator(NumLinkedList list) {
+		current = list.getFront();
+	}
+
+	// Adds an element
+	public void add(double element) {
+		while (current.hasNext())
+			next();
+
+		current.setNext(new NumNode(element));
+	}
+
+	// Adds an element at a specified index
+	public void add(int index, double element) {
+		// Get to index
+		while (current.hasNext() && index > 0) {
+			next();
+			index--;
+		}
+
+		// Insert new node containing element
+		NumNode n = new NumNode(element);
+		n.setNext(current.getNext());
+		n.setPrevious(current);
+		n.getNext().setPrevious(n);
+		current.setNext(n);
+	}
+
+	// returns false if next element does not exist
+	public boolean hasNext() {
+		return current != null;
+	}
+
+	// returns false if previous element does not exist
+	public boolean hasPrevious() {
+		return current != null;
+	}
+
+	// return current data and update pointer
+	public Double next() {
+		double data = current.getElement();
+		current = current.getNext();
+		return data;
+	}
+
+	// return current element and update pointer
+	public double previous() {
+		double data = current.getElement();
+		current = current.getPrevious();
+		return data;
+	}
+
+	// implement if needed
+	public void remove() {
+		if (current.hasPrevious()) {
+			current.getPrevious().setNext(current.getNext());
+		}
+		if (current.hasNext()) {
+			current.getNext().setPrevious(current.getPrevious());
+		}
+	}
+
+	// Replaces the last element returned by next() or previous() with the specified
+	// element
+	public void set(double t) {
+		current.setElement(t);
+	}
+}
