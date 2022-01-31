@@ -93,11 +93,13 @@ public class TestNumArrayList {
 			l.insert(8, 1.0);
 			l.insert(3, 1.0);
 			l.insert(2, 2.0);
+			Assert.assertFalse(l.isSorted());
 			Assert.assertEquals("0.0 1.0 2.0 2.0 1.0 3.0 4.0 0.0 1.0", l.toString());
-
+			
 			// Remove duplicates from list
 			l.removeDuplicates();
 			Assert.assertEquals("0.0 1.0 2.0 3.0 4.0", l.toString());
+			Assert.assertTrue(l.isSorted());
 		}
 
 		// Test remove first element in list
