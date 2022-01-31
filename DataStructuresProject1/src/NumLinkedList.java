@@ -4,20 +4,20 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	private NumNode front;
 	private NumNode back;
 	private int size;
-	
+
 	public NumLinkedList() {
 		size = 0;
 		front = back = null;
 	}
-	
+
 	NumNode getFront() {
 		return front;
 	}
-	
+
 	NumNode getBack() {
 		return back;
 	}
-	
+
 	@Override
 	public int size() {
 		return size;
@@ -25,7 +25,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	@Override
 	public int capacity() {
-		// TODO Auto-generated method stub
 		return size;
 	}
 
@@ -33,18 +32,18 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	public void add(double value) {
 		// Create new node
 		NumNode newNode = new NumNode(value);
-		
+
 		// list is empty
 		if (size++ == 0) {
 			front = back = newNode;
 			return;
 		}
-		
+
 		// add list to back
 		back.setNext(newNode);
 		newNode.setPrevious(back);
 		back = newNode;
-		
+
 		// if size = 1, set front to new node as well
 		if (size == 1)
 			front = back;
@@ -52,32 +51,44 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	@Override
 	public void insert(int i, double value) {
-		if (i >= size) {
+		// Add to back
+		if (size == 0 || i >= size) {
 			add(value);
 			return;
 		}
 		
-		NumNode newNode = new NumNode(value);
 		size++;
-		
+		NumNode newNode = new NumNode(value);
+		// Add to front
 		if (i == 0) {
 			newNode.setNext(front);
 			front.setPrevious(newNode);
 			front = newNode;
 			return;
 		}
+
+		// Add in between
+		NumNode ptr = front;
+		
+		while (--i > 0)
+			ptr = ptr.getNext();
+		
+		newNode.setNext(ptr.getNext());
+		newNode.setPrevious(ptr);
+		ptr.setNext(newNode);
+		newNode.getNext().setPrevious(newNode);
 	}
 
 	@Override
 	public void remove(int i) {
 		if (i >= size || i < 0)
 			return;
-		
+
 		if (--size == 0) {
 			front = back = null;
 			return;
 		}
-		
+
 		if (i == 0) {
 			front = front.getNext();
 			front.setPrevious(null);
@@ -87,7 +98,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			back.setNext(null);
 			return;
 		}
-		
+
 		NumNode ptr = front;
 		while (ptr.hasNext() && i > 0) {
 			ptr = ptr.getNext();
@@ -95,19 +106,19 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		}
 		ptr.getNext().setPrevious(ptr.getPrevious());
 		ptr.getPrevious().setNext(ptr.getNext());
-		
+
 	}
-	
+
 	@Override
 	public boolean contains(double value) {
 		NumNode ptr = front;
-		
+
 		while (ptr.hasNext()) {
 			if (ptr.getElement() == value)
 				return true;
 			ptr = ptr.getNext();
 		}
-		
+
 		return ptr.getElement() == value;
 	}
 
@@ -115,14 +126,14 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	public double lookup(int i) {
 		if (i >= size)
 			return back.getElement();
-		
+
 		NumNode ptr = front;
-		
+
 		while (i > 0) {
 			i--;
 			ptr = ptr.getNext();
 		}
-		
+
 		return ptr.getElement();
 	}
 
@@ -130,50 +141,48 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	public boolean equals(NumList otherList) {
 		if (otherList.size() != size)
 			return false;
-		
+
 		for (int i = 0; i < size; i++)
 			if (otherList.lookup(i) != this.lookup(i))
 				return false;
-		
+
 		return true;
 	}
 
 	@Override
 	public void removeDuplicates() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		if (size == 0)
 			return "";
 		String s = "" + front.getElement();
-		
+
 		NumNode ptr = front;
 		while (ptr.hasNext()) {
 			ptr = ptr.getNext();
 			s += " " + ptr.getElement();
 		}
-		
+
 		return s;
 	}
-	
-	
+
 	@Override
 	public boolean isSorted() {
 		if (size < 2)
 			return true;
-		
+
 		NumNode ptr = front;
 		while (ptr.hasNext()) {
 			if (ptr.getElement() > ptr.getNext().getElement())
 				return false;
-			
+
 			ptr = ptr.getNext();
 		}
-		
+
 		return true;
 	}
 
@@ -250,11 +259,11 @@ class ListIterator implements Iterator<Double> {
 			current.getNext().setPrevious(current.getPrevious());
 		}
 	}
-	
+
 	public double get() {
 		return current.getElement();
 	}
-	
+
 	// Replaces the last element returned by next() or previous() with the specified
 	// element
 	public void set(double t) {
