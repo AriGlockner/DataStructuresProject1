@@ -1,0 +1,5 @@
+10% Log (~1 hour):
+Continued project 2 from where project 1 left off
+Added isSorted method to NumList interface
+Implemented isSorted method in NumArrayList class
+Implemented add/insert methods to NumLinkedList class
