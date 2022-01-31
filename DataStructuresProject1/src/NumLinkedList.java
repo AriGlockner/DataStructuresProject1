@@ -113,14 +113,29 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	@Override
 	public double lookup(int i) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (i >= size)
+			return back.getElement();
+		
+		NumNode ptr = front;
+		
+		while (i > 0) {
+			i--;
+			ptr = ptr.getNext();
+		}
+		
+		return ptr.getElement();
 	}
 
 	@Override
 	public boolean equals(NumList otherList) {
-		// TODO Auto-generated method stub
-		return false;
+		if (otherList.size() != size)
+			return false;
+		
+		for (int i = 0; i < size; i++)
+			if (otherList.lookup(i) != this.lookup(i))
+				return false;
+		
+		return true;
 	}
 
 	@Override
@@ -129,17 +144,22 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		
 	}
 	
-	/*
+	
 	@Override
 	public String toString() {
 		if (size == 0)
 			return "";
-		String s = "";
-		for (double d : list)
+		String s = "" + front.getElement();
+		
+		NumNode ptr = front;
+		while (ptr.hasNext()) {
+			ptr = ptr.getNext();
+			s += " " + ptr.getElement();
+		}
 		
 		return s;
 	}
-	*/
+	
 	
 	@Override
 	public boolean isSorted() {
@@ -230,7 +250,11 @@ class ListIterator implements Iterator<Double> {
 			current.getNext().setPrevious(current.getPrevious());
 		}
 	}
-
+	
+	public double get() {
+		return current.getElement();
+	}
+	
 	// Replaces the last element returned by next() or previous() with the specified
 	// element
 	public void set(double t) {
