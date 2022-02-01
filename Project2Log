@@ -2,4 +2,13 @@
 Continued project 2 from where project 1 left off
 Added isSorted method to NumList interface
 Implemented isSorted method in NumArrayList class
-Implemented add/insert methods to NumLinkedList class
+Implemented toString/add/insert/size methods to NumLinkedList class
+
+50% Log (~5 hours):
+Implemented Remove/Contains/Lookup/equals/removeDuplicates/isSorted methods in NumLinkedList class
+Made NumLinkedList implement Iterable and added a few helper methods meant to help Iterable interface
+Adjusted toString method in NumLinkedList class to use a for each loop implementation
+Changed tests for toString/add/insert/size and created tests for isSorted/contains/removeDuplicates in TestNumLinkedList class
+
+Struggled a little with figuring out remove/removeDuplicates methods for NumLinkedList class due to NullPointerExceptions. Figured out what the problem was by creating temporary
+print lines to show me where the pointer nodes were at in the list and then easily fixed the problems.
