@@ -1,33 +1,42 @@
 import java.util.Iterator;
 
 public class NumLinkedList implements NumList, Iterable<Double> {
+	// Front of list
 	private NumNode front;
+	// Back of list
 	private NumNode back;
+	// Size of list
 	private int size;
 
+	// Initalize list
 	public NumLinkedList() {
 		size = 0;
 		front = back = null;
 	}
 
+	// Returns front Node in list
 	NumNode getFront() {
 		return front;
 	}
 
+	// Returns back Node in list
 	NumNode getBack() {
 		return back;
 	}
 
+	// Returns size of list
 	@Override
 	public int size() {
 		return size;
 	}
 
+	// Returns size of list
 	@Override
 	public int capacity() {
 		return size;
 	}
 
+	// Adds element to back of list
 	@Override
 	public void add(double value) {
 		// Create new node
@@ -43,20 +52,17 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		back.setNext(newNode);
 		newNode.setPrevious(back);
 		back = newNode;
-
-		// if size = 1, set front to new node as well
-		if (size == 1)
-			front = back;
 	}
 
+	// Inserts a value at the specified index
 	@Override
 	public void insert(int i, double value) {
 		// Add to back
-		if (size == 0 || i >= size) {
+		if (i >= size || size == 0) {
 			add(value);
 			return;
 		}
-		
+
 		size++;
 		NumNode newNode = new NumNode(value);
 		// Add to front
@@ -69,16 +75,17 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 		// Add in between
 		NumNode ptr = front;
-		
+
 		while (--i > 0)
 			ptr = ptr.getNext();
-		
+
 		newNode.setNext(ptr.getNext());
 		newNode.setPrevious(ptr);
 		ptr.setNext(newNode);
 		newNode.getNext().setPrevious(newNode);
 	}
 
+	// Removes i-th value in list
 	@Override
 	public void remove(int i) {
 		if (i >= size || i < 0)
@@ -109,6 +116,8 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	}
 
+	// Returns true if list contains value
+	// Otherwise returns false
 	@Override
 	public boolean contains(double value) {
 		NumNode ptr = front;
@@ -122,6 +131,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		return ptr.getElement() == value;
 	}
 
+	// Returns i-th value in list
 	@Override
 	public double lookup(int i) {
 		if (i >= size)
@@ -137,6 +147,8 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		return ptr.getElement();
 	}
 
+	// Returns true if lists are equal
+	// Returns false if lists are unequal
 	@Override
 	public boolean equals(NumList otherList) {
 		if (otherList.size() != size)
@@ -149,27 +161,51 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		return true;
 	}
 
+	// Removes any duplicates in the list
 	@Override
 	public void removeDuplicates() {
-		// TODO Auto-generated method stub
+		if (size < 2)
+			return;
+		NumNode ptr1 = front;
 
+		while (true) {
+			NumNode ptr2 = ptr1.getNext();
+			while (true) {
+				if (ptr1.getElement() == ptr2.getElement()) {
+					size--;
+					ptr2 = ptr2.getPrevious();
+					ptr2.setNext(ptr2.getNext().getNext());
+					if (!ptr2.hasNext())
+						break;
+					ptr2.getNext().setPrevious(ptr2);
+				}
+				if (!ptr2.hasNext())
+					break;
+
+				ptr2 = ptr2.getNext();
+			}
+			if (!ptr1.hasNext())
+				break;
+			ptr1 = ptr1.getNext();
+		}
 	}
 
+	// Returns each Value in the list as a string seperated by a space
 	@Override
 	public String toString() {
+		// Returns empty string if list is empty
 		if (size == 0)
 			return "";
-		String s = "" + front.getElement();
 
-		NumNode ptr = front;
-		while (ptr.hasNext()) {
-			ptr = ptr.getNext();
-			s += " " + ptr.getElement();
-		}
-
-		return s;
+		// Otherwise return each element in a String seperated by a space
+		String s = "";
+		for (double d : this)
+			s += " " + d;
+		return s.substring(1);
 	}
 
+	// Returns true if list is sorted
+	// Otherwise returns false
 	@Override
 	public boolean isSorted() {
 		if (size < 2)
