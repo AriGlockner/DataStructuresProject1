@@ -120,15 +120,11 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	// Otherwise returns false
 	@Override
 	public boolean contains(double value) {
-		NumNode ptr = front;
-
-		while (ptr.hasNext()) {
-			if (ptr.getElement() == value)
+		for (double d : this)
+			if (d == value)
 				return true;
-			ptr = ptr.getNext();
-		}
 
-		return ptr.getElement() == value;
+		return false;
 	}
 
 	// Returns i-th value in list
