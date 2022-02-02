@@ -6,7 +6,7 @@
  * @author ari
  */
 
-public abstract interface NumList {
+public abstract interface NumList extends Iterable<Double> {
 
 	/**
 	 * This method returns the size of the list

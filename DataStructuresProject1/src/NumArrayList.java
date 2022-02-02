@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * NumArrayList is
@@ -6,7 +7,7 @@ import java.util.Arrays;
  * @author ari
  */
 
-public class NumArrayList implements NumList {
+public class NumArrayList implements NumList, Iterable<Double> {
 	// Number to adjust size by when resizing is necessary
 	private int capacity;
 	// Number of values in the list
@@ -154,19 +155,6 @@ public class NumArrayList implements NumList {
 	}
 
 	/**
-	 * @param otherList
-	 * 
-	 * @return true if this list equals the other list
-	 * @return false otherwise
-	 */
-	/*
-	@Override
-	public boolean equals(NumList otherList) {
-		return capacity() == otherList.capacity() && size() == otherList.size()
-				&& toString().equals(otherList.toString());
-	}
-
-	/**
 	 * Removes duplicates of any elements in the list, preserving the list order and
 	 * the position of the first of the duplicates. For example, removing the
 	 * duplicates of the list [1, 2, 3, 1, 2, 4] should result in [1, 2, 3, 4].
@@ -225,5 +213,13 @@ public class NumArrayList implements NumList {
 			if (list[i - 1] > list[i])
 				return false;
 		return true;
+	}
+
+	/**
+	 * @return a new array iterator for this list
+	 */
+	@Override
+	public Iterator<Double> iterator() {
+		return Arrays.stream(list).iterator();
 	}
 }

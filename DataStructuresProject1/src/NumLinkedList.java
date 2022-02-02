@@ -142,22 +142,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 		return ptr.getElement();
 	}
-	
-	/*
-	// Returns true if lists are equal
-	// Returns false if lists are unequal
-	@Override
-	public boolean equals(NumList otherList) {
-		if (otherList.size() != size)
-			return false;
-
-		for (int i = 0; i < size; i++)
-			if (otherList.lookup(i) != this.lookup(i))
-				return false;
-
-		return true;
-	}
-	*/
 
 	// Removes any duplicates in the list
 	@Override
@@ -187,14 +171,14 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			ptr1 = ptr1.getNext();
 		}
 	}
-	
+
 	// Returns each Value in the list as a string seperated by a space
 	@Override
 	public String toString() {
 		// Returns empty string if list is empty
 		if (size == 0)
 			return "";
-		
+
 		// Otherwise return each element in a String seperated by a space
 		// StringBuilder is faster than "" + ""
 		StringBuilder sb = new StringBuilder();
@@ -202,7 +186,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			sb.append(" " + d);
 		return sb.substring(1);
 	}
-	
+
 	// Returns true if list is sorted
 	// Otherwise returns false
 	@Override
