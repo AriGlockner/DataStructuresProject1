@@ -203,17 +203,18 @@ public class NumArrayList implements NumList {
 	 */
 	@Override
 	public String toString() {
+		// return "" if list contains 0 elements
 		if (size == 0)
 			return "";
-
-		String str = new String();
+		
+		// otherwise return each element seperated by a space
+		// StringBuilder is faster than "" += ""
+		StringBuilder sb = new StringBuilder();
+		
 		for (int i = 0; i < size; i++)
-			if (list[i] == Double.NaN)
-				return str.substring(1);
-			else
-				str += " " + list[i];
-
-		return str.substring(1);
+			sb.append(" " + list[i]);
+		
+		return sb.substring(1);
 	}
 
 	/**

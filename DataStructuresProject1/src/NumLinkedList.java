@@ -192,12 +192,13 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		// Returns empty string if list is empty
 		if (size == 0)
 			return "";
-
+		
 		// Otherwise return each element in a String seperated by a space
-		String s = "";
+		// StringBuilder is faster than "" + ""
+		StringBuilder sb = new StringBuilder();
 		for (double d : this)
-			s += " " + d;
-		return s.substring(1);
+			sb.append(" " + d);
+		return sb.substring(1);
 	}
 
 	// Returns true if list is sorted
