@@ -4,11 +4,17 @@ Added isSorted method to NumList interface
 Implemented isSorted method in NumArrayList class
 Implemented toString/add/insert/size methods to NumLinkedList class
 
-50% Log (~5 hours):
+50% Log (~10 hours):
 Implemented Remove/Contains/Lookup/equals/removeDuplicates/isSorted methods in NumLinkedList class
 Made NumLinkedList implement Iterable and added a few helper methods meant to help Iterable interface
 Adjusted toString method in NumLinkedList class to use a for each loop implementation
 Changed tests for toString/add/insert/size and created tests for isSorted/contains/removeDuplicates in TestNumLinkedList class
 
-Struggled a little with figuring out remove/removeDuplicates methods for NumLinkedList class due to NullPointerExceptions. Figured out what the problem was by creating temporary
-print lines to show me where the pointer nodes were at in the list and then easily fixed the problems.
+Struggled a little with figuring out remove/removeDuplicates methods for NumLinkedList class due to NullPointerExceptions. Figured out what the problem was by creating temporary print lines to show me where the pointer nodes were at in the list and then easily fixed the problems.
+
+I realized that using StringBuilder is faster than "" += "" because StringBuilder creates the same String while using fewer objects to create the String so I implemented the
+toString method using the StringBuilder Object.
+
+I realized that the equals methods were written exactly the same in both the NumArrayList and NumLinkedList classes so I changed the NumList interface to make the equals method a default method. By creating the equals method as a default method in the interface, I could delete the equals methods in the NumArrayList and NumLinkedList classes and I don't need to rewrite that exact same method for future classes that may require it.
+
+While I was able to make the equals method a default method in the NumList interface, I am struggling with trying to figure out how to do the other methods in the NumList interface because many of the other methods require having access to the list. I am currently trying to figure out how do I get the list to be visable to the Interface, but not to everything. The other problem I ran into here was much easier to fix. I needed to make the NumArrayList class implement the Iterable interface and the NumList interface extend the Iterable interface.
