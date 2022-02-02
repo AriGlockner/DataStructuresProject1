@@ -69,7 +69,10 @@ public abstract interface NumList {
 	 * @param otherList
 	 * @return if each element in each list is the same and the sizes are the same
 	 */
-	public boolean equals(NumList otherList);
+	public default boolean equals(NumList otherList) {
+		return capacity() == otherList.capacity() && size() == otherList.size()
+				&& toString().equals(otherList.toString());
+	}
 
 	/**
 	 * Removes any duplicates of any elements in the list while preserving the order
@@ -83,9 +86,8 @@ public abstract interface NumList {
 	 * 
 	 * @return each element in the list seperated by a space
 	 */
-	@Override
 	public String toString();
-	
+
 	/**
 	 * @return true if the list is in increasing sorted order
 	 */

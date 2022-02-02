@@ -159,18 +159,11 @@ public class NumArrayList implements NumList {
 	 * @return true if this list equals the other list
 	 * @return false otherwise
 	 */
+	/*
 	@Override
 	public boolean equals(NumList otherList) {
-		// Checks if size and capacity are equal to each other
-		if (this.capacity() != otherList.capacity() || this.size != otherList.size())
-			return false;
-
-		// Iterates through each element of each list to compare if they're different
-		for (int i = 0; i < size; i++)
-			if (list[i] != otherList.lookup(i))
-				return false;
-
-		return true;
+		return capacity() == otherList.capacity() && size() == otherList.size()
+				&& toString().equals(otherList.toString());
 	}
 
 	/**
@@ -206,14 +199,14 @@ public class NumArrayList implements NumList {
 		// return "" if list contains 0 elements
 		if (size == 0)
 			return "";
-		
+
 		// otherwise return each element seperated by a space
 		// StringBuilder is faster than "" += ""
 		StringBuilder sb = new StringBuilder();
-		
+
 		for (int i = 0; i < size; i++)
 			sb.append(" " + list[i]);
-		
+
 		return sb.substring(1);
 	}
 
@@ -225,12 +218,12 @@ public class NumArrayList implements NumList {
 		list = Arrays.copyOf(list, size + capacity);
 		Arrays.fill(list, size, size + capacity, 0.0);
 	}
-	
+
 	@Override
 	public boolean isSorted() {
 		for (int i = 1; i < size; i++)
-			if (list[i-1] > list[i])
-				return false;		
+			if (list[i - 1] > list[i])
+				return false;
 		return true;
 	}
 }
