@@ -7,7 +7,7 @@
  */
 
 public abstract interface NumList extends Iterable<Double> {
-
+	
 	/**
 	 * This method returns the size of the list
 	 * 
@@ -70,8 +70,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return if each element in each list is the same and the sizes are the same
 	 */
 	public default boolean equals(NumList otherList) {
-		return capacity() == otherList.capacity() && size() == otherList.size()
-				&& toString().equals(otherList.toString());
+		return size() == otherList.size() && toString().equals(otherList.toString());
 	}
 
 	/**
@@ -92,4 +91,36 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return true if the list is in increasing sorted order
 	 */
 	public boolean isSorted();
+	
+	/*
+	 * Sorts the list
+	 */
+	public void sort();
+	
+	/**
+	 * Creates a new NumList that is
+	 * 
+	 * @param list1
+	 * @param list2
+	 * @return NumList list1 and list2 without duplicates
+	 */
+	public default NumList union(NumList list1, NumList list2) {
+		// If both lists are sorted
+		if (list1.isSorted() && list2.isSorted()) {
+			
+		}
+		
+		for (double d : list2)
+			list1.add(d);
+		
+		return list1;
+	}
+	
+	/**
+	 * if list is sorted, adds value to list in sorted position
+	 * otherwise adds element to back
+	 * 
+	 * @param value
+	 */
+	public void sortedInsert(double value);
 }

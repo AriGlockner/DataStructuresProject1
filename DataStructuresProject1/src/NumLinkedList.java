@@ -100,7 +100,9 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			front = front.getNext();
 			front.setPrevious(null);
 			return;
-		} else if (i == size) {
+		}
+
+		if (i == size) {
 			back = back.getPrevious();
 			back.setNext(null);
 			return;
@@ -123,24 +125,16 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		for (double d : this)
 			if (d == value)
 				return true;
-
 		return false;
 	}
 
 	// Returns i-th value in list
 	@Override
 	public double lookup(int i) {
-		if (i >= size)
-			return back.getElement();
-
-		NumNode ptr = front;
-
-		while (i > 0) {
-			i--;
-			ptr = ptr.getNext();
-		}
-
-		return ptr.getElement();
+		for (double d : this)
+			if (i-- <= 0)
+				return d;
+		return back.getElement();
 	}
 
 	// Removes any duplicates in the list
@@ -201,91 +195,38 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 			ptr = ptr.getNext();
 		}
-
 		return true;
+	}
+	
+	/**
+	 * Sorts the NumLinkedList
+	 */
+	@Override
+	public void sort() {
+		if (size < 2)
+			return;
+		
+		
+		
+		System.out.println("Unable to sort");
+	}
+	
+	
+	@Override
+	public Iterator<Double> iterator() {
+		return new LinkedListIterator(this);
 	}
 
 	@Override
-	public Iterator<Double> iterator() {
-		// TODO Auto-generated method stub
-		return new ListIterator(this);
-	}
-}
-
-class ListIterator implements Iterator<Double> {
-	// Current node in list
-	private NumNode current;
-
-	// initialize pointer to head of the list for iteration
-	public ListIterator(NumLinkedList list) {
-		current = list.getFront();
-	}
-
-	// Adds an element
-	public void add(double element) {
-		while (current.hasNext())
-			next();
-
-		current.setNext(new NumNode(element));
-	}
-
-	// Adds an element at a specified index
-	public void add(int index, double element) {
-		// Get to index
-		while (current.hasNext() && index > 0) {
-			next();
-			index--;
+	public void sortedInsert(double value) {
+		int index = 0;
+		for (double d : this) {
+			if (d > value) {
+				insert(index, value);
+				return;
+			}
+			index++;
 		}
-
-		// Insert new node containing element
-		NumNode n = new NumNode(element);
-		n.setNext(current.getNext());
-		n.setPrevious(current);
-		n.getNext().setPrevious(n);
-		current.setNext(n);
-	}
-
-	// returns false if next element does not exist
-	public boolean hasNext() {
-		return current != null;
-	}
-
-	// returns false if previous element does not exist
-	public boolean hasPrevious() {
-		return current != null;
-	}
-
-	// return current data and update pointer
-	public Double next() {
-		double data = current.getElement();
-		current = current.getNext();
-		return data;
-	}
-
-	// return current element and update pointer
-	public double previous() {
-		double data = current.getElement();
-		current = current.getPrevious();
-		return data;
-	}
-
-	// implement if needed
-	public void remove() {
-		if (current.hasPrevious()) {
-			current.getPrevious().setNext(current.getNext());
-		}
-		if (current.hasNext()) {
-			current.getNext().setPrevious(current.getPrevious());
-		}
-	}
-
-	public double get() {
-		return current.getElement();
-	}
-
-	// Replaces the last element returned by next() or previous() with the specified
-	// element
-	public void set(double t) {
-		current.setElement(t);
+		
 	}
 }
