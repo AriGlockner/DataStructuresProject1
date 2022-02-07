@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
  *
  * NumList is an abstract interface that can be used to represent an ordered
@@ -91,7 +93,6 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return true if the list is in increasing sorted order
 	 */
 	public default boolean isSorted() {
-		System.out.println(Double.NaN);
 		double prior = Double.NaN;
 		for (double d : this)
 			if (prior != Double.NaN && d < prior)
@@ -138,4 +139,9 @@ public abstract interface NumList extends Iterable<Double> {
 	public void sortedInsert(double value);
 	
 	public void reverse();
+	
+	/**
+	 * @return a new array iterator for this list
+	 */
+	public Iterator<Double> iterator();
 }

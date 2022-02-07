@@ -233,6 +233,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		} while (hasSwapped);
 	}
 
+	// @return a new array iterator for this list
 	@Override
 	public Iterator<Double> iterator() {
 		return new LinkedListIterator(this);

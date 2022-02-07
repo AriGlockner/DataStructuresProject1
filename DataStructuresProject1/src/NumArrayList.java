@@ -216,9 +216,7 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		return true;
 	}
 
-	/**
-	 * @return a new array iterator for this list
-	 */
+	// @return a new array iterator for this list
 	@Override
 	public Iterator<Double> iterator() {
 		return Arrays.stream(list).iterator();
