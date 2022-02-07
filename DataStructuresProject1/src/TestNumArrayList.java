@@ -15,6 +15,7 @@ public class TestNumArrayList {
 	// contains/lookup -> tested in lookup method
 	// equals -> tested in testInsert method
 
+	/*
 	// No @Test annotation because method is called from testInsert method
 	public NumArrayList[] testCapacity() {
 		// Create list objects
@@ -110,5 +111,66 @@ public class TestNumArrayList {
 		// Test remove where index > list size
 		lists[2].remove(Integer.MAX_VALUE);
 		Assert.assertEquals("1.0 2.0 3.0 4.0", lists[2].toString());
+	}
+	*/
+	
+	@Test
+	public void test() {
+		NumArrayList front = new NumArrayList(5);
+		NumArrayList back = new NumArrayList(5);
+		
+		for (int i = 0; i < 5; i++)
+			front.add(i);
+		for (int i = 5; i < 10; i++)
+			back.add(i);
+		
+		NumArrayList list = (NumArrayList) new NumArrayList().union(front, back);
+		
+		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list.toString());
+		Assert.assertTrue(list.isSorted());
+		list.insert(0, 2.718);
+		list.insert(1234567890, 2.718);
+		list.insert(3, 3.14159);
+		Assert.assertFalse(list.isSorted());
+		Assert.assertEquals("2.718 0.0 1.0 3.14159 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 2.718", list.toString());
+		list.removeDuplicates();
+		Assert.assertEquals("2.718 0.0 1.0 3.14159 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list.toString());
+		Assert.assertTrue(list.contains(9.0));
+		Assert.assertFalse(list.contains(10.0));
+		Assert.assertEquals(2.718, list.lookup(0), 2.718);
+		
+	}
+	
+	/**
+	 * Tests add/size/capacity/toString methods for ArrayLists of different sizes
+	 */
+	@Test
+	public void testArrayCapacities() {
+		NumArrayList[] lists = new NumArrayList[] {
+				new NumArrayList(1),
+				new NumArrayList(2),
+				new NumArrayList(5),
+				new NumArrayList(9)
+				};
+		NumArrayList list0 = new NumArrayList(0);
+		Assert.assertEquals(0, list0.capacity());
+		Assert.assertEquals(1, lists[0].capacity());
+		Assert.assertEquals(2, lists[1].capacity());
+		Assert.assertEquals(5, lists[2].capacity());
+		Assert.assertEquals(9, lists[3].capacity());
+		
+		for (int i = 0; i < 10; i++) {
+			for (NumArrayList l : lists)
+				l.add(i);
+		}
+		
+		for (NumArrayList l : lists) {
+			Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", l.toString());
+			Assert.assertEquals(10, l.size());
+		}
+		Assert.assertEquals(10, lists[0].capacity());
+		Assert.assertEquals(10, lists[1].capacity());
+		Assert.assertEquals(10, lists[2].capacity());
+		Assert.assertEquals(18, lists[3].capacity());
 	}
 }

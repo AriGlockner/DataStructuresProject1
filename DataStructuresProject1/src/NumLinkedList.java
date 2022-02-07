@@ -34,7 +34,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	// Returns size of list
 	@Override
 	public int capacity() {
-		return size;
+		return Integer.MAX_VALUE;
 	}
 
 	// Adds element to back of list
