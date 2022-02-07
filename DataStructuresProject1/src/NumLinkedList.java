@@ -249,4 +249,25 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		}
 
 	}
+
+	@Override
+	public void reverse() {
+		if (size < 2)
+			return;
+		
+		System.out.println("Not implemented yet");
+	}
+	
+	public static void main(String[] args) {
+		NumLinkedList list = new NumLinkedList();
+		Random rand = new Random();
+		
+		for (int i = 0; i < 10; i++)
+			list.add(rand.nextInt(100));
+		System.out.println(list);
+		list.reverse();
+		System.out.println(list);
+		//list.reverse();
+		//System.out.println(list);
+	}
 }

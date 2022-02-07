@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * NumArrayList is
@@ -242,5 +243,27 @@ public class NumArrayList implements NumList, Iterable<Double> {
 				return;
 			}
 		add(value);
+	}
+
+	@Override
+	public void reverse() {
+		for (int i = 0; i < size/2; i++) {
+			double foo = lookup(i);
+			list[i] = lookup(size - i - 1);
+			list[size - i - 1] = foo;
+		}
+	}
+	
+	public static void main(String[] args) {
+		NumArrayList list = new NumArrayList(10);
+		Random rand = new Random();
+		
+		for (int i = 0; i < 10; i++)
+			list.add(rand.nextInt(100));
+		System.out.println(list);
+		list.reverse();
+		System.out.println(list);
+		list.reverse();
+		System.out.println(list);
 	}
 }

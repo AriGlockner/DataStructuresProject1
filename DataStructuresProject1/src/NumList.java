@@ -7,7 +7,7 @@
  */
 
 public abstract interface NumList extends Iterable<Double> {
-	
+
 	/**
 	 * This method returns the size of the list
 	 * 
@@ -90,13 +90,23 @@ public abstract interface NumList extends Iterable<Double> {
 	/**
 	 * @return true if the list is in increasing sorted order
 	 */
-	public boolean isSorted();
-	
+	public default boolean isSorted() {
+		System.out.println(Double.NaN);
+		double prior = Double.NaN;
+		for (double d : this)
+			if (prior != Double.NaN && d < prior)
+				return false;
+			else
+				prior = d;
+		
+		return true;
+	}
+
 	/*
 	 * Sorts the list
 	 */
 	public void sort();
-	
+
 	/**
 	 * Creates a new NumList that is
 	 * 
@@ -105,22 +115,27 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return NumList list1 and list2 without duplicates
 	 */
 	public default NumList union(NumList list1, NumList list2) {
-		// If both lists are sorted
-		if (list1.isSorted() && list2.isSorted()) {
-			
-		}
-		
-		for (double d : list2)
-			list1.add(d);
-		
+		// If both lists are sorted add each element from list 2 to list 1 in a sorted
+		// order
+		if (list1.isSorted() && list2.isSorted())
+			for (double d : list2)
+				list1.sortedInsert(d);
+
+		// Otherwise add list2 to the back of list1
+		else
+			for (double d : list2)
+				list1.add(d);
+
 		return list1;
 	}
-	
+
 	/**
-	 * if list is sorted, adds value to list in sorted position
-	 * otherwise adds element to back
+	 * if list is sorted, adds value to list in sorted position otherwise adds
+	 * element to back
 	 * 
 	 * @param value
 	 */
 	public void sortedInsert(double value);
+	
+	public void reverse();
 }
