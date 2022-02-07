@@ -64,8 +64,10 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			return;
 		}
 
+		// Increase size and create new Node
 		size++;
 		NumNode newNode = new NumNode(value);
+
 		// Add to front
 		if (i == 0) {
 			newNode.setNext(front);
@@ -89,26 +91,31 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	// Removes i-th value in list
 	@Override
 	public void remove(int i) {
+		// Can't remove
 		if (i >= size || i < 0)
 			return;
 
+		// List has 1 element
 		if (--size == 0) {
 			front = back = null;
 			return;
 		}
 
+		// Remove front
 		if (i == 0) {
 			front = front.getNext();
 			front.setPrevious(null);
 			return;
 		}
 
+		// Remove back
 		if (i == size) {
 			back = back.getPrevious();
 			back.setNext(null);
 			return;
 		}
 
+		// Remove in middle
 		NumNode ptr = front;
 		while (ptr.hasNext() && i > 0) {
 			ptr = ptr.getNext();
@@ -162,9 +169,8 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			sb.append(" " + d);
 		return sb.substring(1);
 	}
-	
-	// Returns true if list is sorted
-	// Otherwise returns false
+
+	// Returns true if list is sorted, otherwise returns false
 	@Override
 	public boolean isSorted() {
 		if (size < 2)
@@ -219,6 +225,8 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		return new LinkedListIterator(this);
 	}
 
+	// If list is sorted, adds element in sorted order
+	// Otherwise adds element to back of list
 	@Override
 	public void sortedInsert(double value) {
 		int index = 0;
@@ -232,29 +240,30 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	}
 
+	// Reverses each element in the list
 	@Override
 	public void reverse() {
 		if (size < 2)
 			return;
-		
+
 		NumNode previous = null;
-        NumNode ptr = front;
-        NumNode next = null;
-        
-        while (ptr != null) {
-            next = ptr.getNext();
-            ptr.setNext(previous);
-            previous = ptr;
-            ptr = next;
-        }
-        front = previous;
+		NumNode ptr = front;
+		NumNode next = null;
+
+		while (ptr != null) {
+			next = ptr.getNext();
+			ptr.setNext(previous);
+			previous = ptr;
+			ptr = next;
+		}
+		front = previous;
 		back = next;
 	}
-	
+
 	public static void main(String[] args) {
 		NumLinkedList list = new NumLinkedList();
 		Random rand = new Random();
-		
+
 		for (int i = 0; i < 10; i++)
 			list.add(rand.nextInt(100));
 		System.out.println(list);

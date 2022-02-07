@@ -254,7 +254,7 @@ public class NumArrayList implements NumList, Iterable<Double> {
 			list[size - i - 1] = foo;
 		}
 	}
-
+	
 	public static void main(String[] args) {
 		NumArrayList list = new NumArrayList(10);
 		Random rand = new Random();

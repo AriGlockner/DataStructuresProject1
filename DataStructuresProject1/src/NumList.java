@@ -16,21 +16,21 @@ public abstract interface NumList extends Iterable<Double> {
 	 * 
 	 * @return size of the list
 	 */
-	public int size();
+	int size();
 
 	/**
 	 * Number of elements the array can currently hold
 	 * 
 	 * @return number of elements the array can currently hold
 	 */
-	public int capacity();
+	int capacity();
 
 	/**
 	 * Add a new element to the end of the current list
 	 * 
 	 * @param value
 	 */
-	public void add(double value);
+	void add(double value);
 
 	/**
 	 * Inserts a new element before the i-th element of the list. If i > the number
@@ -39,7 +39,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param i
 	 * @param value
 	 */
-	public void insert(int i, double value);
+	void insert(int i, double value);
 
 	/**
 	 * Removes the i-th element of the list. Does nothing if i is greater than the
@@ -47,7 +47,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * 
 	 * @param i
 	 */
-	public void remove(int i);
+	void remove(int i);
 
 	/**
 	 * returns true if the list contains the value, false otherwise
@@ -55,7 +55,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param value
 	 * @return if the list contains the value specified in the parameter
 	 */
-	public default boolean contains(double value) {
+	default boolean contains(double value) {
 		for (double d : this)
 			if (d == value)
 				return true;
@@ -70,7 +70,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param i
 	 * @return value specified at index i in list
 	 */
-	public default double lookup(int i) {
+	default double lookup(int i) {
 		for (double d : this)
 			if (i-- == 0)
 				return d;
@@ -83,7 +83,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param otherList
 	 * @return if each element in each list is the same and the sizes are the same
 	 */
-	public default boolean equals(NumList otherList) {
+	default boolean equals(NumList otherList) {
 		return size() == otherList.size() && toString().equals(otherList.toString());
 	}
 
@@ -92,19 +92,19 @@ public abstract interface NumList extends Iterable<Double> {
 	 * of the first duplicate
 	 * 
 	 */
-	public void removeDuplicates();
+	void removeDuplicates();
 
 	/**
 	 * Converts the contents of the list to a String
 	 * 
 	 * @return each element in the list seperated by a space
 	 */
-	public String toString();
+	String toString();
 
 	/**
 	 * @return true if the list is in increasing sorted order
 	 */
-	public default boolean isSorted() {
+	default boolean isSorted() {
 		double prior = Double.NaN;
 		for (double d : this)
 			if (prior != Double.NaN && d < prior)
@@ -118,7 +118,7 @@ public abstract interface NumList extends Iterable<Double> {
 	/*
 	 * Sorts the list
 	 */
-	public void sort();
+	void sort();
 
 	/**
 	 * Creates a new NumList that is
@@ -127,7 +127,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param list2
 	 * @return NumList list1 and list2 without duplicates
 	 */
-	public default NumList union(NumList list1, NumList list2) {
+	default NumList union(NumList list1, NumList list2) {
 		// If both lists are sorted add each element from list 2 to list 1 in a sorted
 		// order
 		if (list1.isSorted() && list2.isSorted())
@@ -148,12 +148,15 @@ public abstract interface NumList extends Iterable<Double> {
 	 * 
 	 * @param value
 	 */
-	public void sortedInsert(double value);
+	void sortedInsert(double value);
 	
-	public void reverse();
+	/**
+	 * Reverses each element in the list
+	 */
+	void reverse();
 	
 	/**
 	 * @return a new array iterator for this list
 	 */
-	public Iterator<Double> iterator();
+	Iterator<Double> iterator();
 }
