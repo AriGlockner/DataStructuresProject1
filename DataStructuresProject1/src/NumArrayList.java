@@ -146,6 +146,9 @@ public class NumArrayList implements NumList, Iterable<Double> {
 	}
 
 	/**
+	 * Overrides lookup method in NumList because this implementation is faster for
+	 * this type of list
+	 * 
 	 * @returns the i-th element of the list (using 0 for the index of the first
 	 *          element)
 	 * @throws exception if the list has fewer than i+1 elements
@@ -245,17 +248,17 @@ public class NumArrayList implements NumList, Iterable<Double> {
 
 	@Override
 	public void reverse() {
-		for (int i = 0; i < size/2; i++) {
+		for (int i = 0; i < size / 2; i++) {
 			double foo = lookup(i);
 			list[i] = lookup(size - i - 1);
 			list[size - i - 1] = foo;
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		NumArrayList list = new NumArrayList(10);
 		Random rand = new Random();
-		
+
 		for (int i = 0; i < 10; i++)
 			list.add(rand.nextInt(100));
 		System.out.println(list);

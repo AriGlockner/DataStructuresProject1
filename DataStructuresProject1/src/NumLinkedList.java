@@ -1,6 +1,5 @@
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Stack;
 
 public class NumLinkedList implements NumList, Iterable<Double> {
 	// Front of list
@@ -120,25 +119,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	}
 
-	// Returns true if list contains value
-	// Otherwise returns false
-	@Override
-	public boolean contains(double value) {
-		for (double d : this)
-			if (d == value)
-				return true;
-		return false;
-	}
-
-	// Returns i-th value in list
-	@Override
-	public double lookup(int i) {
-		for (double d : this)
-			if (i-- <= 0)
-				return d;
-		return back.getElement();
-	}
-
 	// Removes any duplicates in the list
 	@Override
 	public void removeDuplicates() {
@@ -182,7 +162,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			sb.append(" " + d);
 		return sb.substring(1);
 	}
-
+	
 	// Returns true if list is sorted
 	// Otherwise returns false
 	@Override

@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -54,7 +55,13 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param value
 	 * @return if the list contains the value specified in the parameter
 	 */
-	public boolean contains(double value);
+	public default boolean contains(double value) {
+		for (double d : this)
+			if (d == value)
+				return true;
+		
+		return false;
+	}
 
 	/**
 	 * returns the element at i index in the list. Throwns an exception if i is out
@@ -63,7 +70,12 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param i
 	 * @return value specified at index i in list
 	 */
-	public double lookup(int i);
+	public default double lookup(int i) {
+		for (double d : this)
+			if (i-- == 0)
+				return d;
+		throw new NoSuchElementException("The index is out of bounds of the list");
+	}
 
 	/**
 	 * returns if this list is equal to the other list
