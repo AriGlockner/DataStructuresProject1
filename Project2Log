@@ -1,3 +1,6 @@
+GitHub Repo Link:
+https://github.com/AriGlockner/DataStructuresProjects/
+
 10% Log (~1 hour):
 Continued project 2 from where project 1 left off
 Added isSorted method to NumList interface
@@ -18,3 +21,12 @@ toString method using the StringBuilder Object.
 I realized that the equals methods were written exactly the same in both the NumArrayList and NumLinkedList classes so I changed the NumList interface to make the equals method a default method. By creating the equals method as a default method in the interface, I could delete the equals methods in the NumArrayList and NumLinkedList classes and I don't need to rewrite that exact same method for future classes that may require it.
 
 While I was able to make the equals method a default method in the NumList interface, I am struggling with trying to figure out how to do the other methods in the NumList interface because many of the other methods require having access to the list. I am currently trying to figure out how do I get the list to be visable to the Interface, but not to everything. The other problem I ran into here was much easier to fix. I needed to make the NumArrayList class implement the Iterable interface and the NumList interface extend the Iterable interface.
+
+90% Log (~25 hours):
+Implemented all methods. Need to finish writing test cases. Need to make a few methods more efficient. Need to fix the isSorted method in the NumList interface.
+
+I found out that by putting the iterator method in the NumList interface, I could then do a for each loop in the interface so I could use default methods within the interface rather than recreating the same method every time in the lists.
+
+I had to think about the reverse method in NumArrayList for a little bit, then I realized I could use a temporary variable. The NumLinkedList was much more tricky for me as I ran into an out of memory error due to having the list back call the front. Once I realized that's where the problem came from, the method became much simpler.
+
+I created a working union method, but I may change my implementation. I used a for each loop on list 2 to add elements into list 1 and return list 1. There may be a better way to write it than what I did. I created a few helper methods to help me implement the union method.
