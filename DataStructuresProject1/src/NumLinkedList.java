@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Stack;
 
 public class NumLinkedList implements NumList, Iterable<Double> {
 	// Front of list
@@ -255,7 +256,18 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		if (size < 2)
 			return;
 		
-		System.out.println("Not implemented yet");
+		NumNode previous = null;
+        NumNode ptr = front;
+        NumNode next = null;
+        
+        while (ptr != null) {
+            next = ptr.getNext();
+            ptr.setNext(previous);
+            previous = ptr;
+            ptr = next;
+        }
+        front = previous;
+		back = next;
 	}
 	
 	public static void main(String[] args) {
@@ -267,7 +279,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		System.out.println(list);
 		list.reverse();
 		System.out.println(list);
-		//list.reverse();
-		//System.out.println(list);
+		list.reverse();
+		System.out.println(list);
 	}
 }
