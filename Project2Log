@@ -30,3 +30,10 @@ I found out that by putting the iterator method in the NumList interface, I coul
 I had to think about the reverse method in NumArrayList for a little bit, then I realized I could use a temporary variable. The NumLinkedList was much more tricky for me as I ran into an out of memory error due to having the list back call the front. Once I realized that's where the problem came from, the method became much simpler.
 
 I created a working union method, but I may change my implementation. I used a for each loop on list 2 to add elements into list 1 and return list 1. There may be a better way to write it than what I did. I created a few helper methods to help me implement the union method.
+
+100% Log (~30 hours):
+Figuring out what to do about the Union method was tricky. Most of it was pretty straightforward, but the part I struggled with was figuring out how to efficiently insert each element in list 2 to list 1 in a sorted way. The part that was tricky was not the implementation itself, rather how to I make it so it doesn't need to check the isSorted method every time its called. I couldn't figure that out so I created a precondition saying call this method only when the list is already sorted. This works because if the method isn't already sorted before calling that method, it will still add the element, but it won't be sorted like it was before the element was added.
+
+I realized the problems I had with the isSorted method could be fixed by using a boolean to make sure it doesn't compare values for the 1st iteration through the loop.
+
+Testing everything was pretty straightforward.
