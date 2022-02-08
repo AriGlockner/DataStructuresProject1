@@ -275,7 +275,8 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	public void reverse() {
 		if (size < 2)
 			return;
-
+		
+		/*
 		NumNode previous = null;
 		NumNode ptr = front;
 		NumNode next = null;
@@ -286,8 +287,17 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			previous = ptr;
 			ptr = next;
 		}
-		front = previous;
-		back = next;
+		
+		front = previous.getPrevious();
+		back = next.getNext();
+		*/
+		
+		NumNode ptr = front;
+		do {
+			insert(0, ptr.getElement());
+			ptr = ptr.getNext();
+		} while (ptr != null);
+		removeDuplicates();
 	}
 
 	public static void main(String[] args) {

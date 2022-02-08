@@ -9,6 +9,7 @@ import org.junit.*;
 
 public class TestNumLinkedList {
 
+	/*
 	@Test
 	public void test() {
 		NumLinkedList foo = new NumLinkedList();
@@ -65,5 +66,54 @@ public class TestNumLinkedList {
 				bar.toString());
 		bar.removeDuplicates();
 		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", bar.toString());
+	}
+	*/
+	
+	@Test
+	public void test() {
+		NumLinkedList list = new NumLinkedList();
+		
+		//Assert.assertEquals(Integer.MAX_VALUE, list.capacity());
+		//Assert.assertEquals(0, list.size());
+		
+		for (int i = 1; i <= 10; i++)
+			list.insert(100, i);
+		//Assert.assertEquals(10, list.size());
+		//Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		//Assert.assertTrue(list.isSorted());
+		list.reverse();
+		//Assert.assertEquals("10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0", list.toString());
+		//Assert.assertFalse(list.isSorted());
+		list.reverse();
+		//Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		
+		//Assert.assertFalse(list.contains(3.14159));
+		list.insert(0, 3.14159);
+		list.insert(list.size()/2, 3.14159);
+		Assert.assertEquals("3.14159 1.0 2.0 3.0 4.0 3.14159 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		//list.insert(100, 0.0);
+		list.add(0.0);
+		
+		//System.out.println(list);
+		/*
+		list.insert(list.size() - 1, 3.14159);
+		Assert.assertFalse(list.contains(3.14159));
+		Assert.assertEquals(3.14159, list.lookup(list.size() - 1), 3.14159);
+		*/
+	}
+	
+	@Test
+	public void testArrayListEqualToLinkedList() {
+		NumLinkedList list1 = new NumLinkedList();
+		NumArrayList list2 = new NumArrayList(2);
+		for (int i = 0; i < 5; i++) {
+			list1.add(i);
+			list2.add(i);
+		}
+		Assert.assertTrue(list1.equals(list2));
+		Assert.assertTrue(list2.equals(list1));
+		list1.add(0);
+		Assert.assertFalse(list1.equals(list2));
+		Assert.assertFalse(list2.equals(list1));
 	}
 }
