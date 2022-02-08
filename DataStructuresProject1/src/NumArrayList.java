@@ -214,23 +214,12 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		Arrays.fill(list, size, size + capacity, 0.0);
 	}
 
-	/**
-	 * @return a new array iterator for this list
-	 */
-	@Override
-	public Iterator<Double> iterator() {
-		return Arrays.stream(list).iterator();
-	}
-
 	@Override
 	public void sortedInsert(double value) {
 		/*
-		// If list isn't sorted, adds element to back
-		if (size == 0 || !isSorted()) {
-			add(value);
-			return;
-		}
-		*/
+		 * // If list isn't sorted, adds element to back if (size == 0 || !isSorted()) {
+		 * add(value); return; }
+		 */
 		for (int i = 0; i < size; i++)
 			if (lookup(i) >= value) {
 				insert(i, value);
@@ -249,6 +238,14 @@ public class NumArrayList implements NumList, Iterable<Double> {
 			list[i] = lookup(size - i - 1);
 			list[size - i - 1] = foo;
 		}
+	}
+
+	/**
+	 * @return a new array iterator for this list
+	 */
+	@Override
+	public Iterator<Double> iterator() {
+		return Arrays.stream(list).iterator();
 	}
 
 	public static void main(String[] args) {

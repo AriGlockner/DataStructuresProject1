@@ -193,14 +193,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	}
 
 	/**
-	 * @return a new iterator for this NumLinkedList
-	 */
-	@Override
-	public Iterator<Double> iterator() {
-		return new LinkedListIterator(this);
-	}
-
-	/**
 	 * if list is sorted, adds value to list in sorted position otherwise
 	 * addselement to back
 	 */
@@ -240,6 +232,14 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 		if (previousNode != null)
 			front = previousNode.getPrevious();
+	}
+
+	/**
+	 * @return a new iterator for this NumLinkedList
+	 */
+	@Override
+	public Iterator<Double> iterator() {
+		return new LinkedListIterator(this);
 	}
 
 	public static void main(String[] args) {
