@@ -222,14 +222,6 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		return Arrays.stream(list).iterator();
 	}
 
-	/**
-	 * Sorts the list
-	 */
-	@Override
-	public void sort() {
-		Arrays.sort(list);
-	}
-
 	@Override
 	public void sortedInsert(double value) {
 		// If list isn't sorted, adds element to back

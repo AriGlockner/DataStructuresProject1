@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * @author ari
  */
 
-public abstract interface NumList extends Iterable<Double> {
+public interface NumList extends Iterable<Double> {
 
 	/**
 	 * This method returns the size of the list
@@ -118,11 +118,6 @@ public abstract interface NumList extends Iterable<Double> {
 		return true;
 	}
 
-	/*
-	 * Sorts the list
-	 */
-	void sort();
-
 	/**
 	 * Creates a new NumList that is
 	 * 
@@ -131,6 +126,7 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return NumList list1 and list2 without duplicates
 	 */
 	default NumList union(NumList list1, NumList list2) {
+		/*
 		// If both lists are sorted add each element from list 2 to list 1 in a sorted
 		// order
 		if (list1.isSorted() && list2.isSorted())
@@ -142,6 +138,20 @@ public abstract interface NumList extends Iterable<Double> {
 			for (double d : list2)
 				list1.add(d);
 
+		return list1;
+		*/
+		
+		// If both lists are sorted
+		if (list1.isSorted() && list2.isSorted()) {
+			for (double d : list2)
+				list1.sortedInsert(d);
+			
+		} else
+			// If at least one list isn't sorted
+			for (double d : list2)
+				list1.add(d);
+		
+		list1.removeDuplicates();
 		return list1;
 	}
 
@@ -155,6 +165,8 @@ public abstract interface NumList extends Iterable<Double> {
 
 	/**
 	 * Reverses each element in the list
+	 * 
+	 * 
 	 */
 	void reverse();
 

@@ -120,4 +120,9 @@ public class TestNumLinkedList {
 		Assert.assertFalse(list1.equals(list2));
 		Assert.assertFalse(list2.equals(list1));
 	}
+	
+	@Test
+	public void testUnionMethod() {
+		
+	}
 }

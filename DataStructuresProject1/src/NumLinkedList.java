@@ -193,39 +193,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	}
 
 	/**
-	 * Sorts the NumLinkedList via a bubble sort. Has a big-o runtime of N^2 due to
-	 * having a nested loop
-	 */
-	@Override
-	public void sort() {
-		// If size < 2, then list is already sorted
-		if (size < 2)
-			return;
-
-		boolean hasSwapped;
-		NumNode ptr;
-		NumNode lastPtr = null;
-
-		// Iterate through the list to determine which elements need to be swapped
-		do {
-			hasSwapped = false;
-			ptr = front;
-
-			while (ptr.getNext() != lastPtr) {
-				// Swap elements as needed
-				if (ptr.getElement() > ptr.getNext().getElement()) {
-					double element = ptr.getElement();
-					ptr.setElement(ptr.getNext().getElement());
-					ptr.getNext().setElement(element);
-					hasSwapped = true;
-				}
-				ptr = ptr.getNext();
-			}
-			lastPtr = ptr;
-		} while (hasSwapped);
-	}
-
-	/**
 	 * @return a new iterator for this NumLinkedList
 	 */
 	@Override
