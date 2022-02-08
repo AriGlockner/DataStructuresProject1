@@ -59,7 +59,7 @@ public abstract interface NumList extends Iterable<Double> {
 		for (double d : this)
 			if (d == value)
 				return true;
-		
+
 		return false;
 	}
 
@@ -105,13 +105,16 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @return true if the list is in increasing sorted order
 	 */
 	default boolean isSorted() {
-		double prior = Double.NaN;
-		for (double d : this)
-			if (prior != Double.NaN && d < prior)
+		double priorValue = Double.NaN;
+		boolean priorValueExists = false;
+
+		for (double currentValue : this)
+			if (priorValueExists && priorValue == currentValue)
 				return false;
-			else
-				prior = d;
-		
+			else {
+				priorValue = currentValue;
+				priorValueExists = true;
+			}
 		return true;
 	}
 
@@ -149,12 +152,12 @@ public abstract interface NumList extends Iterable<Double> {
 	 * @param value
 	 */
 	void sortedInsert(double value);
-	
+
 	/**
 	 * Reverses each element in the list
 	 */
 	void reverse();
-	
+
 	/**
 	 * @return a new array iterator for this list
 	 */

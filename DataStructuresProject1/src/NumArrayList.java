@@ -211,14 +211,6 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		Arrays.fill(list, size, size + capacity, 0.0);
 	}
 
-	@Override
-	public boolean isSorted() {
-		for (int i = 1; i < size; i++)
-			if (list[i - 1] > list[i])
-				return false;
-		return true;
-	}
-
 	// @return a new array iterator for this list
 	@Override
 	public Iterator<Double> iterator() {
