@@ -125,22 +125,7 @@ public interface NumList extends Iterable<Double> {
 	 * @param list2
 	 * @return NumList list1 and list2 without duplicates
 	 */
-	default NumList union(NumList list1, NumList list2) {
-		/*
-		// If both lists are sorted add each element from list 2 to list 1 in a sorted
-		// order
-		if (list1.isSorted() && list2.isSorted())
-			for (double d : list2)
-				list1.sortedInsert(d);
-
-		// Otherwise add list2 to the back of list1
-		else
-			for (double d : list2)
-				list1.add(d);
-
-		return list1;
-		*/
-		
+	default NumList union(NumList list1, NumList list2) {		
 		// If both lists are sorted
 		if (list1.isSorted() && list2.isSorted()) {
 			for (double d : list2)
