@@ -109,7 +109,7 @@ public abstract interface NumList extends Iterable<Double> {
 		boolean priorValueExists = false;
 
 		for (double currentValue : this)
-			if (priorValueExists && priorValue == currentValue)
+			if (priorValueExists && priorValue > currentValue)
 				return false;
 			else {
 				priorValue = currentValue;

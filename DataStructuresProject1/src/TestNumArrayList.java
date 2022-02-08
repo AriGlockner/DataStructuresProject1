@@ -1,5 +1,11 @@
 import org.junit.*;
 
+/**
+ * The TestNumArrayList class tests the NumArrayList class
+ * 
+ * @author ari
+ */
+
 public class TestNumArrayList {
 
 	/**

@@ -3,7 +3,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * NumArrayList is
+ * The NumArrayList class represents an arraylist of type double. It is
+ * initialized with a capcity to increase by so when the list needs to be
+ * increased in size, it does so by that amount for efficiency purposes. The
+ * NumArrayList class implements the NumList and Iterable interfaces
  * 
  * @author ari
  */
@@ -134,8 +137,7 @@ public class NumArrayList implements NumList, Iterable<Double> {
 	/**
 	 * @param value - the value to search for
 	 * 
-	 * @return true if if the list contains value
-	 * @return false otherwise
+	 * @return true if if the list contains value, otherwise returns false
 	 */
 	@Override
 	public boolean contains(double value) {
@@ -182,7 +184,8 @@ public class NumArrayList implements NumList, Iterable<Double> {
 	}
 
 	/**
-	 * Overrides toString method from the Object class.
+	 * Specified in NumList Interface, but method Overrides toString method from the
+	 * Object class.
 	 * 
 	 * @return a String containing each element in the list seperated by a space
 	 */
@@ -204,19 +207,24 @@ public class NumArrayList implements NumList, Iterable<Double> {
 
 	/**
 	 * Helper method for add/insert methods that increases size of list by the
-	 * capacity
+	 * capacity as needed
 	 */
 	private void increaseListSize() {
 		list = Arrays.copyOf(list, size + capacity);
 		Arrays.fill(list, size, size + capacity, 0.0);
 	}
 
-	// @return a new array iterator for this list
+	/**
+	 * @return a new array iterator for this list
+	 */
 	@Override
 	public Iterator<Double> iterator() {
 		return Arrays.stream(list).iterator();
 	}
 
+	/**
+	 * Sorts the list
+	 */
 	@Override
 	public void sort() {
 		Arrays.sort(list);
@@ -238,6 +246,9 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		add(value);
 	}
 
+	/**
+	 * Reverses each element in the list
+	 */
 	@Override
 	public void reverse() {
 		for (int i = 0; i < size / 2; i++) {
@@ -246,7 +257,7 @@ public class NumArrayList implements NumList, Iterable<Double> {
 			list[size - i - 1] = foo;
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		NumArrayList list = new NumArrayList(10);
 		Random rand = new Random();

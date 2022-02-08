@@ -1,8 +1,9 @@
 /**
+ * The NumNode class represents a node for the NumLinkedList class. A NumNode
+ * contains an element of type double and pointers to the next and previous
+ * nodes in the list
  * 
  * @author ari
- *
- * @param <T>
  */
 
 public class NumNode {

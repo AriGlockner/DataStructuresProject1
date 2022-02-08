@@ -1,6 +1,13 @@
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * The NumLinkedList class represents a linked list of type double. The
+ * NuLinkedList class implements the NumList and Iterable interfaces
+ * 
+ * @author ari
+ */
+
 public class NumLinkedList implements NumList, Iterable<Double> {
 	// Front of list
 	private NumNode front;
@@ -9,35 +16,55 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	// Size of list
 	private int size;
 
-	// Initalize list
+	/**
+	 * Initalizes an empty NumLinkedList
+	 */
 	public NumLinkedList() {
 		size = 0;
 		front = back = null;
 	}
 
-	// Returns front Node in list
+	/**
+	 * Returns front Node in list
+	 * 
+	 * @return front
+	 */
 	NumNode getFront() {
 		return front;
 	}
 
-	// Returns back Node in list
+	/**
+	 * Returns back Node in list
+	 * 
+	 * @return back
+	 */
 	NumNode getBack() {
 		return back;
 	}
 
-	// Returns size of list
+	/**
+	 * Returns size of list
+	 * 
+	 * @return size
+	 */
 	@Override
 	public int size() {
 		return size;
 	}
 
-	// Returns size of list
+	/**
+	 * Returns the maximum elements the list can currently hold
+	 * 
+	 * @returns a large number
+	 */
 	@Override
 	public int capacity() {
 		return Integer.MAX_VALUE;
 	}
 
-	// Adds element to back of list
+	/**
+	 * Adds element to back of list
+	 */
 	@Override
 	public void add(double value) {
 		// Create new node
@@ -55,7 +82,9 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		back = newNode;
 	}
 
-	// Inserts a value at the specified index
+	/**
+	 * Inserts a value at the specified index
+	 */
 	@Override
 	public void insert(int i, double value) {
 		// Add to back
@@ -88,7 +117,10 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		newNode.getNext().setPrevious(newNode);
 	}
 
-	// Removes i-th value in list
+	/**
+	 * Removes the i-th element of the list. Does nothing if i is greater than
+	 * thenumber of elements in the list
+	 */
 	@Override
 	public void remove(int i) {
 		// Can't remove
@@ -126,7 +158,10 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	}
 
-	// Removes any duplicates in the list
+	/**
+	 * Removes any duplicates of any elements in the list while preserving the
+	 * orderof the first duplicate
+	 */
 	@Override
 	public void removeDuplicates() {
 		if (size < 2)
@@ -155,7 +190,12 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		}
 	}
 
-	// Returns each Value in the list as a string seperated by a space
+	/**
+	 * Specified in NumList Interface, but method Overrides toString method from the
+	 * Object class.
+	 * 
+	 * @return a String containing each element in the list seperated by a space
+	 */
 	@Override
 	public String toString() {
 		// Returns empty string if list is empty
@@ -168,22 +208,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		for (double d : this)
 			sb.append(" " + d);
 		return sb.substring(1);
-	}
-
-	// Returns true if list is sorted, otherwise returns false
-	@Override
-	public boolean isSorted() {
-		if (size < 2)
-			return true;
-
-		NumNode ptr = front;
-		while (ptr.hasNext()) {
-			if (ptr.getElement() > ptr.getNext().getElement())
-				return false;
-
-			ptr = ptr.getNext();
-		}
-		return true;
 	}
 
 	/**
@@ -219,14 +243,18 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		} while (hasSwapped);
 	}
 
-	// @return a new array iterator for this list
+	/**
+	 * @return a new iterator for this NumLinkedList
+	 */
 	@Override
 	public Iterator<Double> iterator() {
 		return new LinkedListIterator(this);
 	}
 
-	// If list is sorted, adds element in sorted order
-	// Otherwise adds element to back of list
+	/**
+	 * if list is sorted, adds value to list in sorted position otherwise
+	 * addselement to back
+	 */
 	@Override
 	public void sortedInsert(double value) {
 		int index = 0;
@@ -240,7 +268,9 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 
 	}
 
-	// Reverses each element in the list
+	/**
+	 * Reverses each element in the list
+	 */
 	@Override
 	public void reverse() {
 		if (size < 2)
