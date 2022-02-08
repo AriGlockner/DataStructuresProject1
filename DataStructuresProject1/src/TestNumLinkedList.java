@@ -81,12 +81,12 @@ public class TestNumLinkedList {
 		Assert.assertEquals(10, list.size());
 		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
 		Assert.assertTrue(list.isSorted());
-		/*
+		///*
 		list.reverse();
 		Assert.assertEquals("10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0", list.toString());
 		Assert.assertFalse(list.isSorted());
 		list.reverse();
-		*/
+		//*/
 		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
 		
 		Assert.assertFalse(list.contains(3.14159));
@@ -97,14 +97,12 @@ public class TestNumLinkedList {
 		
 		Assert.assertTrue(list.contains(3.14159));
 		Assert.assertEquals(3.14159, list.lookup(0), 3.14159);
+		Assert.assertEquals(3.14159, list.lookup(7), 6.0);
+		Assert.assertEquals(3.14159, list.lookup(list.size() - 1), 3.14159);
 		list.removeDuplicates();
 		Assert.assertEquals("3.14159 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
-		
-		/*
-		list.insert(list.size() - 1, 3.14159);
-		Assert.assertFalse(list.contains(3.14159));
-		Assert.assertEquals(3.14159, list.lookup(list.size() - 1), 3.14159);
-		*/
+		list.remove(0);
+		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
 	}
 	
 	@Test
@@ -115,6 +113,7 @@ public class TestNumLinkedList {
 			list1.add(i);
 			list2.add(i);
 		}
+		Assert.assertTrue(list1.equals(list1));
 		Assert.assertTrue(list1.equals(list2));
 		Assert.assertTrue(list2.equals(list1));
 		list1.add(0);
