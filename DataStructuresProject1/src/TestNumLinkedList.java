@@ -73,28 +73,33 @@ public class TestNumLinkedList {
 	public void test() {
 		NumLinkedList list = new NumLinkedList();
 		
-		//Assert.assertEquals(Integer.MAX_VALUE, list.capacity());
-		//Assert.assertEquals(0, list.size());
+		Assert.assertEquals(Integer.MAX_VALUE, list.capacity());
+		Assert.assertEquals(0, list.size());
 		
 		for (int i = 1; i <= 10; i++)
 			list.insert(100, i);
-		//Assert.assertEquals(10, list.size());
-		//Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
-		//Assert.assertTrue(list.isSorted());
+		Assert.assertEquals(10, list.size());
+		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		Assert.assertTrue(list.isSorted());
+		/*
 		list.reverse();
-		//Assert.assertEquals("10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0", list.toString());
-		//Assert.assertFalse(list.isSorted());
+		Assert.assertEquals("10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0", list.toString());
+		Assert.assertFalse(list.isSorted());
 		list.reverse();
-		//Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		*/
+		Assert.assertEquals("1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
 		
-		//Assert.assertFalse(list.contains(3.14159));
+		Assert.assertFalse(list.contains(3.14159));
 		list.insert(0, 3.14159);
 		list.insert(list.size()/2, 3.14159);
-		Assert.assertEquals("3.14159 1.0 2.0 3.0 4.0 3.14159 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
-		//list.insert(100, 0.0);
-		list.add(0.0);
+		list.insert(list.size(), 3.14159);
+		Assert.assertEquals("3.14159 1.0 2.0 3.0 4.0 3.14159 5.0 6.0 7.0 8.0 9.0 10.0 3.14159", list.toString());
 		
-		//System.out.println(list);
+		Assert.assertTrue(list.contains(3.14159));
+		Assert.assertEquals(3.14159, list.lookup(0), 3.14159);
+		list.removeDuplicates();
+		Assert.assertEquals("3.14159 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0", list.toString());
+		
 		/*
 		list.insert(list.size() - 1, 3.14159);
 		Assert.assertFalse(list.contains(3.14159));

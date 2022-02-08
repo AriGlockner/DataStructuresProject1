@@ -71,7 +71,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		NumNode newNode = new NumNode(value);
 
 		// list is empty
-		if (size++ == 0) {
+		if (++size == 1) {
 			front = back = newNode;
 			return;
 		}
@@ -164,30 +164,21 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	 */
 	@Override
 	public void removeDuplicates() {
+		// Return if size is less than 2
 		if (size < 2)
 			return;
-		NumNode ptr1 = front;
-
-		while (true) {
-			NumNode ptr2 = ptr1.getNext();
-			while (true) {
+		
+		// Iterate through the list to
+		for (NumNode ptr1 = front; ptr1 != null; ptr1 = ptr1.getNext())
+			// Compare future elements in list to current element
+			for (NumNode ptr2 = ptr1.getNext(); ptr2 != null; ptr2 = ptr2.getNext())
+				
+				// Remove Element if they're the same
 				if (ptr1.getElement() == ptr2.getElement()) {
-					size--;
-					ptr2 = ptr2.getPrevious();
-					ptr2.setNext(ptr2.getNext().getNext());
-					if (!ptr2.hasNext())
-						break;
-					ptr2.getNext().setPrevious(ptr2);
+					ptr2.getPrevious().setNext(ptr2.getNext());
+					if (ptr2.hasNext())
+						ptr2.getNext().setPrevious(ptr2.getPrevious());
 				}
-				if (!ptr2.hasNext())
-					break;
-
-				ptr2 = ptr2.getNext();
-			}
-			if (!ptr1.hasNext())
-				break;
-			ptr1 = ptr1.getNext();
-		}
 	}
 
 	/**
@@ -291,7 +282,6 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		front = previous.getPrevious();
 		back = next.getNext();
 		*/
-		
 		NumNode ptr = front;
 		do {
 			insert(0, ptr.getElement());
