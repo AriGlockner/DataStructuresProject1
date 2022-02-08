@@ -224,12 +224,13 @@ public class NumArrayList implements NumList, Iterable<Double> {
 
 	@Override
 	public void sortedInsert(double value) {
+		/*
 		// If list isn't sorted, adds element to back
 		if (size == 0 || !isSorted()) {
 			add(value);
 			return;
 		}
-
+		*/
 		for (int i = 0; i < size; i++)
 			if (lookup(i) >= value) {
 				insert(i, value);

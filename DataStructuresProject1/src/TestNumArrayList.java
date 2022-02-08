@@ -69,5 +69,4 @@ public class TestNumArrayList {
 		list.reverse();
 		Assert.assertEquals("2.718 0.0 1.0 3.14159 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list.toString());
 	}
-
 }

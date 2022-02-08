@@ -160,6 +160,7 @@ public interface NumList extends Iterable<Double> {
 	 * element to back
 	 * 
 	 * @param value
+	 * @precondition List is sorted before this method call
 	 */
 	void sortedInsert(double value);
 

@@ -122,7 +122,25 @@ public class TestNumLinkedList {
 	}
 	
 	@Test
-	public void testUnionMethod() {
+	public void testUnion() {
+		NumList list1 = new NumArrayList(5);
+		NumList list2 = new NumLinkedList();
 		
+		for (int i = 0; i < 5; i++)
+			list1.add(i);
+		for (int i = 5; i < 10; i++)
+			list2.add(i);
+		
+		list1 = list1.union(list1, list2);
+		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list1.toString());
+		for (int i = 0; i < 5; i++)
+			list1.remove(5);
+		
+		
+		list2 = new NumArrayList().union(list2, list1);
+		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list2.toString());
+		
+		list1 = new NumArrayList().union(list1, list1);
+		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0", list1.toString());
 	}
 }
