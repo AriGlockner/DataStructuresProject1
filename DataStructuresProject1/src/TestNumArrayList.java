@@ -13,9 +13,9 @@ public class TestNumArrayList {
 	 */
 	@Test
 	public void testArrayCapacities() {
-		NumArrayList[] lists = new NumArrayList[] { new NumArrayList(1), new NumArrayList(2), new NumArrayList(5),
+		NumList[] lists = new NumArrayList[] { new NumArrayList(1), new NumArrayList(2), new NumArrayList(5),
 				new NumArrayList(9) };
-		NumArrayList list0 = new NumArrayList(0);
+		NumList list0 = new NumArrayList(0);
 		Assert.assertEquals(0, list0.capacity());
 		Assert.assertEquals(1, lists[0].capacity());
 		Assert.assertEquals(2, lists[1].capacity());
@@ -23,11 +23,11 @@ public class TestNumArrayList {
 		Assert.assertEquals(9, lists[3].capacity());
 
 		for (int i = 0; i < 10; i++) {
-			for (NumArrayList l : lists)
+			for (NumList l : lists)
 				l.add(i);
 		}
 
-		for (NumArrayList l : lists) {
+		for (NumList l : lists) {
 			Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", l.toString());
 			Assert.assertEquals(10, l.size());
 		}
@@ -42,15 +42,15 @@ public class TestNumArrayList {
 	 */
 	@Test
 	public void testOneList() {
-		NumArrayList front = new NumArrayList(5);
-		NumArrayList back = new NumArrayList(5);
+		NumList front = new NumArrayList(5);
+		NumList back = new NumArrayList(5);
 
 		for (int i = 0; i < 5; i++)
 			front.add(i);
 		for (int i = 5; i < 10; i++)
 			back.add(i);
 
-		NumArrayList list = (NumArrayList) new NumArrayList().union(front, back);
+		NumList list = new NumArrayList().union(front, back);
 
 		Assert.assertEquals("0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0", list.toString());
 		Assert.assertTrue(list.isSorted());

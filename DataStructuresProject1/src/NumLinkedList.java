@@ -1,5 +1,4 @@
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * The NumLinkedList class represents a linked list of type double. The
@@ -24,11 +23,16 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		front = back = null;
 	}
 
+	/**
+	 * @return front NumNode of list
+	 */
 	public NumNode getFront() {
-		// TODO Auto-generated method stub
 		return front;
 	}
 
+	/**
+	 * @return back NumNode of list
+	 */
 	public NumNode getBack() {
 		return back;
 	}
@@ -46,7 +50,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	/**
 	 * Returns the maximum elements the list can currently hold
 	 * 
-	 * @returns a large number
+	 * @returns a large integer
 	 */
 	@Override
 	public int capacity() {
@@ -99,9 +103,11 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		// Add in between
 		NumNode ptr = front;
 
+		// Iterate through list to get to node to insert
 		while (--i > 0)
 			ptr = ptr.getNext();
 
+		// Insert Node
 		newNode.setNext(ptr.getNext());
 		newNode.setPrevious(ptr);
 		ptr.setNext(newNode);
@@ -114,7 +120,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	 */
 	@Override
 	public void remove(int i) {
-		// Can't remove
+		// Can't remove, so return
 		if (i >= size || i < 0)
 			return;
 
@@ -159,7 +165,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		if (size < 2)
 			return;
 
-		// Iterate through the list to
+		// Iterate through the list
 		for (NumNode ptr1 = front; ptr1 != null; ptr1 = ptr1.getNext())
 			// Compare future elements in list to current element
 			for (NumNode ptr2 = ptr1.getNext(); ptr2 != null; ptr2 = ptr2.getNext())
@@ -193,8 +199,9 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 	}
 
 	/**
-	 * if list is sorted, adds value to list in sorted position otherwise
-	 * addselement to back
+	 * if list is sorted, adds value to list in sorted position otherwise adds
+	 * element to list in front of 1st element where value is less than value in
+	 * list or back of list
 	 */
 	@Override
 	public void sortedInsert(double value) {
@@ -206,7 +213,7 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 			}
 			index++;
 		}
-
+		add(value);
 	}
 
 	/**
@@ -242,16 +249,56 @@ public class NumLinkedList implements NumList, Iterable<Double> {
 		return new LinkedListIterator(this);
 	}
 
+	/**
+	 * Demonstration
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		NumLinkedList list = new NumLinkedList();
-		Random rand = new Random();
+		// Create list
+		NumList list = new NumLinkedList();
 
-		for (int i = 0; i < 10; i++)
-			list.add(rand.nextInt(100));
-		System.out.println(list);
+		// Add elements to back of list
+		for (int i = 1; i <= 10; i++)
+			list.insert(100, i);
+		System.out.println("List should print:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List:\t\t\t" + list);
+		System.out.println("List should be sorted (expected true):\t" + list.isSorted() + "\n");
+
+		// Reverse List
 		list.reverse();
-		System.out.println(list);
+		System.out.println("Reverse List");
+		System.out.println("List should print: \t10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0");
+		System.out.println("The list should no longer be sorted (Expected false): " + list.isSorted() + "\n");
+
+		// Reverse List to return to prior state
 		list.reverse();
-		System.out.println(list);
+		System.out.println("Reversed list again\nList should print:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List:\t\t\t" + list + "\n");
+
+		// Contains
+		System.out.println("Lookup/Contains:");
+		System.out.println("List should not contain 3.14159 (expected false):\t" + list.contains(3.14159));
+		System.out.println("List should result in 10.0 from lookup:\t" + list.lookup(list.size() - 1) + "\n");
+
+		// Insert
+		System.out.println("Inserting 3.14159 at the front, middle, and back of the list");
+		list.insert(0, 3.14159);
+		list.insert(list.size() / 2, 3.14159);
+		list.insert(list.size() * 100, 3.14159);
+		System.out.println("List should print:\t3.14159 1.0 2.0 3.0 4.0 3.14159 5.0 6.0 7.0 8.0 9.0 10.0 3.14159");
+		System.out.println("List:\t\t\t" + list + "\n");
+
+		// Contains
+		System.out.println(
+				"List should now contain the value 3.14159 (expected true):\t" + list.contains(3.14159) + "\n");
+
+		// Remove
+		System.out.println("Removing Duplicates:");
+		list.removeDuplicates();
+		System.out.println("List should now contain:\t3.14159 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List contains:\t\t\t" + list + "\n");
+		System.out.println("Removing in front should result in:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List contains:\t\t\t" + list + "\n");
 	}
 }

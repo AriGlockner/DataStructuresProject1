@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * The NumArrayList class represents an arraylist of type double. It is
@@ -214,12 +213,13 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		Arrays.fill(list, size, size + capacity, 0.0);
 	}
 
+	/**
+	 * if list is sorted, adds value to list in sorted position otherwise
+	 * addselement into the list at an unspecified location. List won't be sorted if
+	 * itwasn't sorted prior to method call
+	 */
 	@Override
 	public void sortedInsert(double value) {
-		/*
-		 * // If list isn't sorted, adds element to back if (size == 0 || !isSorted()) {
-		 * add(value); return; }
-		 */
 		for (int i = 0; i < size; i++)
 			if (lookup(i) >= value) {
 				insert(i, value);
@@ -248,16 +248,56 @@ public class NumArrayList implements NumList, Iterable<Double> {
 		return Arrays.stream(list).iterator();
 	}
 
+	/**
+	 * Demonstration
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		NumArrayList list = new NumArrayList(10);
-		Random rand = new Random();
+		// Create list
+		NumList list = new NumArrayList(2);
 
-		for (int i = 0; i < 10; i++)
-			list.add(rand.nextInt(100));
-		System.out.println(list);
+		// Add elements to back of list
+		for (int i = 1; i <= 10; i++)
+			list.insert(100, i);
+		System.out.println("List should print:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List:\t\t\t" + list);
+		System.out.println("List should be sorted (expected true):\t" + list.isSorted() + "\n");
+
+		// Reverse List
 		list.reverse();
-		System.out.println(list);
+		System.out.println("Reverse List");
+		System.out.println("List should print: \t10.0 9.0 8.0 7.0 6.0 5.0 4.0 3.0 2.0 1.0");
+		System.out.println("The list should no longer be sorted (Expected false): " + list.isSorted() + "\n");
+
+		// Reverse List to return to prior state
 		list.reverse();
-		System.out.println(list);
+		System.out.println("Reversed list again\nList should print:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List:\t\t\t" + list + "\n");
+
+		// Contains
+		System.out.println("Lookup/Contains:");
+		System.out.println("List should not contain 3.14159 (expected false):\t" + list.contains(3.14159));
+		System.out.println("List should result in 10.0 from lookup:\t" + list.lookup(list.size() - 1) + "\n");
+
+		// Insert
+		System.out.println("Inserting 3.14159 at the front, middle, and back of the list");
+		list.insert(0, 3.14159);
+		list.insert(list.size() / 2, 3.14159);
+		list.insert(list.size() * 100, 3.14159);
+		System.out.println("List should print:\t3.14159 1.0 2.0 3.0 4.0 3.14159 5.0 6.0 7.0 8.0 9.0 10.0 3.14159");
+		System.out.println("List:\t\t\t" + list + "\n");
+
+		// Contains
+		System.out.println(
+				"List should now contain the value 3.14159 (expected true):\t" + list.contains(3.14159) + "\n");
+
+		// Remove
+		System.out.println("Removing Duplicates:");
+		list.removeDuplicates();
+		System.out.println("List should now contain:\t3.14159 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List contains:\t\t\t" + list + "\n");
+		System.out.println("Removing in front should result in:\t1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0");
+		System.out.println("List contains:\t\t\t" + list + "\n");
 	}
 }
