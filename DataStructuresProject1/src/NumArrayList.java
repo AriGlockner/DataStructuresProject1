@@ -22,8 +22,10 @@ public class NumArrayList implements NumList, Iterable<Double> {
 	 * Initializes an empty NumArrayList of capacity 0
 	 */
 	public NumArrayList() {
-		capacity = size = 0;
-		list = new double[capacity];
+		capacity = 1;
+		size = 0;
+		//capacity = size = 0;
+		list = new double[] { 0.0 };
 	}
 
 	/**
