@@ -1,9 +1,11 @@
 import org.junit.*;
 
-public class TestBinarySearchTree {
+public class TestBinarySearchTree
+{
 
-    @Test
-    public void test() {
-        
-    }
+	@Test
+	public void test()
+	{
+
+	}
 }
