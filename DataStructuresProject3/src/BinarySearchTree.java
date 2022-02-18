@@ -1,63 +1,95 @@
+import java.util.*;
 
-
-public class BinarySearchTree
+/**
+ *
+ * @param <T> key
+ * @param <V> value
+ */
+public class BinarySearchTree<T, V>
 {
+	private TreeNode<T, V> root;
 
-	public void insert(int key)
+	public BinarySearchTree()
 	{
-
+		root = null;
 	}
 
-	public Node Search(int key)
+
+
+	/**
+	 * Inserts a node containing key in the BST
+	 */
+	public void insert(T key)
 	{
-		return new Node();
+		if (root == null)
+		{
+
+		}
 	}
 
-	public void delete(int key)
-	{
-
-	}
-
-	public void inorderRec()
-	{
-
-	}
-
-	public Node kthSmallest(int k)
+	/**
+	 * Searches for a node with a specific key in the BST
+	 *
+	 * @return a node with a specific key in the BST
+	 */
+	public V search(T key)
 	{
 		return null;
 	}
 
+	/**
+	 * Deletes a node containing key from the BST if it exists
+	 */
+	public void delete(T key)
+	{
+
+	}
+
+	/**
+	 * @return a list of values in inorder traversal of the BST implemented using
+	 * recursion
+	 */
+	public List<V> inorderRec()
+	{
+		return null;
+	}
+
+	/**
+	 * Find the kth smallest element in the BST
+	 *
+	 * @param k
+	 * @return the kth smallest element in the BST
+	 */
+	public V kthSmallest(T k)
+	{
+		return null;
+	}
+
+	/**
+	 *
+	 * @param <T> key
+	 * @param <V> value
+	 */
+	static class TreeNode<T, V> implements Comparable
+	{
+		V value;
+		TreeNode left;
+		TreeNode right;
+
+		public TreeNode()
+		{
+
+		}
+
+		@Override
+		public int compareTo(Object o)
+		{
+			return 0;
+		}
+	}
 
 	public static void main(String[] args)
 	{
-		// 1) Construct an empty BinarySearchTree
-		BinarySearchTree tree = new BinarySearchTree();
 
-		// 2) Insert: 2, 1, 4, 5, 9, 3, 6, 7, 10, 12, 11
-		tree.insert(2);
-		tree.insert(1);
-		tree.insert(4);
-		tree.insert(5);
-		tree.insert(9);
-		tree.insert(3);
-		tree.insert(6);
-		tree.insert(7);
-		tree.insert(10);
-		tree.insert(12);
-		tree.insert(11);
-
-		// 3) Delete 4 then delete 9
-		tree.delete(4);
-		tree.delete(9);
-
-		// 4) Print the keys using inorder traversal
-
-		// 5) Search 12 then search 4
-		System.out.println(tree.Search(12));
-		System.out.println(tree.Search(4));
-
-		// 6) Find the 3rd smallest element in the tree
-		System.out.println(tree.kthSmallest(3));
 	}
 }
