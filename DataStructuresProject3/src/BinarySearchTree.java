@@ -72,13 +72,16 @@ public class BinarySearchTree<T, V>
 	 */
 	static class TreeNode<T, V> implements Comparable
 	{
-		V value;
-		TreeNode left;
-		TreeNode right;
+		private T key;
+		private V value;
+		private TreeNode left;
+		private TreeNode right;
 
-		public TreeNode()
+		public TreeNode(T key, V value)
 		{
-
+			this.key = key;
+			this.value = value;
+			left = right = null;
 		}
 
 		@Override
@@ -90,6 +93,6 @@ public class BinarySearchTree<T, V>
 
 	public static void main(String[] args)
 	{
-
+		BinarySearchTree<Integer, String> tree = new BinarySearchTree<Integer, String>();
 	}
 }

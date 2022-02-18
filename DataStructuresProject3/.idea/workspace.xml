@@ -5,20 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/BSTQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LinkedListIterator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NumArrayList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NumLinkedList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NumList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NumNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TestNumArrayList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TestNumLinkedList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/Node.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/TestBinarySearchTree.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BinarySearchTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BinarySearchTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestBinarySearchTree.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
