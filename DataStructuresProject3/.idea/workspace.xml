@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/BSTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTQueue$QueueNode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTQueue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BSTQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BSTQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BinarySearchTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BinarySearchTree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +36,9 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/BinarySearchTree.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -108,5 +116,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/DataStructuresProject3$BinarySearchTree.ic" NAME="BinarySearchTree Coverage Results" MODIFIED="1645555380945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

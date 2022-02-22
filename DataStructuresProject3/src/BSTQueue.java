@@ -4,7 +4,7 @@ public class BSTQueue<T extends Comparable<T>, V>
 {
 	BSTNode<T, V> front;
 	BSTNode<T, V> back;
-	ArrayList<BSTNode<T, V>> queue = new ArrayList(5);
+	ArrayList<BSTNode<T, V>> queue = new ArrayList();
 
 	public BSTQueue()
 	{
@@ -13,20 +13,10 @@ public class BSTQueue<T extends Comparable<T>, V>
 
 	public void add(BSTNode<T, V> node)
 	{
-		if (queue.size() == 0 || queue.contains(node))
-		{
-			queue.add(node);
+		if (queue.contains(node))
 			return;
-		}
 
-		int front = 0;
-		int back = queue.size() - 1;
-
-		while (front < back)
-		{
-			int mid = (front + back) / 2;
-			//if (queue)
-		}
+		queue.add(node);
 	}
 
 	/*
@@ -43,4 +33,9 @@ public class BSTQueue<T extends Comparable<T>, V>
 		}
 	}
 	 */
+	public static void main(String[] args)
+	{
+		BSTQueue<Integer, Integer> queue = new BSTQueue<>();
+
+	}
 }
