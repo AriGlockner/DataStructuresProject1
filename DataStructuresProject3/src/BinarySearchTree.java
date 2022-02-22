@@ -1,5 +1,3 @@
-import com.sun.source.tree.Tree;
-
 import java.util.*;
 
 /**
@@ -67,10 +65,9 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-		//if (root)
-		sb.append(" " + root.toString());
-		return sb.substring(1);
+		if (root == null)
+			return "";
+		return root.toString();
 	}
 
 	/**
@@ -100,7 +97,88 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	 */
 	public void delete(T key)
 	{
+		if (root == null)
+			return;
 
+		TreeNode ptr = root;
+		TreeNode lastPtr = root;
+		boolean isLeft = true;
+
+		while (ptr != null)
+		{
+			// Remove node
+			if (ptr.key.compareTo(key) == 0)
+			{
+				System.out.println("Removing: " + key + " -> " + ptr.value);
+
+				// Remove leaf node
+				if (ptr.left == null && ptr.right == null)
+					if (isLeft)
+						lastPtr.left = null;
+					else
+						lastPtr.right = null;
+
+				// Remove if left child is null
+				else if (ptr.left == null)
+					if (isLeft)
+						lastPtr.left = ptr.right;
+					else
+						lastPtr.right = ptr.right;
+
+				// Remove if right child is null
+				else if (ptr.right == null)
+					if (isLeft)
+						lastPtr.left = ptr.left;
+					else
+						lastPtr.right = ptr.left;
+
+				// Remove if Node has 2 child Nodes
+				else
+					if (isLeft)
+					{
+						// Create placeholder for node to be remove's right's left node
+						TreeNode<T, V> foo = ptr.right.left;
+						// Replace node to be deleted with node to be deleted's right node
+						ptr.right.left = ptr.left;
+						lastPtr.left = ptr.right;
+
+						// Put placeholder node back into the tree
+						ptr = lastPtr.left.left;
+						while (ptr.right != null)
+							ptr = ptr.right;
+						ptr.right = foo;
+					}
+					else
+					{
+						// Create placeholder for node to be remove's left's right node
+						TreeNode<T, V> foo = ptr.left.right;
+						// Replace node to be deleted with node to be deleted's left node
+						ptr.left.right = ptr.right;
+						lastPtr.right = ptr.left;
+
+						// Put placeholder node back into the tree
+						ptr = lastPtr.right.right;
+						while (ptr.left != null)
+							ptr = ptr.left;
+						ptr.left = foo;
+					}
+
+				return;
+			}
+			// Iterate to
+			if (ptr.key.compareTo(key) > 0)
+			{
+				lastPtr = ptr;
+				ptr = ptr.left;
+				isLeft = true;
+			}
+			else
+			{
+				lastPtr = ptr;
+				ptr = ptr.right;
+				isLeft = false;
+			}
+		}
 	}
 
 	/**
@@ -109,22 +187,9 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	 */
 	public List<V> inorderRec()
 	{
-		/*
-		if (left != null)
-				sb.append(" " + left.toString());
-			sb.append(" " + value.toString());
-			if (right != null)
-				sb.append(" " + right.toString());
-		 */
-		List<V> list = new ArrayList<V>();
-
-		TreeNode<T, V> lptr = root;
-
-
-
-		list.add(root.value);
-
-		return list;
+		if (root == null)
+			return null;
+		return root.inorderRec();
 	}
 
 
@@ -160,6 +225,22 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			this.key = key;
 			this.value = value;
 			left = right = null;
+		}
+
+		private List<V> inorderRec()
+		{
+			List<V> list = new ArrayList<V>();
+
+			if (left != null)
+				for (V v : (List<V>) left.inorderRec())
+					list.add(v);
+
+			list.add(value);
+
+			if (right != null)
+				for (V v : (List<V>) right.inorderRec())
+					list.add(v);
+			return list;
 		}
 
 		@Override
@@ -198,14 +279,20 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		tree.insert(10, 'I');
 		tree.insert(12, 'K');
 		tree.insert(11, 'J');
+
+		System.out.println(tree);
+
 		// Delete 4, then 9
-		//tree.delete(4);
-		//tree.delete(9);
+		tree.delete(4);
+		tree.delete(9);
+		tree.delete(2);
+
 		System.out.println(tree);
 
 		// Search 12 then search 4.
 		System.out.println(tree.search(12));
 		System.out.println(tree.search(4));
+		System.out.println(tree.inorderRec());
 
 	}
 }
