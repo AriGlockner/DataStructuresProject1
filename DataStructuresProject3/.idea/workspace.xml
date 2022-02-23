@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/TestBinarySearchTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BSTQueue.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/LinkedListIterator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/NumArrayList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/NumLinkedList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/NumList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/NumNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/TestNumArrayList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/TestNumLinkedList.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BinarySearchTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BinarySearchTree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +35,8 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/BinarySearchTree.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/TestBinarySearchTree.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/BinarySearchTree.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -85,10 +78,41 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in DataStructuresProject3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestBinarySearchTree" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DataStructuresProject3" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestBinarySearchTree.testAnotherGenericType" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DataStructuresProject3" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
+      <option name="METHOD_NAME" value="testAnotherGenericType" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestBinarySearchTree.testBinarySearchTree" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DataStructuresProject3" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
+      <option name="METHOD_NAME" value="testBinarySearchTree" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestBinarySearchTree.testOtherGenericTypes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DataStructuresProject3" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
+      <option name="METHOD_NAME" value="testOtherGenericTypes" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -96,7 +120,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.BinarySearchTree" />
-        <item itemvalue="JUnit.All in DataStructuresProject3" />
+        <item itemvalue="JUnit.TestBinarySearchTree" />
+        <item itemvalue="JUnit.TestBinarySearchTree.testAnotherGenericType" />
+        <item itemvalue="JUnit.TestBinarySearchTree.testOtherGenericTypes" />
+        <item itemvalue="JUnit.TestBinarySearchTree.testBinarySearchTree" />
       </list>
     </recent_temporary>
   </component>

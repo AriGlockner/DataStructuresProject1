@@ -26,7 +26,7 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	public void insert(T key, V value)
 	{
 		// Create Node to add
-		TreeNode<T, V> newNode = new TreeNode<T, V>(key, value);
+		TreeNode<T, V> newNode = new TreeNode<>(key, value);
 
 		// if tree is empty, add Node to tree and to list
 		if (root == null)
@@ -37,15 +37,19 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 		// Add Node into sorted arraylist
 		TreeNode<T, V> ptr = root;
-		if (root.value == value) return;
-		while (ptr != null)
+
+		// Return statement within while loop
+		while (true)
 		{
 			// Return if value to add is the same as the node's value
-			if (ptr.value == value) return;
+			if (ptr.value == value)
+				return;
 
+			// If keys are the same, replace the old value with this value
 			if (ptr.key.compareTo(newNode.key) == 0)
 			{
 				ptr.value = value;
+				return;
 			} else if (ptr.key.compareTo(newNode.key) > 0)
 			{
 				if (ptr.left == null)
@@ -67,7 +71,7 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	}
 
 	/**
-	 * @return each value in the tree seperated by a space
+	 * @return each value in the tree separated by a space
 	 */
 	@Override
 	public String toString()
@@ -100,27 +104,48 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	 */
 	public void delete(T key)
 	{
-		if (root == null) return;
+		if (root == null)
+			return;
 
+
+		// Remove Root
 		if (key == root.key)
 		{
-			// Assign placeholder node for root's right's left node
-			TreeNode<T, V> foo = root.right.left;
+			// Tree only contains root node
+			if (root.right == null && root.left == null)
+				removeAll();
+				// Root's right node is empty
+			else if (root.right == null)
+				root = root.left;
+				// Root's left node is empty
+			else if (root.left == null)
+				root = root.right;
+				// Default
+			else
+			{
+				// Create Placeholder Node
+				TreeNode<T, V> foo = root.right.left;
 
-			// Replace the root of the tree with the root's right node
-			root.right.left = root.left;
-			root = root.right;
+				// Move root node to root's right node
+				root.right.left = root.left;
+				root = root.right;
 
-			// Find a new spot for the placeholder node
-			TreeNode<T, V> ptr = root.left;
-			while (ptr.right != null) ptr = ptr.right;
-			ptr.right = foo;
+				// Add placeholder node back in if needed
+				if (foo != null)
+				{
+					TreeNode<T, V> ptr = root.left;
+
+					while (ptr.right != null)
+						ptr = ptr.right;
+					ptr.right = foo;
+				}
+			}
 			return;
 		}
 
 
-		TreeNode ptr = root;
-		TreeNode lastPtr = root;
+		TreeNode<T, V> ptr = root;
+		TreeNode<T, V> lastPtr = root;
 		boolean isLeft = true;
 
 		while (ptr != null)
@@ -196,10 +221,10 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 
 	/**
-	 * Find the kth smallest element in the BST
+	 * Find the kth the smallest element in the BST
 	 *
-	 * @param k
-	 * @return the kth smallest element in the BST
+	 * @param k the kth the smallest value in the tree to return
+	 * @return the kth the smallest element in the BST
 	 */
 	public V kthSmallest(int k)
 	{
@@ -224,10 +249,10 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	 */
 	static class TreeNode<T extends Comparable<T>, V> implements Comparable<T>
 	{
-		private T key;
+		private final T key;
 		private V value;
-		private TreeNode left;
-		private TreeNode right;
+		private TreeNode<T, V> left;
+		private TreeNode<T, V> right;
 
 		public TreeNode(T key, V value)
 		{
@@ -238,15 +263,16 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 		private List<V> inorderRec()
 		{
-			List<V> list = new ArrayList<V>();
+			List<V> list = new ArrayList<>();
 
-			if (left != null) for (V v : (List<V>) left.inorderRec())
-				list.add(v);
+			if (left != null)
+				list.addAll(left.inorderRec());
 
 			list.add(value);
 
-			if (right != null) for (V v : (List<V>) right.inorderRec())
-				list.add(v);
+			if (right != null)
+				list.addAll(right.inorderRec());
+
 			return list;
 		}
 
@@ -261,17 +287,22 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if (left != null) sb.append(" " + left.toString());
-			sb.append(" " + value.toString());
-			if (right != null) sb.append(" " + right.toString());
+			if (left != null) sb.append(" ").append(left);
+			sb.append(" ").append(value.toString());
+			if (right != null) sb.append(" ").append(right);
 
 			return sb.substring(1);
 		}
 	}
 
+	/**
+	 * Demo
+	 *
+	 * @param args arguments
+	 */
 	public static void main(String[] args)
 	{
-		BinarySearchTree<Integer, Character> tree = new BinarySearchTree<Integer, Character>();
+		BinarySearchTree<Integer, Character> tree = new BinarySearchTree<>();
 		// Insert: 2, 1, 4, 5, 9, 3, 6, 7, 10, 12, 11
 		tree.insert(2, 'B');
 		tree.insert(1, 'A');
@@ -297,11 +328,11 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		System.out.println("Expected:\t[A, B, C, E, F, G, I, J, K]\nActual:\t\t" + tree.inorderRec());
 
 		// Find the 3rd smallest element in the tree
-		System.out.println("Expected:\t3\nActual\t\t" + tree.kthSmallest(3));
+		System.out.println("Expected:\tC\nActual\t\t" + tree.kthSmallest(3));
 
 		// Show list works with other generic types
 		// Double, String
-		BinarySearchTree<Double, String> tree2 = new BinarySearchTree<Double, String>();
+		BinarySearchTree<Double, String> tree2 = new BinarySearchTree<>();
 		String[] strings2 = new String[] {"kajdfci", "qiduxh", "cvaebr", "k", "dchuvabjkk"};
 
 		for (int i = 0; i < 5; i++)
@@ -309,7 +340,7 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		System.out.println("Expected:\tkajdfci qiduxh cvaebr k dchuvabjkk\nActual:\t\t" + tree2);
 
 		// String, String
-		BinarySearchTree<String, String> tree3 = new BinarySearchTree<String, String>();
+		BinarySearchTree<String, String> tree3 = new BinarySearchTree<>();
 		String[] strings3 = new String[] {"ycienso", ";socje", "3.14159", "abcdefg", "JDxjnadFjk"};
 
 		for (int i = 0; i < 5; i++)
