@@ -7,3 +7,9 @@ Once I got on the right track, things started to become smooth. I realized that 
 The insert/search/inorderRec methods were easy to implement.
 
 The delete method was a little tricky at first, but then I figured it out. All it took me to figure it out was writing out on paper and pencil (or in my case OneNote and insert table) to figure out how to move over all of the nodes over without. Once I drew it out, it was pretty simple to implement.
+
+
+50% Log (~20 hours):
+After taking a break, I came back to the project and instantly realized that I could do a very easy implementation of the kth smallest value by just simply returning inorderRec().get(k-1)
+
+It took me much more time to clean up my project so it could be submitted for the 50% complete then it took me for the 50% Log from the 10% Log spot
