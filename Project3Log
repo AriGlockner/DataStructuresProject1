@@ -1,0 +1,9 @@
+10% Log (~15 hours):
+
+I started the project in the wrong way and had to restart. I originally started designing my "tree" (not really a tree) by creating an arraylist and recreating a binary tree from an arraylist every time I added/removed an element. I realized this wasn't implementing a binary tree, rather making a slower arraylist in another form, so I had to restart and this cost me a lot of time.
+
+Once I got on the right track, things started to become smooth. I realized that this binary tree didn't have to be balanced/complete so I could add things easily.
+
+The insert/search/inorderRec methods were easy to implement.
+
+The delete method was a little tricky at first, but then I figured it out. All it took me to figure it out was writing out on paper and pencil (or in my case OneNote and insert table) to figure out how to move over all of the nodes over without. Once I drew it out, it was pretty simple to implement.
