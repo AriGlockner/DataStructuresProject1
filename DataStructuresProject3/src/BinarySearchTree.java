@@ -100,6 +100,24 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		if (root == null)
 			return;
 
+		if (key == root.key)
+		{
+			// Assign placeholder node for root's right's left node
+			TreeNode<T, V> foo = root.right.left;
+
+			// Replace the root of the tree with the root's right node
+			root.right.left = root.left;
+			root = root.right;
+
+			// Find a new spot for the placeholder node
+			TreeNode<T, V> ptr = root.left;
+			while (ptr.right != null)
+				ptr = ptr.right;
+			ptr.right = foo;
+			return;
+		}
+
+
 		TreeNode ptr = root;
 		TreeNode lastPtr = root;
 		boolean isLeft = true;
@@ -109,8 +127,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			// Remove node
 			if (ptr.key.compareTo(key) == 0)
 			{
-				System.out.println("Removing: " + key + " -> " + ptr.value);
-
 				// Remove leaf node
 				if (ptr.left == null && ptr.right == null)
 					if (isLeft)
