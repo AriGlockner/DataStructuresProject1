@@ -54,7 +54,7 @@ public class TestBinarySearchTree
 
 
 		// Delete when tree is Empty
-		tree.removeAll();
+		tree = new BinarySearchTree<>();
 		Assert.assertEquals("", tree.toString());
 		tree.delete(4);
 		Assert.assertEquals("", tree.toString());
