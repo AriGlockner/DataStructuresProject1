@@ -11,7 +11,6 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 	// Top level node of tree
 	private TreeNode<T, V> root;
 
-
 	/**
 	 * Instantiates a new empty Binary Search Tree
 	 */
@@ -30,14 +29,14 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 		// Create Node to add
 		TreeNode<T, V> newNode = new TreeNode<>(key, value);
 
-		// if tree is empty, add Node to tree
+		// if tree is empty, add Node to tree and to list
 		if (root == null)
 		{
 			root = newNode;
 			return;
 		}
 
-		// Add Node into sorted Tree
+		// Add Node into sorted arraylist
 		TreeNode<T, V> ptr = root;
 
 		// Return statement within while loop
@@ -239,21 +238,11 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 	 */
 	static class TreeNode<T extends Comparable<T>, V> implements Comparable<T>
 	{
-		// Key to be sorted by
 		private final T key;
-		// Element Node Contains
 		private V value;
-		// Left Child Node
 		private TreeNode<T, V> left;
-		// Right Child Node
 		private TreeNode<T, V> right;
 
-		/**
-		 * Instantiates a new TreeNode containing a key and a value
-		 *
-		 * @param key - what TreeNode is sorted by
-		 * @param value - what TreeNode holds
-		 */
 		public TreeNode(T key, V value)
 		{
 			this.key = key;
@@ -261,9 +250,6 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 			left = right = null;
 		}
 
-		/**
-		 * @return a list containing this element and all child elements in a sorted order
-		 */
 		public List<V> inorderRec()
 		{
 			List<V> list = new ArrayList<>();
@@ -279,20 +265,12 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 			return list;
 		}
 
-		/**
-		 *
-		 * @param o - other key
-		 * @return -1, 0, 1
-		 */
 		@Override
 		public int compareTo(T o)
 		{
 			return (key.compareTo(o));
 		}
 
-		/**
-		 * @return each element in inorderRec seperated by a space
-		 */
 		@Override
 		public String toString()
 		{
