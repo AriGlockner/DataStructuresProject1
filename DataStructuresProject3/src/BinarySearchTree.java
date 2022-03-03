@@ -6,7 +6,7 @@ import java.util.*;
  * @param <T> key
  * @param <V> value
  */
-public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearchTreeInterface<T, V>
+public class BinarySearchTree<T extends Comparable<T>, V>
 {
 	// Top level node of tree
 	private TreeNode<T, V> root;
@@ -23,7 +23,6 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 	/**
 	 * Inserts a node containing key in the BST
 	 */
-	@Override
 	public void insert(T key, V value)
 	{
 		// Create Node to add
@@ -220,6 +219,18 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 		return root.inorderRec();
 	}
 
+
+	/**
+	 * Find the kth the smallest element in the BST
+	 *
+	 * @param k the kth the smallest value in the tree to return
+	 * @return the kth the smallest element in the BST
+	 */
+	public V kthSmallest(int k)
+	{
+		return inorderRec().get(k - 1);
+	}
+
 	/**
 	 * Removes all elements from Tree
 	 */
@@ -250,7 +261,7 @@ public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearc
 			left = right = null;
 		}
 
-		public List<V> inorderRec()
+		private List<V> inorderRec()
 		{
 			List<V> list = new ArrayList<>();
 
