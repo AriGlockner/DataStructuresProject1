@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/temp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/AVLTree$TreeNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/AVLTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/AVLTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree$TreeNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/BinarySearchTreeInterface.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DataStructuresProject3/TestBinarySearchTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DataStructuresProject3/TestBinarySearchTree.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AVLTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AVLTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BinarySearchTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BinarySearchTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BinarySearchTreeInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestBinarySearchTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestBinarySearchTree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -78,16 +69,16 @@
       <recent name="C:\Users\ari\git\DataStructuresProject1\DataStructuresProject3\src" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.TestBinarySearchTree.testBinarySearchTree">
-    <configuration name="BinarySearchTree" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="BinarySearchTree" />
+  <component name="RunManager" selected="Application.AVLTree">
+    <configuration name="AVLTree" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="AVLTree" />
       <module name="DataStructuresProject3" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="temp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="temp" />
+    <configuration name="BinarySearchTree" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="BinarySearchTree" />
       <module name="DataStructuresProject3" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -102,21 +93,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestBinarySearchTree.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestBinarySearchTree.testAnotherGenericType" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DataStructuresProject3" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="METHOD_NAME" value="testAnotherGenericType" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestBinarySearchTree.testBinarySearchTree" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestBinarySearchTree.testOtherGenericTypes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DataStructuresProject3" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="TestBinarySearchTree" />
-      <option name="METHOD_NAME" value="testBinarySearchTree" />
+      <option name="METHOD_NAME" value="testOtherGenericTypes" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -124,11 +115,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.TestBinarySearchTree.testBinarySearchTree" />
-        <item itemvalue="JUnit.TestBinarySearchTree.test" />
-        <item itemvalue="JUnit.TestBinarySearchTree" />
+        <item itemvalue="Application.AVLTree" />
         <item itemvalue="Application.BinarySearchTree" />
-        <item itemvalue="Application.temp" />
+        <item itemvalue="JUnit.TestBinarySearchTree" />
+        <item itemvalue="JUnit.TestBinarySearchTree.testAnotherGenericType" />
+        <item itemvalue="JUnit.TestBinarySearchTree.testOtherGenericTypes" />
       </list>
     </recent_temporary>
   </component>
@@ -154,49 +145,7 @@
       </map>
     </option>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BinarySearchTree.java</url>
-          <line>399</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BinarySearchTree.java</url>
-          <line>407</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BinarySearchTree.java</url>
-          <line>284</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BinarySearchTree.java</url>
-          <line>302</line>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TestBinarySearchTree.java</url>
-          <line>89</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TestBinarySearchTree.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TestBinarySearchTree.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DataStructuresProject3$BinarySearchTree.ic" NAME="BinarySearchTree Coverage Results" MODIFIED="1645555380945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/DataStructuresProject3$TestBinarySearchTree.ic" NAME="TestBinarySearchTree Coverage Results" MODIFIED="1646240559571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

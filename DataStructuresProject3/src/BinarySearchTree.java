@@ -6,10 +6,10 @@ import java.util.*;
  * @param <T> key
  * @param <V> value
  */
-public class BinarySearchTree<T extends Comparable<T>, V>
+public class BinarySearchTree<T extends Comparable<T>, V> implements BinarySearchTreeInterface<T, V>
 {
 	// Top level node of tree
-	TreeNode<T, V> root;
+	private TreeNode<T, V> root;
 
 
 	/**
@@ -23,13 +23,10 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 	/**
 	 * Inserts a node containing key in the BST
-	 *
-	 * @param key   - value to be sorted by
-	 * @param value - value node will contain
 	 */
+	@Override
 	public void insert(T key, V value)
 	{
-		/*
 		// Create Node to add
 		TreeNode<T, V> newNode = new TreeNode<>(key, value);
 
@@ -60,7 +57,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 				if (ptr.left == null)
 				{
 					ptr.left = newNode;
-					newNode.parent = ptr;
 					return;
 				}
 				ptr = ptr.left;
@@ -69,58 +65,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 				if (ptr.right == null)
 				{
 					ptr.right = newNode;
-					newNode.parent = ptr;
-					return;
-				}
-				ptr = ptr.right;
-			}
-		}
-		 */
-		insertNode(new TreeNode<>(key, value));
-	}
-
-	private void insertNode(TreeNode<T, V> newNode)
-	{
-		if (newNode == null)
-			return;
-
-		// if tree is empty, add Node to tree
-		if (root == null)
-		{
-			root = newNode;
-			return;
-		}
-
-		// Add Node into sorted Tree
-		TreeNode<T, V> ptr = root;
-
-		// Return statement within while loop
-		while (true)
-		{
-			// Return if value to add is the same as the node's value
-			if (ptr.value == newNode.value)
-				return;
-
-			// If keys are the same, replace the old value with this value
-			if (ptr.key.compareTo(newNode.key) == 0)
-			{
-				ptr.value = newNode.value;
-				return;
-			} else if (ptr.key.compareTo(newNode.key) > 0)
-			{
-				if (ptr.left == null)
-				{
-					ptr.left = newNode;
-					newNode.parent = ptr;
-					return;
-				}
-				ptr = ptr.left;
-			} else
-			{
-				if (ptr.right == null)
-				{
-					ptr.right = newNode;
-					newNode.parent = ptr;
 					return;
 				}
 				ptr = ptr.right;
@@ -135,21 +79,13 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	public String toString()
 	{
 		if (root == null) return "";
-
-		StringBuilder sb = new StringBuilder();
-		List<V> values = inorderRec();
-		for (V value : values)
-			sb.append(" ").append(value);
-		return sb.substring(1);
-
-		//return root.toString();
+		return root.toString();
 	}
 
 	/**
 	 * Searches for a node with a specific key in the BST
 	 *
-	 * @param key - value to search for
-	 * @return a node with a specific key in the BST if it exists. Otherwise, returns null
+	 * @return a node with a specific key in the BST
 	 */
 	public V search(T key)
 	{
@@ -167,118 +103,13 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 	/**
 	 * Deletes a node containing key from the BST if it exists
-	 *
-	 * @param key - value to be sorted by
 	 */
 	public void delete(T key)
 	{
 		if (root == null)
 			return;
 
-		// Remove root
-		if (key == root.key)
-		{
-			// If tree contains 1 node
-			if (root.right == null && root.left == null)
-			{
-				root = null;
-				return;
-			}
 
-			// If tree contains 1 right child, but no left child
-			else if (root.left == null)
-			{
-				root = root.right;
-				root.parent = null;
-				return;
-			}
-
-			// If tree contains 1 left child, but no right child
-			else if (root.right == null)
-			{
-				root = root.left;
-				root.parent = null;
-				return;
-			}
-
-			// Root contains 2 children
-			TreeNode<T, V> placeholder = root.right.left;
-			root.right.left = root.left;
-			root = root.right;
-			root.parent = null;
-			root.left.parent = root;
-
-			// Add placeholder back in
-			insertNode(placeholder);
-
-			return;
-		}
-
-		// Search for node to remove
-		TreeNode<T, V> ptr = root;
-		// isLeft is used for telling which direction the node to remove is in
-		boolean isLeft = true;
-
-		do
-		{
-			if (ptr.compareTo(key) == 0)
-				break;
-			else if (ptr.compareTo(key) > 0)
-			{
-				ptr = ptr.right;
-				isLeft = false;
-			}
-			else
-			{
-				ptr = ptr.left;
-				isLeft = true;
-			}
-		} while (ptr != null);
-
-		if (ptr == null)
-			return;
-
-		// Remove ptr
-
-		// Remove if 0 child nodes
-		if (ptr.left == null && ptr.right == null)
-		{
-			if (isLeft)
-				ptr.parent.left = null;
-			else
-				ptr.parent.right = null;
-			return;
-		}
-
-		// Remove if ptr has left child node
-		if (ptr.right == null)
-		{
-			if (isLeft)
-				ptr.parent.left = ptr.left;
-			else
-				ptr.parent.right = ptr.left;
-			return;
-		}
-
-		// Remove if ptr has right child node
-		if (ptr.left == null)
-		{
-			if (isLeft)
-				ptr.parent.left = ptr.right;
-			else
-				ptr.parent.right = ptr.right;
-			return;
-		}
-
-		// Remove if 2 child nodes
-		TreeNode<T, V> placeholder = ptr.right;
-		ptr.parent.right = ptr.left;
-		ptr.left.parent = ptr.parent;
-
-		// Insert placeholder back in
-		insertNode(placeholder);
-
-		/*
 		// Remove Root
 		if (key == root.key)
 		{
@@ -287,53 +118,28 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 				removeAll();
 				// Root's right node is empty
 			else if (root.right == null)
-			{
 				root = root.left;
-				root.parent = null;
-			}
-			// Root's left node is empty
+				// Root's left node is empty
 			else if (root.left == null)
-			{
 				root = root.right;
-				root.parent = null;
-			}
-			// Default
+				// Default
 			else
 			{
-				// Create Placeholder node
+				// Create Placeholder Node
 				TreeNode<T, V> foo = root.right.left;
 
-				// point
+				// Move root node to root's right node
 				root.right.left = root.left;
-
-				// shift node to parent
 				root = root.right;
-				root.parent = null;
 
-				//
-				root.left.parent = root;
-
-				// add placeholder node back in if placeholder is not null
+				// Add placeholder node back in if needed
 				if (foo != null)
 				{
-					TreeNode<T, V> ptr = root;
+					TreeNode<T, V> ptr = root.left;
 
-					while (true)
-						if (foo.compareTo(ptr.key) > 0)
-							if (ptr.right == null)
-							{
-								ptr.right = foo;
-								foo.parent = ptr;
-								break;
-							} else
-								ptr = ptr.right;
-						else if (ptr.left == null)
-						{
-							ptr.left = foo;
-							foo.parent = ptr;
-							break;
-						} else
-							ptr = ptr.left;
+					while (ptr.right != null)
+						ptr = ptr.right;
+					ptr.right = foo;
 				}
 			}
 			return;
@@ -341,7 +147,7 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 
 
 		TreeNode<T, V> ptr = root;
-		//TreeNode<T, V> lastPtr = root;
+		TreeNode<T, V> lastPtr = root;
 		boolean isLeft = true;
 
 		while (ptr != null)
@@ -350,70 +156,40 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			if (ptr.key.compareTo(key) == 0)
 			{
 				// Remove leaf node
-				if (ptr.left == null && ptr.right == null)
-					if (isLeft)
-						ptr.parent.left = null;
-						//lastPtr.left = null;
-					else
-						ptr.parent.right = null;
-					//lastPtr.right = null;
+				if (ptr.left == null && ptr.right == null) if (isLeft) lastPtr.left = null;
+				else lastPtr.right = null;
 
 					// Remove if left child is null
-				else if (ptr.left == null)
-					if (isLeft)
-						ptr.parent.left = ptr.right;
-						//lastPtr.left = ptr.right;
-					else
-						ptr.parent.right = ptr.right;
-					//lastPtr.right = ptr.right;
+				else if (ptr.left == null) if (isLeft) lastPtr.left = ptr.right;
+				else lastPtr.right = ptr.right;
 
 					// Remove if right child is null
-				else if (ptr.right == null)
-					if (isLeft)
-						ptr.parent.left = ptr.left;
-						//lastPtr.left = ptr.left;
-					else
-						ptr.parent.right = ptr.left;
-					//lastPtr.right = ptr.left;
+				else if (ptr.right == null) if (isLeft) lastPtr.left = ptr.left;
+				else lastPtr.right = ptr.left;
 
 					// Remove if Node has 2 child Nodes
 				else if (isLeft)
 				{
-					System.out.println("Ptr: " + ptr);
-					System.out.println("Parent: " + ptr.parent);
-					System.out.println("Left: " + ptr.left);
-					System.out.println("Right: " + ptr.right);
-
 					// Create placeholder for node to be remove's right's left node
 					TreeNode<T, V> foo = ptr.right.left;
 					// Replace node to be deleted with node to be deleted's right node
 					ptr.right.left = ptr.left;
-					ptr.parent.left = ptr.right;
-					//lastPtr.left = ptr.right;
+					lastPtr.left = ptr.right;
 
 					// Put placeholder node back into the tree
-					//ptr = lastPtr.left.left;
-					ptr = ptr.parent.left.left;
+					ptr = lastPtr.left.left;
 					while (ptr.right != null) ptr = ptr.right;
 					ptr.right = foo;
-
 				} else
 				{
-					System.out.println("Ptr: " + ptr);
-					System.out.println("Parent: " + ptr.parent);
-					System.out.println("Left: " + ptr.left);
-					System.out.println("Right: " + ptr.right);
-
 					// Create placeholder for node to be remove's left's right node
 					TreeNode<T, V> foo = ptr.left.right;
 					// Replace node to be deleted with node to be deleted's left node
 					ptr.left.right = ptr.right;
-					ptr.parent.right = ptr.left;
-					//lastPtr.right = ptr.left;
+					lastPtr.right = ptr.left;
 
 					// Put placeholder node back into the tree
-					//ptr = lastPtr.right.right;
-					ptr = ptr.parent.right.right;
+					ptr = lastPtr.right.right;
 					while (ptr.left != null) ptr = ptr.left;
 					ptr.left = foo;
 				}
@@ -423,30 +199,16 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			// Iterate to
 			if (ptr.key.compareTo(key) > 0)
 			{
-				//lastPtr = ptr;
-				ptr.parent = ptr;
+				lastPtr = ptr;
 				ptr = ptr.left;
 				isLeft = true;
 			} else
 			{
-				ptr.parent = ptr;
-				//lastPtr = ptr;
+				lastPtr = ptr;
 				ptr = ptr.right;
 				isLeft = false;
 			}
 		}
-		 */
-	}
-
-	/**
-	 * Find the kth the smallest element in the BST
-	 *
-	 * @param k the kth the smallest value in the tree to return
-	 * @return the kth the smallest element in the BST
-	 */
-	V kthSmallest(int k)
-	{
-		return inorderRec().get(k - 1);
 	}
 
 	/**
@@ -482,16 +244,14 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		// Element Node Contains
 		private V value;
 		// Left Child Node
-		TreeNode<T, V> left;
+		private TreeNode<T, V> left;
 		// Right Child Node
-		TreeNode<T, V> right;
-		// Parent Node
-		TreeNode<T, V> parent;
+		private TreeNode<T, V> right;
 
 		/**
 		 * Instantiates a new TreeNode containing a key and a value
 		 *
-		 * @param key   - what TreeNode is sorted by
+		 * @param key - what TreeNode is sorted by
 		 * @param value - what TreeNode holds
 		 */
 		public TreeNode(T key, V value)
@@ -499,7 +259,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			this.key = key;
 			this.value = value;
 			left = right = null;
-			parent = null;
 		}
 
 		/**
@@ -521,6 +280,7 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		}
 
 		/**
+		 *
 		 * @param o - other key
 		 * @return -1, 0, 1
 		 */
@@ -536,7 +296,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 		@Override
 		public String toString()
 		{
-			/*
 			StringBuilder sb = new StringBuilder();
 
 			if (left != null) sb.append(" ").append(left);
@@ -544,8 +303,6 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 			if (right != null) sb.append(" ").append(right);
 
 			return sb.substring(1);
-			 */
-			return value.toString();
 		}
 	}
 
