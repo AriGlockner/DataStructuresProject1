@@ -9,7 +9,7 @@ import java.util.*;
 public class BinarySearchTree<T extends Comparable<T>, V>
 {
 	// Top level node of tree
-	private TreeNode<T, V> root;
+	TreeNode<T, V> root;
 
 	/**
 	 * Instantiates a new empty Binary Search Tree
@@ -272,9 +272,9 @@ public class BinarySearchTree<T extends Comparable<T>, V>
 	{
 		private final T key;
 		private V value;
-		private TreeNode<T, V> left;
-		private TreeNode<T, V> right;
-		private TreeNode<T, V> parent;
+		TreeNode<T, V> left;
+		TreeNode<T, V> right;
+		TreeNode<T, V> parent;
 
 		public TreeNode(T key, V value)
 		{
