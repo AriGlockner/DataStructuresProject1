@@ -1,7 +1,48 @@
 import org.junit.*;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class TestBinarySearchTree
 {
+	@Test
+	public void test()
+	{
+		BinarySearchTree<Character, Character> tree = new BinarySearchTree<>();
+		char c = 'B';
+		ArrayList<Character> characterArrayList = new ArrayList<>();
+
+		for (int i = 0; i < 10; i++)
+			characterArrayList.add((char) (c + i));
+
+		System.out.println(characterArrayList);
+
+		Random rand = new Random();
+		while (characterArrayList.size() > 0)
+		{
+			int i = rand.nextInt(characterArrayList.size());
+			System.out.print(characterArrayList.get(i) + " ");
+			tree.insert(characterArrayList.get(i), characterArrayList.get(i));
+			characterArrayList.remove(i);
+		}
+
+		System.out.println("\nSorted: " + tree);
+		System.out.println(tree.root);
+
+		helpTest(tree.root);
+	}
+
+	void helpTest(BinarySearchTree.TreeNode<?, ?> n)
+	{
+		System.out.println("Node: " + n + "\tParent: " + n.parent);
+		if (n.left != null)
+			helpTest(n.left);
+
+		if (n.right != null)
+			helpTest(n.right);
+	}
+
+
 	/**
 	 * Tests all methods in the BinarySearchTree class with a key of type Integer and a value of type Character
 	 */
@@ -42,7 +83,10 @@ public class TestBinarySearchTree
 
 		// Remove from middle
 		Assert.assertEquals("F", tree.search(4).toString());
+		System.out.println(tree.root + " " + tree.search(4));
+		System.out.println(tree);
 		tree.delete(4);
+		System.out.println(tree);
 		Assert.assertNull(tree.search(4));
 		Assert.assertEquals("[B, D, E, G, H]", tree.inorderRec().toString());
 
@@ -62,7 +106,7 @@ public class TestBinarySearchTree
 
 	/**
 	 * Tests the BST with other generic types than the ones tested in the testBinarySearchTree method
-	 */
+	 *
 	@Test
 	public void testAnotherGenericType()
 	{
@@ -74,4 +118,5 @@ public class TestBinarySearchTree
 		tree1.insert("adjtdfjcjvh", 1);
 		Assert.assertEquals("[0, 1, 2, 3, 4]", tree1.inorderRec().toString());
 	}
+	*/
 }
