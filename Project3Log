@@ -13,3 +13,6 @@ The delete method was a little tricky at first, but then I figured it out. All i
 After taking a break, I came back to the project and instantly realized that I could do a very easy implementation of the kth smallest value by just simply returning inorderRec().get(k-1)
 
 It took me much more time to clean up my project so it could be submitted for the 50% complete then it took me for the 50% Log from the 10% Log spot
+
+90% Log (~30 hours):
+between breaking my project through fault between chair and keyboard, I ended up wasting a lot of time. It was not code related. That combined with a lot of work from other classes meant that I didn't have time to do the AVL Tree. What I ended up doing though was adding in the parent nodes as a pointer in the TreeNode class and doing the implementation to keep them updated properly.
