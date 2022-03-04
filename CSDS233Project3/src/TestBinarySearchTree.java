@@ -1,4 +1,5 @@
 import org.junit.*;
+import java.util.HashMap;
 
 public class TestBinarySearchTree
 {
@@ -64,8 +65,9 @@ public class TestBinarySearchTree
 	 * Tests the BST with other generic types than the ones tested in the testBinarySearchTree method
 	 */
 	@Test
-	public void testAnotherGenericType()
+	public void testOtherGenericTypes()
 	{
+		// Test String key and Integer value
 		BinarySearchTree<String, Integer> tree1 = new BinarySearchTree<>();
 		tree1.insert("czpfdje d\\f", 3);
 		tree1.insert("xcygadfcxjv", 4);
@@ -73,5 +75,15 @@ public class TestBinarySearchTree
 		tree1.insert("cvyebafci9c", 2);
 		tree1.insert("adjtdfjcjvh", 1);
 		Assert.assertEquals("[0, 1, 2, 3, 4]", tree1.inorderRec().toString());
+
+		// Test Long key and Object value
+		BinarySearchTree<Long, Object> tree2 = new BinarySearchTree<>();
+		tree2.insert(100L, "The duck does not eat the bear");
+		tree2.insert(Long.MAX_VALUE, new HashMap<>());
+		tree2.insert(Long.MAX_VALUE, new Exception("This exception is useless and is just for fun"));
+		tree2.insert(0L, "A queue is just like ordering at the den");
+		tree2.insert(-4L, Math.PI);
+		Assert.assertEquals("3.141592653589793 A queue is just like ordering at the den The duck does not eat"
+				+ " the bear java.lang.Exception: This exception is useless and is just for fun", tree2.toString());
 	}
 }
