@@ -1,5 +1,4 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 import java.lang.*;
 
