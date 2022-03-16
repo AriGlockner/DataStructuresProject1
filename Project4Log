@@ -1,0 +1,4 @@
+10% Log (~1 hour):
+HashEntry was extremely simple to write as I've created other similar Objects so many times. I spent more time formatting the HashEntry class into JavaDoc than I spent actually writing the code for it.
+For the Tokenizer class, I initially wanted to use BufferedReader to read the file, but I realized that I felt like it was simpler to just use the Scanner class. I realized both constructors needed to normalize each word, and since I would be doing this multiple times, it made more sense to create a private helper normalize method to do that task for me. I created an ArrayList in each constructor and added each word to the ArrayList after normalizing it and then finally assiging the ArrayList in the constructor to the ArrayList parameter.
+
