@@ -1,6 +1,6 @@
 public class HashEntry
 {
-	private String key;
+	private final String key;
 	private int value;
 
 	public HashEntry(String key, int value)
