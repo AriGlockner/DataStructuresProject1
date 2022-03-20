@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="" />
+    <list default="true" id="81b00f82-c099-4bc9-8b0c-71534f8bb467" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../CSDS233Project4/src/HashEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/../CSDS233Project4/src/HashEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CSDS233Project4/src/HashTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/../CSDS233Project4/src/HashTable.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
