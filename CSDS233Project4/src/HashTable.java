@@ -120,6 +120,11 @@ public class HashTable
 		return -1;
 	}
 
+	HashEntry getHashEntry(String key)
+	{
+		return table[Math.abs(key.hashCode() % table.length)];
+	}
+
 	/**
 	 * Doubles the size of the table and fills in the values into the new table
 	 */

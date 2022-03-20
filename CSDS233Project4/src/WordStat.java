@@ -43,39 +43,83 @@ public class WordStat
 	 */
 	public int wordCount(String word)
 	{
-		return 1;
+		HashEntry ptr = table.getHashEntry(word);
+		int count = 0;
+		while (ptr != null)
+		{
+			ptr = ptr.getNext();
+			count++;
+		}
+
+		return count;
 	}
 
+	/**
+	 * @param w1 word 1
+	 * @param w2 word 2
+	 * @return the sum of the return of wordCount for w1 and w2
+	 */
 	public int wordPairCount(String w1, String w2)
 	{
-		return 1;
+		return wordCount(w1) + wordCount(w2);
 	}
 
+	/**
+	 * @param word the word to search for
+	 * @return the rank of word, where rank 1 is the most common word
+	 */
 	public int wordRank(String word)
 	{
 		return 1;
 	}
 
+	/**
+	 * @param w1 word 1
+	 * @param w2 word 2
+	 * @return the rank of the word pair w1 w2. Return 0 if the word pair is not in the table
+	 */
 	public int wordPairRank(String w1, String w2)
 	{
 		return 1;
 	}
 
+	/**
+	 * @param k number of most common words
+	 * @return a String array of the k most common words in decreasing order of their count
+	 */
 	public String[] mostCommonWords(int k)
 	{
 		return null;
 	}
 
+	/**
+	 * @param k number of the least common words
+	 * @return a String array of the k the least common words in increasing order of their count
+	 */
 	public String[] leastCommonWords(int k)
 	{
 		return null;
 	}
 
+	/**
+	 * @param k number of words to return
+	 * @return the k most common word pair in a String array, where each element is in the form of "word1 word2"
+	 * separated by a single space
+	 */
 	public String[] mostCommonWordPairs(int k)
 	{
 		return null;
 	}
 
+	/**
+	 *
+	 * @param k number of words to return
+	 * @param baseWord word to check for
+	 * @param i relative position to baseWord
+	 * @return the k most common words at a given relative position i to baseWord. These are called "collocations." The
+	 * relative position can be either +1 or -1 to indicate words following or preceding the base word. For example,
+	 * mostCommonCollocs(10, "crash", -1) would return the 10 most common words that precede "crash"
+	 */
 	public String[] mostCommonCollocs(int k, String baseWord, int i)
 	{
 		return null;
