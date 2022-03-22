@@ -74,6 +74,11 @@ public class HashEntry implements Comparable<HashEntry>
 		this.value = value;
 	}
 
+	HashEntry get()
+	{
+		return new HashEntry(key, value);
+	}
+
 	/**
 	 * @return "[key, value] " + any other objects in the LinkedList
 	 */
@@ -98,4 +103,11 @@ public class HashEntry implements Comparable<HashEntry>
 		return Integer.compare(value, h.value);
 	}
 
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof HashEntry h))
+			return false;
+		return key.equals(h.key) && value == h.value;
+	}
 }

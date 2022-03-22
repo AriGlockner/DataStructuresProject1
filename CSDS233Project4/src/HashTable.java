@@ -138,14 +138,9 @@ public class HashTable
 		return table[Math.abs(key.hashCode() % table.length)];
 	}
 
-	HashEntry getHashEntryAtPosition(int index)
+	HashEntry[] getTable()
 	{
-		return table[index];
-	}
-
-	int getCapacity()
-	{
-		return table.length;
+		return table;
 	}
 
 	/**

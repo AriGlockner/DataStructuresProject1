@@ -1,7 +1,5 @@
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class WordStat
 {
@@ -20,9 +18,8 @@ public class WordStat
 
 	/**
 	 * @param file to compute statistics from
-	 * @throws FileNotFoundException if unable to find the appropriate path
 	 */
-	public WordStat(String file) throws FileNotFoundException
+	public WordStat(String file)
 	{
 		initializeHashTable(new Tokenizer(file));
 	}
@@ -31,7 +28,7 @@ public class WordStat
 	 *
 	 * @param words list of Strings to compute from
 	 */
-	public WordStat(String[] words) throws FileNotFoundException
+	public WordStat(String[] words)
 	{
 		initializeHashTable(new Tokenizer(words));
 	}
@@ -62,6 +59,21 @@ public class WordStat
 		// Add every unique key from the HashTable to the Heap
 		int numElements = 0;
 
+		for (HashEntry hashEntry : table.getTable())
+		{
+			ArrayList<HashEntry> wordsInList = new ArrayList<>();
+			while (hashEntry != null)
+			{
+				if (!wordsInList.contains(hashEntry))
+				{
+					HashEntry hashToAdd = hashEntry.get();
+					heap.insert(hashToAdd);
+					wordsInList.add(hashToAdd);
+					numElements++;
+				}
+				hashEntry = hashEntry.getNext();
+			}
+		}
 
 		// Remove the most common word from the heap and add it to the mostCommonWords list until the heap is empty
 		mostCommonWords = new String[numElements];
@@ -105,13 +117,7 @@ public class WordStat
 	//TODO: Write Method
 	public int wordRank(String word)
 	{
-		int numTimes = wordCount(word);
-		// If word does not exist, returns 0
-		if (numTimes < 1)
-			return 0;
-		int rank = 1;
-
-		return rank;
+		return table.get(word);
 	}
 
 	/**
@@ -128,12 +134,12 @@ public class WordStat
 	 * @param k number of most common words
 	 * @return a String array of the k most common words in decreasing order of their count
 	 */
-	//TODO: Write Method
 	public String[] mostCommonWords(int k)
 	{
 		if (k > mostCommonWords.length)
 			k = mostCommonWords.length;
-		return null;
+		k = Math.abs(k);
+		return Arrays.copyOf(mostCommonWords, k);
 	}
 
 	/**
@@ -216,14 +222,19 @@ public class WordStat
 		return table.toString();
 	}
 
-	public static void main(String[] args) throws FileNotFoundException
+	public static void main(String[] args)
 	{
 		WordStat wordStat = new WordStat("foobar.txt");
+		/*
 		System.out.println(wordStat.wordCount("foobar"));
 		System.out.println(wordStat.wordCount("foo"));
 		System.out.println(wordStat.wordCount("bar"));
 		System.out.println(wordStat.wordCount("foobar!"));
 		System.out.println(wordStat.wordPairCount("foo", "bar"));
 		System.out.println(wordStat);
+		 */
+		//System.out.println(wordStat.table);
+		System.out.println(Arrays.toString(wordStat.mostCommonWords));
+		System.out.println(Arrays.toString(wordStat.mostCommonWords(2)));
 	}
 }
