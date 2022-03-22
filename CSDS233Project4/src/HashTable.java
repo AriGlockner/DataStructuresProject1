@@ -11,7 +11,7 @@ public class HashTable
 	 */
 	public HashTable()
 	{
-		table = new HashEntry[8];
+		table = new HashEntry[100];
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class HashTable
 	 */
 	public int get(String key)
 	{
-		HashEntry hash = table[key.hashCode() % table.length];
+		HashEntry hash = table[Math.abs(key.hashCode()) % table.length];
 
 		// if key does not exist in table, return -1
 		if (hash == null)
@@ -107,16 +107,17 @@ public class HashTable
 	public int get(String key, int hashCode)
 	{
 		// Search every HashEntry with the key of hashCode for a HashEntry with a specific key
-		HashEntry ptr = table[Math.abs(hashCode % table.length)];
+		HashEntry hash = table[Math.abs(hashCode) % table.length];
 
-		while (ptr != null)
-		{
-			if (ptr.getKey().equals(key))
-				return ptr.getValue();
-			ptr = ptr.getNext();
-		}
+		if (hash == null)
+			return -1;
 
-		// Otherwise, return -1
+		while (hash != null)
+			if (key.equals(hash.getKey()))
+				return hash.getValue();
+			else
+				hash = hash.getNext();
+
 		return -1;
 	}
 
@@ -142,9 +143,10 @@ public class HashTable
 		StringBuilder sb = new StringBuilder();
 
 		for (HashEntry h : table)
-			sb.append(h).append(" ");
+			if (h != null)
+				sb.append(h);
 
-		return sb.toString();
+		return sb.substring(0, sb.length()-1);
 	}
 
 	public static void main(String[] args)

@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 /**
  * This class provides the functionality to read lines of a text file, extract and normalize the words, and store them
@@ -8,20 +7,30 @@ import java.lang.*;
  */
 public class Tokenizer
 {
-	private final ArrayList<String> wordList;
+	private ArrayList<String> wordList;
 
 	/**
 	 * @param file specifies the file from which to obtain the words.
 	 */
-	public Tokenizer(String file) throws FileNotFoundException
+	public Tokenizer(String file) // throws FileNotFoundException
 	{
-		Scanner scanner = new Scanner(new FileInputStream(file));
-		ArrayList<String> words = new ArrayList<>();
+		try
+		{
+			// Initialize scanner and wordList
+			Scanner scanner = new Scanner(new FileInputStream(file));
+			wordList = new ArrayList<>();
 
-		while (scanner.hasNextLine())
-			words.add(normalize(scanner.nextLine()));
+			// Read each line in the file, normalize the words and add them to wordList
+			while (scanner.hasNextLine())
+				normalize(scanner.nextLine());
 
-		wordList = words;
+		} catch (Exception e)
+		{
+			// Initialize wordList as an empty list
+			wordList = new ArrayList<>(0);
+
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -29,12 +38,10 @@ public class Tokenizer
 	 */
 	public Tokenizer(String[] words)
 	{
-		ArrayList<String> wordList = new ArrayList<>();
-
+		// Normalize each word in the array and add it to the ArrayList
+		wordList = new ArrayList<>(words.length);
 		for (String str : words)
-			wordList.add(normalize(str));
-
-		this.wordList = wordList;
+			normalize(str);
 	}
 
 	/**
@@ -43,14 +50,16 @@ public class Tokenizer
 	 * Removes leading and trailing whitespace
 	 * Removes punctuation
 	 */
-	private static String normalize(String str)
+	private void normalize(String str)
 	{
 		// Make String LowerCase
 		str = str.toLowerCase();
 		// Remove all Punctuation
 		str = str.replaceAll("\\p{Punct}","");
 		// Remove Leading/Trailing Spaces
-		return str.trim();
+		str = str.trim();
+		// Add every word to the ArrayList
+		wordList.addAll(List.of(str.split("\\s+")));
 	}
 
 	/**
@@ -64,15 +73,7 @@ public class Tokenizer
 	@Override
 	public String toString()
 	{
-		if (wordList == null)
-			return "";
-
-		StringBuilder stringBuilder = new StringBuilder();
-
-		for (String str : wordList)
-			stringBuilder.append(" ").append(str);
-
-		return stringBuilder.substring(1);
+		return wordList.toString();
 	}
 
 	public static void main(String[] args) throws FileNotFoundException
