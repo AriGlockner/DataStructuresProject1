@@ -5,7 +5,7 @@
  *
  * @author ari
  */
-public class HashEntry
+public class HashEntry implements Comparable<HashEntry>
 {
 	// The key is the index
 	private final String key;
@@ -91,4 +91,11 @@ public class HashEntry
 
 		return sb.toString();
 	}
+
+	@Override
+	public int compareTo(HashEntry h)
+	{
+		return Integer.compare(value, h.value);
+	}
+
 }

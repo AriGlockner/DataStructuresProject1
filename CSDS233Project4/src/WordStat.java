@@ -1,13 +1,22 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class WordStat
 {
 	private final HashTable table = new HashTable();
-
+	private String[] mostCommonWords;
 
 	//TODO: Use the values of each HashEntry to create a list of most common words at initialization of this class
 	//TODO: Use the TODO on line 10 to write the methods that use common words
+
+	/*
+	How to generate mostCommonWords:
+	add every entry to a heap O(N)
+	remove items from heap to generate mostCommonWords O(NlogN)
+	total time O(NlogN)
+	 */
 
 	/**
 	 * @param file to compute statistics from
@@ -41,7 +50,25 @@ public class WordStat
 			table.put(word, 1);
 			table.updateEverythingWithKey(word, wordCount(word));
 		}
+
+		setMostCommonWords();
 	}
+
+	private void setMostCommonWords()
+	{
+		// Create max heap of HashEntries
+		Heap<HashEntry> heap = new Heap<>();
+
+		// Add every unique key from the HashTable to the Heap
+		int numElements = 0;
+
+
+		// Remove the most common word from the heap and add it to the mostCommonWords list until the heap is empty
+		mostCommonWords = new String[numElements];
+		for (int i = 0; i < numElements; i++)
+			mostCommonWords[i] = heap.delete().getKey();
+	}
+
 
 	/**
 	 * @param word to search for
@@ -104,6 +131,8 @@ public class WordStat
 	//TODO: Write Method
 	public String[] mostCommonWords(int k)
 	{
+		if (k > mostCommonWords.length)
+			k = mostCommonWords.length;
 		return null;
 	}
 
