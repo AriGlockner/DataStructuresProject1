@@ -136,10 +136,7 @@ public class WordStat
 	 */
 	public String[] mostCommonWords(int k)
 	{
-		if (k > mostCommonWords.length)
-			k = mostCommonWords.length;
-		k = Math.abs(k);
-		return Arrays.copyOf(mostCommonWords, k);
+		return Arrays.copyOf(mostCommonWords, Math.min(Math.abs(k), mostCommonWords.length));
 	}
 
 	/**
@@ -149,7 +146,8 @@ public class WordStat
 	//TODO: Write Method
 	public String[] leastCommonWords(int k)
 	{
-		return null;
+		k = Math.min(Math.abs(k), mostCommonWords.length);
+		return Arrays.copyOfRange(mostCommonWords, mostCommonWords.length - k, mostCommonWords.length);
 	}
 
 	/**
@@ -236,5 +234,6 @@ public class WordStat
 		//System.out.println(wordStat.table);
 		System.out.println(Arrays.toString(wordStat.mostCommonWords));
 		System.out.println(Arrays.toString(wordStat.mostCommonWords(2)));
+		System.out.println(Arrays.toString(wordStat.leastCommonWords(2)));
 	}
 }
