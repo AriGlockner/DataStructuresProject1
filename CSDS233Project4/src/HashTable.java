@@ -79,6 +79,18 @@ public class HashTable
 			table[position].setValue(value);
 	}
 
+	void updateEverythingWithKey(String key, int value)
+	{
+		HashEntry ptr = table[Math.abs(key.hashCode() % table.length)];
+
+		while (ptr != null)
+		{
+			if (ptr.getKey().equals(key))
+				ptr.setValue(value);
+			ptr = ptr.getNext();
+		}
+	}
+
 	/**
 	 * Returns the current value associated with the parameter key
 	 *
