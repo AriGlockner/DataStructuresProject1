@@ -63,7 +63,6 @@ public class HashEntry implements Comparable<HashEntry>
 			next.setNext(newHashEntry);
 	}
 
-
 	/**
 	 * Sets the value
 	 *
@@ -74,6 +73,10 @@ public class HashEntry implements Comparable<HashEntry>
 		this.value = value;
 	}
 
+	/**
+	 * Helper method for WordStat class
+	 * @return this Object without any items in the Linked List
+	 */
 	HashEntry get()
 	{
 		return new HashEntry(key, value);
@@ -97,12 +100,22 @@ public class HashEntry implements Comparable<HashEntry>
 		return sb.toString();
 	}
 
+	/**
+	 * Compares this object to another HashEntry
+	 * @param h other hash entry
+	 * @return this value compared to other value
+	 */
 	@Override
 	public int compareTo(HashEntry h)
 	{
 		return Integer.compare(value, h.value);
 	}
 
+	/**
+	 * @param o other object
+	 * @return true if other object is a HashEntry and the keys are the same and the values are the same. Otherwise,
+	 * returns false
+	 */
 	@Override
 	public boolean equals(Object o)
 	{

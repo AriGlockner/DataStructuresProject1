@@ -1,10 +1,13 @@
 import java.lang.*;
-import java.util.*;
 
+/**
+ * The HashTable class represents a table of HashEntries. The HashTable class uses a HashCode to get a constant lookup
+ * in all situations except when two or more HashEntries share the same key.
+ */
 public class HashTable
 {
 	// HashTable containing all HashEntries
-	private HashEntry[] table;
+	private final HashEntry[] table;
 
 	/**
 	 * Initializes HashTable to a predetermined capacity
@@ -79,6 +82,12 @@ public class HashTable
 			table[position].setValue(value);
 	}
 
+	/**
+	 * Helper method for WordStat class
+	 *
+	 * @param key   objects with this key need to be updated
+	 * @param value value to set new
+	 */
 	void updateEverythingWithKey(String key, int value)
 	{
 		HashEntry ptr = table[Math.abs(key.hashCode() % table.length)];
@@ -133,22 +142,24 @@ public class HashTable
 		return -1;
 	}
 
+	/**
+	 * Helper method for WordStat class
+	 *
+	 * @param key value to search for
+	 * @return the HashEntry with the key
+	 */
 	HashEntry getHashEntry(String key)
 	{
 		return table[Math.abs(key.hashCode() % table.length)];
 	}
 
+	/**
+	 * Helper method for WordStat class
+	 * @return the table
+	 */
 	HashEntry[] getTable()
 	{
 		return table;
-	}
-
-	/**
-	 * Doubles the size of the table and fills in the values into the new table
-	 */
-	private void increaseTableSize()
-	{
-		table = Arrays.copyOf(table, table.length * 2);
 	}
 
 	/**
@@ -163,20 +174,74 @@ public class HashTable
 			if (h != null)
 				sb.append(h);
 
-		return sb.substring(0, sb.length()-1);
+		return sb.substring(0, sb.length() - 1);
 	}
 
+	/**
+	 * Demo
+	 *
+	 * @param args program arguments
+	 */
 	public static void main(String[] args)
 	{
-		HashTable t = new HashTable();
+		System.out.println("Demo:\n");
 
-		t.put("foobar", 0);
-		t.put("foobar", 0);
-		t.put("foobar", 1);
-		t.put("foo", 0);
-		t.put("foo", 1);
-		t.put("fdsjhgfjxy3yufuyc4", 983265);
+		String[] strings = new String[] {"one", "ten", "five", "ten", "fifteen", "ten", "two", "twenty", "fifteen",
+				"ten"};
+		int[] values = new int[] {1, 10, 5, 314159, 15, 10, 2, 20, 15, 10};
 
-		System.out.println(t);
+		HashTable table1 = new HashTable();
+		HashTable table2 = new HashTable(7);
+
+		// Test put(key, value)
+		for (int i = 0; i < strings.length; i++)
+		{
+			table1.put(strings[i], values[i]);
+			table2.put(strings[i], values[i]);
+		}
+
+		System.out.println("\nput(key, value):");
+		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [twenty, 20] [two, 2] " +
+				"[one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
+		System.out.println("Expected:\n[two, 2] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
+				"[fifteen, 15] [fifteen, 15] [twenty, 20]\nActual:\n" + table2);
+
+		// Test put(key, value, hashCode)
+		System.out.println("\nput(key, value, hashCode):");
+		table1.put("hashCode=314159", 314159, 314159);
+		table2.put("hashCode=314159", 314159, 314159);
+		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [hashCode=314159, 314159] " +
+				"[twenty, 20] [two, 2] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
+		System.out.println("Expected:\n[two, 2] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
+				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
+
+		// Test update
+		System.out.println("\nUpdate:");
+		table1.update("two", 22);
+		table2.update("two", 22);
+		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [hashCode=314159, 314159] " +
+				"[twenty, 20] [two, 22] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
+		System.out.println("Expected:\n[two, 22] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
+				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
+		// test update not there -> add
+		table1.update("MyPhoneNumber", 1234567890);
+		table2.update("MyPhoneNumber", 1234567890);
+		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [MyPhoneNumber, 1234567890]" +
+				" [hashCode=314159, 314159] [twenty, 20] [two, 22] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" +
+				table1);
+		System.out.println("Expected:\n[two, 22] [ten, 1234567890] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
+				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
+
+		// Test get(key)
+		System.out.println("\nget(key):");
+		System.out.println("Expected:\n-1\nActual:\n" + table1.get("great value"));
+		System.out.println("Expected:\n1234567890\nActual:\n" + table2.get("great value"));
+
+		// Test get(key, hashCode)
+		System.out.println("\nget(key, hashCode):");
+		System.out.println("Expected:\n-1\nActual:\n" + table1.get("ten", 8));
+		System.out.println("Expected:\n10\nActual:\n" + table1.get("ten", 17));
+		System.out.println("Expected:\n1234567890\nActual:\n" + table2.get("ten", 8));
+		System.out.println("Expected:\n-1\nActual:\n" + table2.get("ten", 17));
 	}
 }

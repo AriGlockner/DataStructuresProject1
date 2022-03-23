@@ -1,20 +1,9 @@
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class WordStat
 {
 	private final HashTable table = new HashTable();
 	private String[] mostCommonWords;
-
-	//TODO: Use the values of each HashEntry to create a list of most common words at initialization of this class
-	//TODO: Use the TODO on line 10 to write the methods that use common words
-
-	/*
-	How to generate mostCommonWords:
-	add every entry to a heap O(N)
-	remove items from heap to generate mostCommonWords O(NlogN)
-	total time O(NlogN)
-	 */
 
 	/**
 	 * @param file to compute statistics from
@@ -25,7 +14,6 @@ public class WordStat
 	}
 
 	/**
-	 *
 	 * @param words list of Strings to compute from
 	 */
 	public WordStat(String[] words)
@@ -88,16 +76,10 @@ public class WordStat
 	 */
 	public int wordCount(String word)
 	{
-		HashEntry ptr = table.getHashEntry(word);
-		int count = 0;
-		while (ptr != null)
-		{
-			if (word.equals(ptr.getKey()))
-				count++;
-			ptr = ptr.getNext();
-		}
-
-		return count;
+		HashEntry hashEntry = table.getHashEntry(word);
+		if (hashEntry == null)
+			return 0;
+		return hashEntry.getValue();
 	}
 
 	/**
@@ -114,10 +96,19 @@ public class WordStat
 	 * @param word the word to search for
 	 * @return the rank of word, where rank 1 is the most common word
 	 */
-	//TODO: Write Method
 	public int wordRank(String word)
 	{
-		return table.get(word);
+		int rankOfWord = table.get(word);
+		if (rankOfWord == 0)
+			return 0;
+		int rank = 1;
+
+		for (String key : mostCommonWords)
+			if (key.equals(word))
+				return rank;
+			else if (table.get(word) > rankOfWord)
+				rank++;
+		return 0;
 	}
 
 	/**
@@ -143,7 +134,6 @@ public class WordStat
 	 * @param k number of the least common words
 	 * @return a String array of the k the least common words in increasing order of their count
 	 */
-	//TODO: Write Method
 	public String[] leastCommonWords(int k)
 	{
 		k = Math.min(Math.abs(k), mostCommonWords.length);
@@ -162,42 +152,83 @@ public class WordStat
 	}
 
 	/**
-	 *
-	 * @param k number of words to return
+	 * @param k        number of words to return
 	 * @param baseWord word to check for
-	 * @param i relative position to baseWord
+	 * @param i        relative position to baseWord
 	 * @return the k most common words at a given relative position i to baseWord. These are called "collocations." The
 	 * relative position can be either +1 or -1 to indicate words following or preceding the base word. For example,
 	 * mostCommonCollocs(10, "crash", -1) would return the 10 most common words that precede "crash"
 	 */
-	//TODO: Write Method
 	public String[] mostCommonCollocs(int k, String baseWord, int i)
 	{
-		return null;
+		if (Math.abs(i) != 1)
+			return null;
+
+		String[] words = new String[k];
+
+		int wordPosition = -1;
+
+		for (int index = 0; index < mostCommonWords.length; index++)
+			if (mostCommonWords[index].equals(baseWord))
+			{
+				wordPosition = index;
+				break;
+			}
+
+		if (wordPosition == -1)
+			return null;
+
+
+		for (int index = 0; k > 0; k--, wordPosition += i, index++)
+		{
+			if (wordPosition < 0 || wordPosition > mostCommonWords.length)
+				return words;
+			words[index] = mostCommonWords[wordPosition];
+		}
+
+		return words;
 	}
 
 	/**
 	 * This method has the same functionality as mostCommonCollocs except that it excludes from consideration any words
 	 * in the String array exclusions. This provides a means to obtain collocations that exclude common word pairs such
 	 * as "of the" or "in a"
-	 * @param k number of words to return
-	 * @param baseWord word to check for
-	 * @param i relative position to baseWord
+	 *
+	 * @param k          number of words to return
+	 * @param baseWord   word to check for
+	 * @param i          relative position to baseWord
 	 * @param exclusions list of words to exclude
 	 * @return the k most common words excluding words in the parameter exclusions at a given relative position i to
 	 * baseWord. These are called "collocations." The relative position can be either +1 or -1 to indicate words
 	 * following or preceding the base word. For example, mostCommonCollocs(10, "crash", -1) would return the 10 most
 	 * common words that precede "crash"
 	 */
-	//TODO: Write Method
 	public String[] mostCommonCollocsExc(int k, String baseWord, int i, String[] exclusions)
 	{
-		return null;
+		if (Math.abs(i) != 1)
+			return null;
+
+		String[] possibleWords = mostCommonCollocs(k + exclusions.length, baseWord, i);
+		String[] words = new String[k];
+
+		int position = 0;
+		for (int index = 0; index < possibleWords.length; index++)
+		{
+			// temp must be used. It is not allowed to just put index inside the lambda shortcut because it is not final
+			final int temp = index;
+			if (Arrays.stream(exclusions).noneMatch(foo -> foo.equals(possibleWords[temp])))
+			{
+				words[position++] = possibleWords[index];
+				if (position == k)
+					return words;
+			}
+		}
+
+		return words;
 	}
 
 	/**
-	 *
-	 * @param k number of words to return
+	 * @param k         number of words to return
 	 * @param startWord first word to return
 	 * @return a string composed of k words from startWord w2 w3 ... wk. The string is generated by finding w2, the
 	 * most common word following the startWord, then w3, the most common word following w2, and so on. Each word
@@ -210,7 +241,16 @@ public class WordStat
 			return "";
 
 		StringBuilder sb = new StringBuilder();
+		boolean generateString = false;
 
+		for (String str : mostCommonWords)
+			if (generateString || str.equals(startWord))
+			{
+				generateString = true;
+				sb.append(str).append(" ");
+				if (--k == 0)
+					return sb.substring(0, sb.length() - 1);
+			}
 		return sb.substring(0, sb.length() - 1);
 	}
 
@@ -222,7 +262,7 @@ public class WordStat
 
 	public static void main(String[] args)
 	{
-		WordStat wordStat = new WordStat("foobar.txt");
+		//WordStat wordStat = new WordStat("foobar.txt");
 		/*
 		System.out.println(wordStat.wordCount("foobar"));
 		System.out.println(wordStat.wordCount("foo"));
@@ -230,10 +270,11 @@ public class WordStat
 		System.out.println(wordStat.wordCount("foobar!"));
 		System.out.println(wordStat.wordPairCount("foo", "bar"));
 		System.out.println(wordStat);
-		 */
+		 *
 		//System.out.println(wordStat.table);
 		System.out.println(Arrays.toString(wordStat.mostCommonWords));
 		System.out.println(Arrays.toString(wordStat.mostCommonWords(2)));
 		System.out.println(Arrays.toString(wordStat.leastCommonWords(2)));
+		*/
 	}
 }
