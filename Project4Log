@@ -4,3 +4,24 @@ For the Tokenizer class, I initially wanted to use BufferedReader to read the fi
 
 50% Log (~5 hours):
 It took me a bit to understand what I was supposed to be doing here for the HashTable. Once I got the concept down, implementing the HashTable was pretty easy and straightforward. In retrospect, I should have made sure I knew what I was doing before I started writing the HashTable
+
+90% Log (~20 hours):
+The WordStat class (including the extra credit portion) took me a significant amount of time to write.
+Since I already had written the Tokenizer class and the HashTable class, I used those two classes for writing the constructors. The constructors itself were very easy, but the difficulty was dealing with setting up a couple of String arrays to be used in other methods of the project which I will get into later in the 90% log portion. When writing the constructors (and their helper methods), I realized very quickly that I could set the int value for the put call to the HashTable to be the total number of instances that of that specific key in the table and I could update it easily by using an update method in the HashTable class. This helped me with the later methods.
+
+wordCount was pretty easy. Just search for the word in the table and return the value
+wordPairCount was simple since I could return w1 + w2.
+
+wordRank took me some time to think about the best implementation. The method itself was easy to write since I had already created a list of the most common words, but the part that made me think was actually setting it up the most common words to begin with. I realized though that I was trying to find the most common, and I had the number of instances already in the HashEntry, so I realized that to implement this the most efficiently would require the use of a priority queue.
+
+wordPairCount isn't working correctly just yet, so I will wait to describe it until I have it correct.
+
+mostCommonWords was pretty simple to write as I already had the most common words in an array. I only needed to return a sub array of those words
+leastCommonWords was pretty easy cause it was the same as mostCommonWords but using Collections.reverseOrder from the api
+
+mostCommonWordPairs isn't working correctly just yet, so I will wait to describe it until I have it correct.
+
+mostCommonCollocs wasn't too difficult for me. It just required me to iterate starting from the baseWord in the parameter until I have k words in the array.
+mostCommonCollocsExc was easy since I already wrote the mostCommonCollocs method. I could use that but ignore the words in the ignore list.
+
+generateWordString was pretty self explanitory.
