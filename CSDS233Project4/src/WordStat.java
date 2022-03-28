@@ -3,10 +3,8 @@ import java.util.*;
 public class WordStat
 {
 	private final HashTable table;
-	private HashEntry[] mostCommonEntries;
 	private String[] mostCommonWords;
-	//private String[] mostCommonWordPairs;
-	private String[] wordPairStrings;
+	private String[] mostCommonWordPairs;
 
 	/**
 	 * @param file to compute statistics from
@@ -58,7 +56,7 @@ public class WordStat
 				heap.insert(hashEntry);
 
 		// Remove all items from the heap and add them to the mostCommonEntries
-		mostCommonEntries = new HashEntry[heap.size()];
+		HashEntry[] mostCommonEntries = new HashEntry[heap.size()];
 		for (int i = 0; i < mostCommonEntries.length; i++)
 			mostCommonEntries[i] = heap.delete();
 
@@ -66,49 +64,24 @@ public class WordStat
 		for (int i = 0; i < mostCommonWords.length; i++)
 			mostCommonWords[i] = mostCommonEntries[i].getKey();
 
-		setMostCommonWordPairs();
+		setMostCommonWordPairs(mostCommonEntries);
 	}
 
-	//TODO: Fix Method
-	private void setMostCommonWordPairs()
+	private void setMostCommonWordPairs(HashEntry[] mostCommonEntries)
 	{
 		// Create max heap for most common word pairs
 		Heap<HashEntry> heap = new Heap<>();
 
 		// Add values to heap
-		for (int i = 0; i < mostCommonEntries.length - 1; i++)
+		for (int i = 0; i < mostCommonEntries.length; i++)
 			for (int j = i + 1; j < mostCommonEntries.length; j++)
 				heap.insert(new HashEntry(mostCommonEntries[i].getKey() + " " + mostCommonEntries[j].getKey(),
 						mostCommonEntries[i].getValue() + mostCommonEntries[j].getValue()));
 
-		// Remove HashEntries from the heap and add it to wordPairStrings
-		wordPairStrings = new String[heap.size()];
-		for (int i = 0; i < heap.size(); i++)
-			wordPairStrings[i] = heap.delete().getKey();
-
-		/*
-		// Calculate size of word pairs size
-		int len = 0;
-		for (int i = mostCommonWords.length - 1; i > 0; i--)
-			len += i;
-		HashEntry[] wordPairs = new HashEntry[len];
-
-		// Add every 2 word combination from mostCommonWordPair to the wordPairs
-		int index = 0;
-		for (int i = 0; i < mostCommonWords.length - 1; i++)
-			for (int j = i + 1; j < mostCommonWords.length; j++)
-				wordPairs[index++] = new HashEntry(mostCommonWords[i] + " " + mostCommonWords[j],
-						wordPairCount(mostCommonWords[i], mostCommonWords[j]));
-
-		// Sorts the most common word pairs
-		Arrays.sort(wordPairs, Collections.reverseOrder());
-
-		// Create an array of strings from most common word pair
-		wordPairStrings = new String[len];
-		index = 0;
-		for (HashEntry hashEntry : wordPairs)
-			wordPairStrings[index++] = hashEntry.getKey();
-		 */
+		// Remove HashEntries from the heap and add it to mostCommonWordPairs
+		mostCommonWordPairs = new String[heap.size()];
+		for (int i = 0; i < mostCommonWordPairs.length; i++)
+			mostCommonWordPairs[i] = heap.delete().getKey();
 	}
 
 	/**
@@ -130,6 +103,7 @@ public class WordStat
 	 * @param w2 word 2
 	 * @return the sum of the return of wordCount for w1 and w2
 	 */
+	//TODO: Figure out what wordPairCount
 	public int wordPairCount(String w1, String w2)
 	{
 		return wordCount(w1) + wordCount(w2);
@@ -139,6 +113,7 @@ public class WordStat
 	 * @param word the word to search for
 	 * @return the rank of word, where rank 1 is the most common word
 	 */
+	//TODO: Figure out what wordRank means
 	public int wordRank(String word)
 	{
 		word = normalize(word);
@@ -161,12 +136,13 @@ public class WordStat
 	 * @param w2 word 2
 	 * @return the rank of the word pair w1 w2. Return 0 if the word pair is not in the table
 	 */
+	//TODO: Figure out what wordPairRank means
 	public int wordPairRank(String w1, String w2)
 	{
 		/*
 		String key = w1 + " " + w2;
 		int index = 1;
-		for (String wordPairs : wordPairStrings)
+		for (String wordPairs : mostCommonWordPairs)
 			if (wordPairs.equals(key))
 				return index;
 			else
@@ -202,10 +178,9 @@ public class WordStat
 	 * @return the k most common word pair in a String array, where each element is in the form of "word1 word2"
 	 * separated by a single space
 	 */
-	//TODO: Might Need to Fix Method depending on what fixing setMostCommonWordPairs fix looks like
 	public String[] mostCommonWordPairs(int k)
 	{
-		return Arrays.copyOf(wordPairStrings, k);
+		return Arrays.copyOf(mostCommonWordPairs, k);
 	}
 
 	/**
@@ -349,18 +324,6 @@ public class WordStat
 	 */
 	public static void main(String[] args)
 	{
-		/*
-		 Methods to test:
-		 both constructors
-		 wordRank -> done
-		 wordPairRank
-		 mostCommonWords -> done
-		 leastCommonWords -> done
-		 mostCommonWordPairs -> done
-		 mostCommonCallocsExc -> done
-		 generateWordStrings
-		 */
-
 		String[] words = new String[] {"The ", "duck ", "does ", "not ", "eat ", "the ", "bear.", " \\. duck ,; ",
 				" du/ck", "duck", "bear"};
 		WordStat wordStat1 = new WordStat(words);
@@ -380,9 +343,9 @@ public class WordStat
 
 		// Most Common Word
 		System.out.println("\nMost Common Word:");
-		System.out.println("Expected:\n[duck, the, bear, does, not, eat]\nActual:\n" +
+		System.out.println("Expected:\n[duck, bear, the, does, eat, not]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonWords(Integer.MAX_VALUE)));
-		System.out.println("Expected:\n[duck, the]\nActual:\n" + Arrays.toString(wordStat1.mostCommonWords(2)));
+		System.out.println("Expected:\n[duck, bear]\nActual:\n" + Arrays.toString(wordStat1.mostCommonWords(2)));
 
 		// Least Common Word
 		System.out.println("\nLeast Common Word:");
@@ -392,16 +355,16 @@ public class WordStat
 
 		// Most Common Word Pairs:
 		System.out.println("\nMost Common Word Pairs:");
-		System.out.println("Expected:\n[duck the, duck bear, duck does, duck not, duck eat]\nActual:\n" +
+		System.out.println("Expected:\n[duck bear, duck the, duck does, duck eat, duck not]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonWordPairs(5)));
-		System.out.println("Expected:\n[duck the, duck bear, duck does, duck not, duck eat, the bear, the does, the " +
-				"not, the eat, bear does, bear not, bear eat, does not, does eat, not eat]\nActual:\n" +
+		System.out.println("Expected:\n[duck bear, duck the, duck does, duck eat, duck not, bear the, bear does, " +
+				"bear eat, bear not, the does, the eat, the not, does eat, does not, eat not]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonWordPairs(15)));
-		System.out.println("Expected:\n[duck the]\nActual:\n" + Arrays.toString(wordStat1.mostCommonWordPairs(1)));
+		System.out.println("Expected:\n[duck bear]\nActual:\n" + Arrays.toString(wordStat1.mostCommonWordPairs(1)));
 		System.out.println("Expected:\n[]\nActual:\n" + Arrays.toString(wordStat1.mostCommonWordPairs(0)));
 
 		// Most Common Collocs Exclusions
-		System.out.println("\nMost Common Collocs");
+		System.out.println("\nMost Common Collocs:");
 		System.out.println("Expected:\n[duck, bear]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonCollocsExc(2, "duck", 1, new String[] {"the"})));
 		System.out.println("Expected:\n[duck, null]\nActual:\n" +
@@ -409,20 +372,23 @@ public class WordStat
 
 		System.out.println("Expected:\n[duck, null]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonCollocsExc(2, "duck", -1, new String[] {})));
-		System.out.println("Expected:\n[duck, the, bear, does, not]\nActual:\n" +
+		System.out.println("Expected:\n[duck, bear, the, does, eat]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonCollocsExc(5, "duck", 1, new String[] {})));
 
 		// Generate Word String
 		System.out.println("\nGenerate Word String:");
 		System.out.println("Expected:\n\nActual:\n" + wordStat1.generateWordString(0, "duck"));
 		System.out.println("Expected:\nduck\nActual:\n" + wordStat1.generateWordString(1, "duck"));
-		System.out.println("Expected:\nduck the bear\nActual:\n" + wordStat1.generateWordString(3, "duck"));
-		System.out.println("Expected:\nduck the bear does not eat\nActual:\n"
+		System.out.println("Expected:\nduck bear the\nActual:\n" + wordStat1.generateWordString(3, "duck"));
+		System.out.println("Expected:\nduck bear the does eat not\nActual:\n"
 				+ wordStat1.generateWordString(10, "duck"));
 
 		// Constructor 2
 		System.out.println("\nTest Constructor from file:");
 		WordStat wordStat2 = new WordStat("foobar.txt");
 		System.out.println(Arrays.toString(wordStat2.mostCommonWords(50)));
+
+		System.out.println("\nWord Pair Count:");
+
 	}
 }
