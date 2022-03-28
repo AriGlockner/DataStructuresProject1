@@ -70,6 +70,15 @@ public class Tokenizer
 		return wordList;
 	}
 
+	/**
+	 * Helps initialize wordStat class HashTable
+	 * @return size of wordList
+	 */
+	public int getSize()
+	{
+		return wordList.size();
+	}
+
 	@Override
 	public String toString()
 	{

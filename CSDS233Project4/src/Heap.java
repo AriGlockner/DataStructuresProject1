@@ -17,6 +17,14 @@ public class Heap<T extends Comparable<T>>
 	}
 
 	/**
+	 * @return the number of items in the heap
+	 */
+	public int size()
+	{
+		return items.size();
+	}
+
+	/**
 	 * Inserts item into the heap
 	 * @param item to be inserted into the Heap
 	 */

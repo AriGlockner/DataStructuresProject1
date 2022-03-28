@@ -75,6 +75,7 @@ public class HashEntry implements Comparable<HashEntry>
 
 	/**
 	 * Helper method for WordStat class
+	 *
 	 * @return this Object without any items in the Linked List
 	 */
 	HashEntry get()
@@ -101,14 +102,36 @@ public class HashEntry implements Comparable<HashEntry>
 	}
 
 	/**
+	 * Helper method for compareTo
+	 *
+	 * @param h other hashEntry
+	 * @return 1, 0, -1 like compareTo using alphabetical order as the comparator
+	 */
+	private int compareKey(HashEntry h)
+	{
+		// Return if a character is different
+		int len = Math.min(key.length(), h.key.length());
+		for (int i = 0; i < len; i++)
+			if (key.charAt(i) != h.key.charAt(i))
+				return key.charAt(i) > h.getKey().charAt(i) ? -1 : 1;
+
+		// Return based on length of Strings
+		if (key.length() == h.getKey().length())
+			return 0;
+		return key.length() > h.getKey().length() ? -1 : 1;
+	}
+
+	/**
 	 * Compares this object to another HashEntry
+	 *
 	 * @param h other hash entry
 	 * @return this value compared to other value
 	 */
 	@Override
 	public int compareTo(HashEntry h)
 	{
-		return Integer.compare(value, h.value);
+		// Returns -1 or 1 based on value. If value is same, returns output from compareKey
+		return (value != h.value) ? (value - h.value) / Math.abs(value - h.value) : compareKey(h);
 	}
 
 	/**

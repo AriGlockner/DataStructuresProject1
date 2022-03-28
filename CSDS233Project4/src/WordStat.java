@@ -2,8 +2,10 @@ import java.util.*;
 
 public class WordStat
 {
-	private final HashTable table = new HashTable();
+	private final HashTable table;
+	private HashEntry[] mostCommonEntries;
 	private String[] mostCommonWords;
+	//private String[] mostCommonWordPairs;
 	private String[] wordPairStrings;
 
 	/**
@@ -11,7 +13,9 @@ public class WordStat
 	 */
 	public WordStat(String file)
 	{
-		initializeHashTable(new Tokenizer(file));
+		Tokenizer t = new Tokenizer(file);
+		table = new HashTable(t.getSize());
+		initializeHashTable(t);
 	}
 
 	/**
@@ -19,7 +23,9 @@ public class WordStat
 	 */
 	public WordStat(String[] words)
 	{
-		initializeHashTable(new Tokenizer(words));
+		Tokenizer t = new Tokenizer(words);
+		table = new HashTable(words.length);
+		initializeHashTable(t);
 	}
 
 	/**
@@ -29,28 +35,10 @@ public class WordStat
 	 */
 	private void initializeHashTable(Tokenizer t)
 	{
+		// Add every unique word from the Tokenizer to the HashTable with a value of the number of instances in the list
 		ArrayList<String> words = t.wordList();
-
-		// Add every word to the table and set the value equal to the instances of the word
 		for (String word : words)
-		{
-			// Add word to table
-			table.put(word, 1);
-
-			// Calculate instances with a specific key
-			// Can't use wordCount method because wordCount method relies on having an accurate value
-			int count = 0;
-			HashEntry hashEntry = table.getHashEntry(word);
-			while (hashEntry != null)
-			{
-				if (hashEntry.getKey().equals(word))
-					count++;
-				hashEntry = hashEntry.getNext();
-			}
-
-			// Update value of every HashEntry with a specific key
-			table.updateEverythingWithKey(word, count);
-		}
+			table.update(word, wordCount(word) + 1);
 
 		setMostCommonWords();
 	}
@@ -61,43 +49,44 @@ public class WordStat
 	 */
 	private void setMostCommonWords()
 	{
-		// Create max heap of HashEntries
+		// Create a heap to generate the most common words
 		Heap<HashEntry> heap = new Heap<>();
 
-		// Add every unique key from the HashTable to the Heap
-		int numElements = 0;
-
+		// Add items to the heap
 		for (HashEntry hashEntry : table.getTable())
-		{
-			ArrayList<HashEntry> wordsInList = new ArrayList<>();
-			while (hashEntry != null)
-			{
-				if (!wordsInList.contains(hashEntry))
-				{
-					HashEntry hashToAdd = hashEntry.get();
-					heap.insert(hashToAdd);
-					wordsInList.add(hashToAdd);
-					numElements++;
-				}
-				hashEntry = hashEntry.getNext();
-			}
-		}
+			if (hashEntry != null)
+				heap.insert(hashEntry);
 
-		// Remove the most common word from the heap and add it to the mostCommonWords list until the heap is empty
-		mostCommonWords = new String[numElements];
-		//mostCommon = new HashEntry[numElements];
-		for (int i = 0; i < numElements; i++)
-		{
-			//mostCommon[i] = heap.delete();
-			mostCommonWords[i] = heap.delete().getKey();
-			//mostCommonWords[i] = mostCommon[i].getKey();
-		}
+		// Remove all items from the heap and add them to the mostCommonEntries
+		mostCommonEntries = new HashEntry[heap.size()];
+		for (int i = 0; i < mostCommonEntries.length; i++)
+			mostCommonEntries[i] = heap.delete();
+
+		mostCommonWords = new String[mostCommonEntries.length];
+		for (int i = 0; i < mostCommonWords.length; i++)
+			mostCommonWords[i] = mostCommonEntries[i].getKey();
+
 		setMostCommonWordPairs();
 	}
 
 	//TODO: Fix Method
 	private void setMostCommonWordPairs()
 	{
+		// Create max heap for most common word pairs
+		Heap<HashEntry> heap = new Heap<>();
+
+		// Add values to heap
+		for (int i = 0; i < mostCommonEntries.length - 1; i++)
+			for (int j = i + 1; j < mostCommonEntries.length; j++)
+				heap.insert(new HashEntry(mostCommonEntries[i].getKey() + " " + mostCommonEntries[j].getKey(),
+						mostCommonEntries[i].getValue() + mostCommonEntries[j].getValue()));
+
+		// Remove HashEntries from the heap and add it to wordPairStrings
+		wordPairStrings = new String[heap.size()];
+		for (int i = 0; i < heap.size(); i++)
+			wordPairStrings[i] = heap.delete().getKey();
+
+		/*
 		// Calculate size of word pairs size
 		int len = 0;
 		for (int i = mostCommonWords.length - 1; i > 0; i--)
@@ -119,6 +108,7 @@ public class WordStat
 		index = 0;
 		for (HashEntry hashEntry : wordPairs)
 			wordPairStrings[index++] = hashEntry.getKey();
+		 */
 	}
 
 	/**
@@ -127,10 +117,12 @@ public class WordStat
 	 */
 	public int wordCount(String word)
 	{
-		HashEntry hashEntry = table.getHashEntry(word);
-		if (hashEntry == null)
+		// get number of instances in table
+		int count = table.get(word);
+		// return 0 if not in table
+		if (count == -1)
 			return 0;
-		return hashEntry.getValue();
+		return count;
 	}
 
 	/**
@@ -149,7 +141,8 @@ public class WordStat
 	 */
 	public int wordRank(String word)
 	{
-		int rankOfWord = table.get(word);
+		word = normalize(word);
+		int numInstances = table.get(word);
 
 		int rank = 1;
 
@@ -157,7 +150,7 @@ public class WordStat
 		{
 			if (str.equals(word))
 				return rank;
-			else if (table.get(str) > rankOfWord)
+			else if (table.get(str) > numInstances)
 				rank++;
 		}
 		return 0;
@@ -170,6 +163,7 @@ public class WordStat
 	 */
 	public int wordPairRank(String w1, String w2)
 	{
+		/*
 		String key = w1 + " " + w2;
 		int index = 1;
 		for (String wordPairs : wordPairStrings)
@@ -179,7 +173,9 @@ public class WordStat
 				index++;
 
 		return 0;
+		 */
 		//return wordRank(w1) + wordRank(w2);
+		return wordRank(normalize(w1 + w2));
 	}
 
 	/**
@@ -209,7 +205,7 @@ public class WordStat
 	//TODO: Might Need to Fix Method depending on what fixing setMostCommonWordPairs fix looks like
 	public String[] mostCommonWordPairs(int k)
 	{
-		return Arrays.copyOf(wordPairStrings, Math.min(k, wordPairStrings.length));
+		return Arrays.copyOf(wordPairStrings, k);
 	}
 
 	/**
@@ -280,7 +276,7 @@ public class WordStat
 		for (int index = 0; index < possibleWords.length; index++)
 		{
 			// temp must be used. It is not allowed to just put index inside the lambda shortcut because it is not final
-			final int temp = index;
+			int temp = index;
 			if (Arrays.stream(exclusions).noneMatch(foo -> foo.equals(possibleWords[temp])))
 			{
 				words[position++] = possibleWords[index];
@@ -339,7 +335,7 @@ public class WordStat
 		// Make String LowerCase
 		str = str.toLowerCase();
 		// Remove all Punctuation
-		str = str.replaceAll("\\p{Punct}","");
+		str = str.replaceAll("\\p{Punct}", "");
 		// Remove Leading/Trailing Spaces
 		//str = str.trim();
 		// Add every word to the ArrayList
@@ -348,6 +344,7 @@ public class WordStat
 
 	/**
 	 * Demo
+	 *
 	 * @param args arguments
 	 */
 	public static void main(String[] args)
@@ -364,8 +361,8 @@ public class WordStat
 		 generateWordStrings
 		 */
 
-		String[] words = new String[] { "The ", "duck ", "does ", "not ", "eat ", "the ", "bear.", " \\. duck ,; ",
-				" du/ck", "duck", "bear" };
+		String[] words = new String[] {"The ", "duck ", "does ", "not ", "eat ", "the ", "bear.", " \\. duck ,; ",
+				" du/ck", "duck", "bear"};
 		WordStat wordStat1 = new WordStat(words);
 
 		// Word Rank
