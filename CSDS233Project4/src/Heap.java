@@ -1,12 +1,11 @@
 import java.util.ArrayList;
 
 /**
- * The MyHeap class represents a max heap of a generic type
- * @param <T> the type to be sorted in the heap
+ * The MyHeap class represents a max heap of type HashEntry
  */
-public class Heap<T extends Comparable<T>>
+public class Heap
 {
-	private ArrayList<T> items;
+	private ArrayList<HashEntry> items;
 
 	/**
 	 * Initializes a new Max Heap
@@ -26,26 +25,39 @@ public class Heap<T extends Comparable<T>>
 
 	/**
 	 * Inserts item into the heap
+	 *
 	 * @param item to be inserted into the Heap
 	 */
-	public void insert(T item)
+	public void insert(HashEntry item)
 	{
-		items.add(item);
+		items.add(new HashEntry(item.getKey(), item.getValue()));
 		siftUp();
+	}
+
+	public void update(HashEntry item)
+	{
+		for (HashEntry hashEntry : items)
+			if (hashEntry.equals(item))
+			{
+				hashEntry.setValue(hashEntry.getValue() + 1);
+				return;
+			}
+		insert(item);
 	}
 
 	/**
 	 * Deletes and Returns the maximum value in the heap
+	 *
 	 * @return the max value in the heap
 	 */
-	public T delete()
+	public HashEntry delete()
 	{
 		if (items.size() == 0)
 			return null;
 		if (items.size() == 1)
 			return items.remove(0);
 
-		T placeholder = items.get(0);
+		HashEntry placeholder = items.get(0);
 		items.set(0, items.remove(items.size() - 1));
 		siftDown();
 		return placeholder;
@@ -61,8 +73,8 @@ public class Heap<T extends Comparable<T>>
 		while (k > 0)
 		{
 			int p = (k - 1) / 2;
-			T item = items.get(k);
-			T parent = items.get(p);
+			HashEntry item = items.get(k);
+			HashEntry parent = items.get(p);
 
 			if (item.compareTo(parent) > 0)
 			{
@@ -100,13 +112,12 @@ public class Heap<T extends Comparable<T>>
 			if (items.get(k).compareTo(items.get(max)) < 0)
 			{
 				// switch
-				T temp = items.get(k);
+				HashEntry temp = items.get(k);
 				items.set(k, items.get(max));
 				items.set(max, temp);
 				k = max;
 				l = 2 * k + 1;
-			}
-			else
+			} else
 				return;
 		}
 	}

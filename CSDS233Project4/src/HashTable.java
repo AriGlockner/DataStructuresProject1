@@ -76,10 +76,16 @@ public class HashTable
 	{
 		int position = Math.abs(key.hashCode() % table.length);
 
-		if (table[position] == null)
-			put(key, value);
-		else
-			table[position].setValue(value);
+		HashEntry ptr = table[position];
+		while (ptr != null)
+			if (ptr.getKey().equals(key))
+			{
+				ptr.setValue(value);
+				return;
+			}
+			else
+				ptr = ptr.getNext();
+		put(key, value);
 	}
 
 	/**
@@ -161,7 +167,15 @@ public class HashTable
 
 		for (HashEntry h : table)
 			if (h != null)
-				sb.append(h);
+			{
+				HashEntry ptr = h;
+				while (ptr != null)
+				{
+					sb.append(ptr);
+					ptr = ptr.getNext();
+				}
+				//sb.append(h);
+			}
 
 		return sb.substring(0, sb.length() - 1);
 	}

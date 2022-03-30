@@ -12,7 +12,7 @@ public class Tokenizer
 	/**
 	 * @param file specifies the file from which to obtain the words.
 	 */
-	public Tokenizer(String file) // throws FileNotFoundException
+	public Tokenizer(String file)
 	{
 		try
 		{
@@ -70,24 +70,9 @@ public class Tokenizer
 		return wordList;
 	}
 
-	/**
-	 * Helps initialize wordStat class HashTable
-	 * @return size of wordList
-	 */
-	public int getSize()
-	{
-		return wordList.size();
-	}
-
 	@Override
 	public String toString()
 	{
 		return wordList.toString();
-	}
-
-	public static void main(String[] args) throws FileNotFoundException
-	{
-		Tokenizer t = new Tokenizer("foobar.txt");
-		System.out.println(t);
 	}
 }

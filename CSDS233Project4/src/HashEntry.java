@@ -134,6 +134,11 @@ public class HashEntry implements Comparable<HashEntry>
 		return (value != h.value) ? (value - h.value) / Math.abs(value - h.value) : compareKey(h);
 	}
 
+	public int compareWithoutKey(HashEntry h)
+	{
+		return Integer.compare(value, h.value);
+	}
+
 	/**
 	 * @param o other object
 	 * @return true if other object is a HashEntry and the keys are the same and the values are the same. Otherwise,

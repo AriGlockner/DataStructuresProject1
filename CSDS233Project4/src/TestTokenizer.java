@@ -1,7 +1,5 @@
 import org.junit.*;
 
-import java.io.FileNotFoundException;
-
 /**
  * This class tests the Tokenizer class
  */
@@ -34,7 +32,7 @@ public class TestTokenizer
 		Tokenizer tokenizer = new Tokenizer(new String[] {"foobar.1", " \\ foo", "bar", " the duck ", " does", "not",
 				"eat", "the", "bear"});
 
-		Assert.assertEquals("[foobar1, foo, bar, the duck, does, not, eat, the, bear]",
+		Assert.assertEquals("[foobar1, foo, bar, the, duck, does, not, eat, the, bear]",
 				tokenizer.wordList().toString());
 	}
 }

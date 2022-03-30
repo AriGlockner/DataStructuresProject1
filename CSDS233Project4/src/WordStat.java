@@ -13,7 +13,7 @@ public class WordStat
 	private String[] mostCommonWordPairs;
 
 	//
-	private final String[] words;
+	private String[] words;
 
 	/**
 	 * @param file to compute statistics from
@@ -21,7 +21,6 @@ public class WordStat
 	public WordStat(String file)
 	{
 		Tokenizer t = new Tokenizer(file);
-		words = t.wordList().toArray(new String[0]);
 		initializeAndAssignFields(t);
 	}
 
@@ -31,7 +30,6 @@ public class WordStat
 	public WordStat(String[] words)
 	{
 		Tokenizer t = new Tokenizer(words);
-		this.words = words;
 		initializeAndAssignFields(t);
 	}
 
@@ -44,6 +42,7 @@ public class WordStat
 	{
 		// List of words in order of how they appear
 		ArrayList<String> words = t.wordList();
+		this.words = words.toArray(new String[0]);
 		int len = words.size();
 
 		/* Single Words */
@@ -57,10 +56,11 @@ public class WordStat
 			wordsByNumInstances.update(word, wordCount(word) + 1);
 
 		// Add items into a heap
-		Heap<HashEntry> heap = new Heap<>();
+		Heap heap = new Heap();
 		for (HashEntry hashEntry : wordsByNumInstances.getTable())
 			if (hashEntry != null)
-				heap.insert(hashEntry);
+				heap.update(hashEntry);
+
 
 		// Remove items from the heap and add items into wordRanks and mostCommonWords
 		int index = 0;
@@ -80,6 +80,11 @@ public class WordStat
 		// Remove null Strings from mostCommonWords
 		mostCommonWords = Arrays.stream(mostCommonWords).filter(Objects::nonNull).toArray(String[]::new);
 
+
+
+
+
+
 		/* Word Pairs */
 		// Initialize fields
 		wordPairsByNumInstances = new HashTable(len);
@@ -88,103 +93,56 @@ public class WordStat
 
 		// Add items into wordPairsByNumInstances
 		for (int i = 1; i < words.size(); i++)
-			wordPairsByNumInstances.update(words.get(i - 1) + " " + words.get(i),
-					1 + wordPairsByNumInstances.get(words.get(i - 1) + " " + words.get(i)));
+		{
+			int value = 1 + wordPairsByNumInstances.get(words.get(i - 1) + " " + words.get(i));
+			wordPairsByNumInstances.update(words.get(i - 1) + " " + words.get(i), Math.max(value, 1));
+		}
 
-		//TODO: Continue here:
 		// Add items into a heap
 		// Clear All shouldn't be necessary. But can't hurt
+		//TODO: Remove clearAll
 		heap.clearAll();
-		/*
 		for (HashEntry hashEntry : wordPairsByNumInstances.getTable())
 			if (hashEntry != null)
-				heap.insert(hashEntry);
-		*/
-		for (int i = 1; i < words.size(); i++)
-			heap.insert(new HashEntry(words.get(i - 1) + " " + words.get(i),
-					1 /* + wordPairRanks.get(words.get(i - 1) + " " + words.get(i))*/ ));
-		//System.out.println(heap.size());
+			{
+				HashEntry ptr = hashEntry;
+				while (ptr != null)
+				{
+					heap.update(ptr);
+					ptr = ptr.getNext();
+				}
+			}
 
-
-
-		// Word Pair Ranks
-		index = 0;
+		// Reset the variables used for insertion into the HashTable
+		index = 1;
+		lastEntry = null;
+		lastRank = -1;
+		// Add every HashTable from the heap into wordPairRanks and mostCommonWordPairs
 		while (!heap.isEmpty())
 		{
-			HashEntry foobar = heap.delete();
-			wordPairRanks.update(foobar.getKey(), foobar.getValue());
-			mostCommonWordPairs[index++] = foobar.getKey();
+			// Loop is used due to handling collisions in the HashTable
+			HashEntry ptr = heap.delete();
+			while (ptr != null)
+			{
+				// Add to wordPairRanks HashTable. Store the item's rank as its value
+				if (lastEntry == null || lastEntry.getValue() != ptr.getValue())
+				{
+					wordPairRanks.put(ptr.getKey(), index);
+					lastRank = index;
+				}
+				// If the value is the same as the last value, it should store the same value as the one prior
+				else
+					wordPairRanks.put(ptr.getKey(), lastRank);
+				// Add String from heap deletion to mostCommonWordPairs array
+				mostCommonWordPairs[index++ - 1] = ptr.getKey();
+				// Go to the next HashEntry in the Linked List in case of collision
+				lastEntry = ptr;
+				ptr = ptr.getNext();
+			}
 		}
+
 		// Remove null Strings from mostCommonWordPairs
 		mostCommonWordPairs = Arrays.stream(mostCommonWordPairs).filter(Objects::nonNull).toArray(String[]::new);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		/*
-		//TODO: Add each word (and the word prior) starting from index i = 1 to a new String[] called wordPairs
-		for (int i = 1; i < words.size(); i++)
-			wordPairsByNumInstances.update(words.get(i - 1) + " " + words.get(i),
-					1 + wordPairsByNumInstances.get(words.get(i - 1) + " " + words.get(i)));
-
-
-
-
-
-		// Create a heap to generate the most common words
-		Heap<HashEntry> heap = new Heap<>();
-
-		// Add items to the heap
-		for (HashEntry hashEntry : wordsByNumInstances.getTable())
-			if (hashEntry != null)
-				heap.insert(hashEntry);
-
-		// Remove all items from the heap and add them to the mostCommonEntries
-		HashEntry[] mostCommonEntries = new HashEntry[heap.size()];
-		for (int i = 0; i < mostCommonEntries.length; i++)
-			mostCommonEntries[i] = heap.delete();
-
-		mostCommonWords = new String[mostCommonEntries.length];
-		for (int i = 0; i < mostCommonWords.length; i++)
-			mostCommonWords[i] = mostCommonEntries[i].getKey();
-
-
-
-
-
-		// Create max heap for most common word pairs
-		//Heap<HashEntry> heap = new Heap<>();
-		// Heap should already be empty, but doesn't hurt to clear all again just to be safe
-		heap.clearAll();
-
-		// Add values to heap
-		//for (int i = 1; i < )
-
-		/*
-		for (int i = 0; i < mostCommonEntries.length; i++)
-			for (int j = i + 1; j < mostCommonEntries.length; j++)
-				heap.insert(new HashEntry(mostCommonEntries[i].getKey() + " " + mostCommonEntries[j].getKey(),
-						mostCommonEntries[i].getValue() + mostCommonEntries[j].getValue()));
-		*
-		// Remove HashEntries from the heap and add it to mostCommonWordPairs
-		mostCommonWordPairs = new String[heap.size()];
-		for (int i = 0; i < mostCommonWordPairs.length; i++)
-			mostCommonWordPairs[i] = heap.delete().getKey();
-
-		//setMostCommonWords();
-		*/
 	}
 
 	/**
@@ -238,10 +196,7 @@ public class WordStat
 	 */
 	public int wordCount(String word)
 	{
-		// get number of instances in table
-		int count = wordsByNumInstances.get(word);
-		// return count if in table, otherwise, return 0
-		return count != -1 ? count : 0;
+		return Math.max(0, wordsByNumInstances.get(word));
 	}
 
 	/**
@@ -251,10 +206,8 @@ public class WordStat
 	 */
 	public int wordPairCount(String w1, String w2)
 	{
-		// get number of instances in table
-		int count = wordPairsByNumInstances.get(w1 + " " + w2);
 		// return count if in table, otherwise, return 0
-		return count != -1 ? count : 0;
+		return Math.max(0, wordPairsByNumInstances.get(w1 + " " + w2));
 	}
 
 	/**
@@ -263,10 +216,8 @@ public class WordStat
 	 */
 	public int wordRank(String word)
 	{
-		// Get rank of word
-		int rank = wordRanks.get(word);
 		// if word is in table return word rank, otherwise, return 0
-		return rank != -1 ? rank : 0;
+		return Math.max(0, wordRanks.get(word));
 	}
 
 	/**
@@ -276,10 +227,9 @@ public class WordStat
 	 */
 	public int wordPairRank(String w1, String w2)
 	{
-		// get number of instances in table
-		int count = wordPairRanks.get(w1 + " " + w2);
 		// return count if in table, otherwise, return 0
-		return count != -1 ? count : 0;
+		//return Math.max(0, 1 + wordPairRanks.get(w1 + " " + w2));
+		return Math.max(0, wordPairRanks.get(w1 + " " + w2));
 	}
 
 	/**
@@ -426,7 +376,7 @@ public class WordStat
 	@Override
 	public String toString()
 	{
-		return wordsByNumInstances.toString();
+		return Arrays.toString(words);
 	}
 
 	/**
@@ -458,19 +408,21 @@ public class WordStat
 		WordStat wordStat1 = new WordStat(words);
 
 		// Word Rank
+		/*
 		System.out.println("Word Rank:");
 		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordRank("the"));
 		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordRank("duck"));
 		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordRank("bear"));
 		System.out.println("Expected:\n4\nActual:\n" + wordStat1.wordRank("does"));
 		System.out.println("Expected:\n0\nActual:\n" + wordStat1.wordRank("Word Not There"));
-
+		*/
 		// Word Pair Rank
-		System.out.println("\nWord Pair Rank:");
-		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("duck", "duck"));
-		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairRank("duck", "bear"));
+		//System.out.println("\nWord Pair Rank:");
+		//System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("duck", "duck"));
+		//System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairRank("duck", "bear"));
 
 		// Most Common Word
+		/*
 		System.out.println("\nMost Common Word:");
 		System.out.println("Expected:\n[duck, bear, the, does, eat, not]\nActual:\n" +
 				Arrays.toString(wordStat1.mostCommonWords(Integer.MAX_VALUE)));
@@ -510,13 +462,41 @@ public class WordStat
 		System.out.println("Expected:\nduck bear the\nActual:\n" + wordStat1.generateWordString(3, "duck"));
 		System.out.println("Expected:\nduck bear the does eat not\nActual:\n"
 				+ wordStat1.generateWordString(10, "duck"));
-
+		*/
 		// Constructor 2
+		/*
 		System.out.println("\nTest Constructor from file:");
 		WordStat wordStat2 = new WordStat("foobar.txt");
 		System.out.println("Expected:\n[foobar, bar, foo]\nActual:\n" + Arrays.toString(wordStat2.mostCommonWords(50)));
+		*/
 
 		System.out.println("\n");
 		System.out.println(Arrays.toString(wordStat1.mostCommonWordPairs));
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("the", "duck") + "\n"); //
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("duck", "does") + "\n");
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("does", "not") + "\n");
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("not", "eat") + "\n");
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("eat", "the") + "\n");
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("the", "bear") + "\n"); //
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("bear", "duck") + "\n"); //
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairRank("duck", "duck") + "\n"); //
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairRank("duck", "bear") + "\n");
+		//System.out.println("Expected:\n0\nActual:\n" + wordStat1.wordPairRank("not", "here") + "\n");
+		/*
+		//System.out.println(wordStat1.wordPairsByNumInstances);
+		System.out.println(wordStat1);
+		System.out.println(Arrays.toString(wordStat1.wordPairRanks.getTable()));
+		*/
+		/*
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("the", "duck") + "\n"); //
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("duck", "does") + "\n");
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("does", "not") + "\n");
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("not", "eat") + "\n");
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("eat", "the") + "\n");
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("the", "bear") + "\n"); //
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("bear", "duck") + "\n"); //
+		System.out.println("Expected:\n2\nActual:\n" + wordStat1.wordPairCount("duck", "duck") + "\n"); //
+		System.out.println("Expected:\n1\nActual:\n" + wordStat1.wordPairCount("duck", "bear") + "\n");
+		*/
 	}
 }
