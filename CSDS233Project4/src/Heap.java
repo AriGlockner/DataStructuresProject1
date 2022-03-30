@@ -6,7 +6,7 @@ import java.util.ArrayList;
  */
 public class Heap<T extends Comparable<T>>
 {
-	private final ArrayList<T> items;
+	private ArrayList<T> items;
 
 	/**
 	 * Initializes a new Max Heap
@@ -109,5 +109,21 @@ public class Heap<T extends Comparable<T>>
 			else
 				return;
 		}
+	}
+
+	/**
+	 * Removes all elements from the heap without returning any of them
+	 */
+	public void clearAll()
+	{
+		items = new ArrayList<>();
+	}
+
+	/**
+	 * @return true if heap contains 0 items. Otherwise, returns false
+	 */
+	public boolean isEmpty()
+	{
+		return items.isEmpty();
 	}
 }

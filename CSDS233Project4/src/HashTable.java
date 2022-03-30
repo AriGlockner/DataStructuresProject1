@@ -14,7 +14,7 @@ public class HashTable
 	 */
 	public HashTable()
 	{
-		table = new HashEntry[100];
+		table = new HashEntry[1024];
 	}
 
 	/**
@@ -83,24 +83,6 @@ public class HashTable
 	}
 
 	/**
-	 * Helper method for WordStat class
-	 *
-	 * @param key   objects with this key need to be updated
-	 * @param value value to set new
-	 */
-	void updateEverythingWithKey(String key, int value)
-	{
-		HashEntry ptr = table[Math.abs(key.hashCode() % table.length)];
-
-		while (ptr != null)
-		{
-			if (ptr.getKey().equals(key))
-				ptr.setValue(value);
-			ptr = ptr.getNext();
-		}
-	}
-
-	/**
 	 * Returns the current value associated with the parameter key
 	 *
 	 * @param key what to search the HashTable for
@@ -114,7 +96,14 @@ public class HashTable
 		if (hash == null)
 			return -1;
 		// Otherwise, return the hash's value
-		return hash.getValue();
+		//return hash.getValue();
+		while (hash != null)
+		{
+			if (hash.getKey().equals(key))
+				return hash.getValue();
+			hash = hash.getNext();
+		}
+		return -1;
 	}
 
 	/**
