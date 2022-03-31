@@ -70,8 +70,13 @@ public class TestWordStat
 		Assert.assertEquals("[was, the, one, invention]",
 				Arrays.toString(wordStat.leastCommonWords(4)));
 
-		//TODO:
 		// Most Common Word Pairs
+		System.out.println(Arrays.toString(wordStat.mostCommonWords(Integer.MAX_VALUE)));
+		System.out.println(Arrays.toString(wordStat.mostCommonWordPairs(Integer.MAX_VALUE)));
+		Assert.assertEquals("[breaking breaking, three four, shovel shovel, two three, a a, a ground, a " +
+				"invention, breaking a, four four]", Arrays.toString(wordStat.mostCommonWordPairs(Integer.MAX_VALUE)));
+		Assert.assertEquals("[breaking breaking, three four, shovel shovel, two three]",
+				Arrays.toString(wordStat.mostCommonWordPairs(4)));
 
 		// Most Common Collocs
 		Assert.assertEquals("[shovel, three, two, invention, one]",
@@ -87,9 +92,11 @@ public class TestWordStat
 				Arrays.toString(wordStat.mostCommonCollocsExc(2, "shovel", -1, new String[] {"shovel"})));
 
 		// Generate Word String
-		System.out.println(Arrays.toString(wordStat.mostCommonWords(Integer.MAX_VALUE)));
 		Assert.assertEquals("breaking four shovel three two", wordStat.generateWordString(5, "breaking"));
 		Assert.assertEquals("was", wordStat.generateWordString(1, "was"));
+		Assert.assertEquals("breaking four shovel three two invention one the was", wordStat.generateWordString(9, "breaking"));
+		Assert.assertEquals("invention one the", wordStat.generateWordString(3, "invention"));
+		Assert.assertEquals("one the was", wordStat.generateWordString(3, "one"));
 	}
 
 	/**

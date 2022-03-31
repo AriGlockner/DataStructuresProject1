@@ -352,29 +352,13 @@ public class WordStat
 	 */
 	public String generateWordString(int k, String startWord)
 	{
-		if (k < 1 || wordRank(startWord) < 1)
-			return "";
-
-		StringBuilder sb = new StringBuilder();
-		boolean generateString = false;
-
-		for (int w = wordRank(startWord) - 1; k > 0 && w < mostCommonWords.length; w++, k--)
-			if (generateString || mostCommonWords[w].equals(startWord))
-			{
-				sb.append(mostCommonWords[w]).append(" ");
-				generateString = true;
-			}
-		System.out.println(sb.length() + ":\t" + sb);
-		if (sb.length() == 0)
-			return "";
-		return sb.substring(0, sb.length() - 1);
-		/*
 		if (k < 1)
 			return "";
 
 		StringBuilder sb = new StringBuilder();
 		boolean generateString = false;
 
+		// Start at startWord and add the next k - 1 most common words to the string separated by a space
 		for (String str : mostCommonWords)
 			if (generateString || str.equals(startWord))
 			{
@@ -384,7 +368,6 @@ public class WordStat
 					return sb.substring(0, sb.length() - 1);
 			}
 		return sb.substring(0, sb.length() - 1);
-		 */
 	}
 
 	/**
