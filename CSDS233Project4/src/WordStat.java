@@ -6,6 +6,7 @@ public class WordStat
 	private HashTable wordsByNumInstances;
 	private HashTable wordRanks;
 	private String[] mostCommonWords;
+	private String[] leastCommonWords;
 
 	/* Word Pairs */
 	private HashTable wordPairsByNumInstances;
@@ -80,7 +81,8 @@ public class WordStat
 		// Remove null Strings from mostCommonWords
 		mostCommonWords = Arrays.stream(mostCommonWords).filter(Objects::nonNull).toArray(String[]::new);
 
-
+		leastCommonWords = mostCommonWords.clone();
+		Collections.reverse(Arrays.asList(leastCommonWords));
 
 
 
@@ -247,8 +249,7 @@ public class WordStat
 	 */
 	public String[] leastCommonWords(int k)
 	{
-		k = Math.min(Math.abs(k), mostCommonWords.length);
-		return Arrays.copyOfRange(mostCommonWords, mostCommonWords.length - Math.min(Math.abs(k), mostCommonWords.length), mostCommonWords.length);
+		return Arrays.copyOf(leastCommonWords, Math.min(Math.abs(k), leastCommonWords.length));
 	}
 
 	/**
@@ -351,8 +352,23 @@ public class WordStat
 	 */
 	public String generateWordString(int k, String startWord)
 	{
-		startWord = normalize(startWord);
+		if (k < 1 || wordRank(startWord) < 1)
+			return "";
 
+		StringBuilder sb = new StringBuilder();
+		boolean generateString = false;
+
+		for (int w = wordRank(startWord) - 1; k > 0 && w < mostCommonWords.length; w++, k--)
+			if (generateString || mostCommonWords[w].equals(startWord))
+			{
+				sb.append(mostCommonWords[w]).append(" ");
+				generateString = true;
+			}
+		System.out.println(sb.length() + ":\t" + sb);
+		if (sb.length() == 0)
+			return "";
+		return sb.substring(0, sb.length() - 1);
+		/*
 		if (k < 1)
 			return "";
 
@@ -368,6 +384,7 @@ public class WordStat
 					return sb.substring(0, sb.length() - 1);
 			}
 		return sb.substring(0, sb.length() - 1);
+		 */
 	}
 
 	/**

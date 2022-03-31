@@ -1,5 +1,4 @@
 import org.junit.*;
-
 import java.util.Arrays;
 
 /**
@@ -16,7 +15,7 @@ public class TestWordStat
 		/* Initialize WordStat */
 		String[] words = new String[] {"         o(*n!^&%e       ", "two", "three", "four", "two", "three", "four",
 				"three", "four", "four.", "the", "shovel", "shovel", "shovel", "was", "a a", "ground", "breaking",
-				"breaking", " ~* ^   breaking      ", "breaking", "&@#)&%*", "invention."};
+				"breaking", " ~* ^   breaking      ", "breaking", "&@#a)&%*", "invention."};
 		WordStat wordStat = new WordStat(words);
 
 		/* Start Tests */
@@ -26,7 +25,7 @@ public class TestWordStat
 		Assert.assertEquals(2, wordStat.wordCount("two"));
 		Assert.assertEquals(3, wordStat.wordCount("three"));
 		Assert.assertEquals(4, wordStat.wordCount("four"));
-		Assert.assertEquals(2, wordStat.wordCount("a"));
+		Assert.assertEquals(3, wordStat.wordCount("a"));
 
 		// Word Pair Count
 		Assert.assertEquals(0, wordStat.wordPairCount("zero", "one"));
@@ -46,17 +45,51 @@ public class TestWordStat
 		Assert.assertEquals(1, wordStat.wordRank("breaking"));
 
 		// Word Pair Rank
+		Assert.assertEquals(0, wordStat.wordPairRank("zero", "one"));
+		Assert.assertEquals(5, wordStat.wordPairRank("one", "two"));
+		Assert.assertEquals(3, wordStat.wordPairRank("two", "three"));
+		Assert.assertEquals(1, wordStat.wordPairRank("three", "four"));
+		Assert.assertEquals(0, wordStat.wordPairRank("two", "a"));
+		Assert.assertEquals(1, wordStat.wordPairRank("breaking", "breaking"));
+		Assert.assertEquals(5, wordStat.wordPairRank("a", "a"));
 
 		// Most Common Words
-		//System.out.println(Arrays.toString(wordStat.mostCommonWords(23)));
+		Assert.assertEquals("[breaking, four, shovel, three, two, invention, one, the, was]",
+				Arrays.toString(wordStat.mostCommonWords(Integer.MAX_VALUE)));
+		Assert.assertEquals("[]", Arrays.toString(wordStat.mostCommonWords(0)));
+		Assert.assertEquals("[breaking]", Arrays.toString(wordStat.mostCommonWords(1)));
+		Assert.assertEquals("[breaking, four, shovel, three]", Arrays.toString(wordStat.mostCommonWords(4)));
 
 		// Least Common Words
+		Assert.assertEquals("[was, the, one, invention, two, three, shovel, four, breaking]",
+				Arrays.toString(wordStat.leastCommonWords(Integer.MAX_VALUE)));
+		Assert.assertEquals("[]",
+				Arrays.toString(wordStat.leastCommonWords(0)));
+		Assert.assertEquals("[was]",
+				Arrays.toString(wordStat.leastCommonWords(1)));
+		Assert.assertEquals("[was, the, one, invention]",
+				Arrays.toString(wordStat.leastCommonWords(4)));
+
+		//TODO:
+		// Most Common Word Pairs
 
 		// Most Common Collocs
+		Assert.assertEquals("[shovel, three, two, invention, one]",
+				Arrays.toString(wordStat.mostCommonCollocs(5, "shovel", 1)));
+		Assert.assertEquals("[shovel, four, breaking, null]",
+				Arrays.toString(wordStat.mostCommonCollocs(4, "shovel", -1)));
 
 		// Most Common Collocs Exclusions
+		Assert.assertEquals("[shovel, three, two, one, the]",
+				Arrays.toString(wordStat.mostCommonCollocsExc(5, "shovel", 1,
+						new String[] {"", "invention"})));
+		Assert.assertEquals("[four, breaking]",
+				Arrays.toString(wordStat.mostCommonCollocsExc(2, "shovel", -1, new String[] {"shovel"})));
 
 		// Generate Word String
+		System.out.println(Arrays.toString(wordStat.mostCommonWords(Integer.MAX_VALUE)));
+		Assert.assertEquals("breaking four shovel three two", wordStat.generateWordString(5, "breaking"));
+		Assert.assertEquals("was", wordStat.generateWordString(1, "was"));
 	}
 
 	/**
@@ -69,7 +102,6 @@ public class TestWordStat
 		WordStat wordStat = new WordStat("foobar.txt");
 
 		/* Start Tests */
-		//Assert.assertEquals(wordStat.);
-
+		Assert.assertEquals("[foobar, bar, foo]", Arrays.toString(wordStat.mostCommonWords(3)));
 	}
 }
