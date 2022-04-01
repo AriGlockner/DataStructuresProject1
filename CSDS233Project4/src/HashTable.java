@@ -139,17 +139,6 @@ public class HashTable
 
 	/**
 	 * Helper method for WordStat class
-	 *
-	 * @param key value to search for
-	 * @return the HashEntry with the key
-	 */
-	HashEntry getHashEntry(String key)
-	{
-		return table[Math.abs(key.hashCode() % table.length)];
-	}
-
-	/**
-	 * Helper method for WordStat class
 	 * @return the table
 	 */
 	HashEntry[] getTable()

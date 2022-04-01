@@ -71,8 +71,6 @@ public class TestWordStat
 				Arrays.toString(wordStat.leastCommonWords(4)));
 
 		// Most Common Word Pairs
-		System.out.println(Arrays.toString(wordStat.mostCommonWords(Integer.MAX_VALUE)));
-		System.out.println(Arrays.toString(wordStat.mostCommonWordPairs(Integer.MAX_VALUE)));
 		Assert.assertEquals("[breaking breaking, three four, shovel shovel, two three, a a, a ground, a " +
 				"invention, breaking a, four four]", Arrays.toString(wordStat.mostCommonWordPairs(Integer.MAX_VALUE)));
 		Assert.assertEquals("[breaking breaking, three four, shovel shovel, two three]",

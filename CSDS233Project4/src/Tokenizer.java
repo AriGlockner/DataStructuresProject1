@@ -70,6 +70,9 @@ public class Tokenizer
 		return wordList;
 	}
 
+	/**
+	 * @return the output of the method wordList in a string form
+	 */
 	@Override
 	public String toString()
 	{

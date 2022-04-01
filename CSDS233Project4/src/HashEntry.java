@@ -74,16 +74,6 @@ public class HashEntry implements Comparable<HashEntry>
 	}
 
 	/**
-	 * Helper method for WordStat class
-	 *
-	 * @return this Object without any items in the Linked List
-	 */
-	HashEntry get()
-	{
-		return new HashEntry(key, value);
-	}
-
-	/**
 	 * @return "[key, value] " + any other objects in the LinkedList
 	 */
 	@Override
@@ -134,11 +124,6 @@ public class HashEntry implements Comparable<HashEntry>
 		return (value != h.value) ? (value - h.value) / Math.abs(value - h.value) : compareKey(h);
 	}
 
-	public int compareWithoutKey(HashEntry h)
-	{
-		return Integer.compare(value, h.value);
-	}
-
 	/**
 	 * @param o other object
 	 * @return true if other object is a HashEntry and the keys are the same and the values are the same. Otherwise,
@@ -147,8 +132,9 @@ public class HashEntry implements Comparable<HashEntry>
 	@Override
 	public boolean equals(Object o)
 	{
-		if (!(o instanceof HashEntry h))
+		if (!(o instanceof HashEntry))
 			return false;
+		HashEntry h = (HashEntry) o;
 		return key.equals(h.key) && value == h.value;
 	}
 }

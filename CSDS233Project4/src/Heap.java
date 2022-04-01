@@ -16,14 +16,6 @@ public class Heap
 	}
 
 	/**
-	 * @return the number of items in the heap
-	 */
-	public int size()
-	{
-		return items.size();
-	}
-
-	/**
 	 * Inserts item into the heap
 	 *
 	 * @param item to be inserted into the Heap
@@ -34,6 +26,11 @@ public class Heap
 		siftUp();
 	}
 
+	/**
+	 * If the item exists in the heap, it changes the value of it. Otherwise, it adds the item to the heap
+	 *
+	 * @param item to update
+	 */
 	public void update(HashEntry item)
 	{
 		for (HashEntry hashEntry : items)
@@ -120,14 +117,6 @@ public class Heap
 			} else
 				return;
 		}
-	}
-
-	/**
-	 * Removes all elements from the heap without returning any of them
-	 */
-	public void clearAll()
-	{
-		items = new ArrayList<>();
 	}
 
 	/**
