@@ -21,6 +21,8 @@ public class WordStat
 	private String[] mostCommonWordPairs;
 
 	/**
+	 * Initializes a new WordStat based on a file in the parameter
+	 *
 	 * @param file to compute statistics from
 	 */
 	public WordStat(String file)
@@ -30,6 +32,8 @@ public class WordStat
 	}
 
 	/**
+	 * Initializes a new WordStat. Creates the word stats based on the words in the array words
+	 *
 	 * @param words list of Strings to compute from
 	 */
 	public WordStat(String[] words)
@@ -39,7 +43,9 @@ public class WordStat
 	}
 
 	/**
-	 * Helper method for both constructors to initialize the HashTable
+	 * Helper method for both constructors that initializes the HashTables wordsByNumInstances, wordRanks,
+	 * wordPairsByNumInstances and wordPairRanks along with the String arrays mostCommonWords, leastCommonWords and
+	 * mostCommonWordPairs.
 	 *
 	 * @param t tokenizer
 	 */
@@ -66,7 +72,6 @@ public class WordStat
 			if (hashEntry != null)
 				heap.update(hashEntry);
 
-
 		// Remove items from the heap and add items into wordRanks and mostCommonWords
 		int index = 0;
 		HashEntry lastEntry = null;
@@ -87,9 +92,6 @@ public class WordStat
 
 		leastCommonWords = mostCommonWords.clone();
 		Collections.reverse(Arrays.asList(leastCommonWords));
-
-
-
 
 		/* Word Pairs */
 		// Initialize fields
@@ -165,7 +167,6 @@ public class WordStat
 	 */
 	public int wordPairCount(String w1, String w2)
 	{
-		// return count if in table, otherwise, return 0
 		return Math.max(0, wordPairsByNumInstances.get(w1 + " " + w2));
 	}
 
@@ -175,7 +176,6 @@ public class WordStat
 	 */
 	public int wordRank(String word)
 	{
-		// if word is in table return word rank, otherwise, return 0
 		return Math.max(0, wordRanks.get(word));
 	}
 
@@ -186,8 +186,6 @@ public class WordStat
 	 */
 	public int wordPairRank(String w1, String w2)
 	{
-		// return count if in table, otherwise, return 0
-		//return Math.max(0, 1 + wordPairRanks.get(w1 + " " + w2));
 		return Math.max(0, wordPairRanks.get(w1 + " " + w2));
 	}
 
@@ -235,9 +233,9 @@ public class WordStat
 			return null;
 
 		String[] words = new String[k];
-
 		int wordPosition = -1;
 
+		// Get starting position in most common words
 		for (int index = 0; index < mostCommonWords.length; index++)
 			if (mostCommonWords[index].equals(baseWord))
 			{
@@ -248,14 +246,12 @@ public class WordStat
 		if (wordPosition == -1)
 			return null;
 
-
+		// Add words to array
 		for (int index = 0; k > 0; k--, wordPosition += i, index++)
-		{
 			if (wordPosition < 0 || wordPosition > mostCommonWords.length)
 				return words;
-			words[index] = mostCommonWords[wordPosition];
-		}
-
+			else
+				words[index] = mostCommonWords[wordPosition];
 		return words;
 	}
 
@@ -425,7 +421,7 @@ public class WordStat
 
 		// Constructor 2
 		System.out.println("\nTest Constructor from file:");
-		WordStat wordStat2 = new WordStat("foobar.txt");
+		WordStat wordStat2 = new WordStat("src\\foobar.txt");
 		System.out.println("Expected:\n[foobar, bar, foo]\nActual:\n" + Arrays.toString(wordStat2.mostCommonWords(50)));
 
 	}

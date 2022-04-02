@@ -82,8 +82,7 @@ public class HashTable
 			{
 				ptr.setValue(value);
 				return;
-			}
-			else
+			} else
 				ptr = ptr.getNext();
 		put(key, value);
 	}
@@ -139,6 +138,7 @@ public class HashTable
 
 	/**
 	 * Helper method for WordStat class
+	 *
 	 * @return the table
 	 */
 	HashEntry[] getTable()

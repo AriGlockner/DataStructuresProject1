@@ -1,4 +1,5 @@
 import org.junit.*;
+
 import java.util.Arrays;
 
 /**
@@ -104,7 +105,7 @@ public class TestWordStat
 	public void testFile()
 	{
 		/* Initialize WordStat */
-		WordStat wordStat = new WordStat("foobar.txt");
+		WordStat wordStat = new WordStat("src\\foobar.txt");
 
 		/* Start Tests */
 		Assert.assertEquals("[foobar, bar, foo]", Arrays.toString(wordStat.mostCommonWords(3)));

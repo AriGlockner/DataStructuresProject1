@@ -7,6 +7,7 @@ import java.util.*;
  */
 public class Tokenizer
 {
+	// List of words
 	private ArrayList<String> wordList;
 
 	/**
@@ -55,11 +56,12 @@ public class Tokenizer
 		// Make String LowerCase
 		str = str.toLowerCase();
 		// Remove all Punctuation
-		str = str.replaceAll("\\p{Punct}","");
+		str = str.replaceAll("\\p{Punct}", "");
 		// Remove Leading/Trailing Spaces
 		str = str.trim();
 		// Add every word to the ArrayList
-		wordList.addAll(List.of(str.split("\\s+")));
+		//wordList.addAll(List.of(str.split("\\s+")));
+		Collections.addAll(wordList, str.split("\\s+"));
 	}
 
 	/**
