@@ -25,3 +25,10 @@ mostCommonCollocs wasn't too difficult for me. It just required me to iterate st
 mostCommonCollocsExc was easy since I already wrote the mostCommonCollocs method. I could use that but ignore the words in the ignore list.
 
 generateWordString was pretty self explanitory.
+
+100% Log (~40 hours):
+I realized I wasn't really using the HashTable class as I was meant to within the WordStat class, so I had to rewrite a large portion of the WordStat class. I rewrote my WordStat class to use multiple HashTables that were initialized from a method that was called from the constructors and then used the HashTables to have an constant time lookup.
+
+I created a seperate fields to do everything for the pairs of words as what I did for single words.
+
+I created a bunch of test cases, and fixed some errors in some of my method
