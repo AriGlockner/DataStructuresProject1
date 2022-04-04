@@ -226,11 +226,11 @@ public class WordStat
 	 * mostCommonCollocs(10, "crash", -1) would return the 10 most common words that precede "crash"
 	 */
 	public String[] mostCommonCollocs(int k, String baseWord, int i)
-		{
-		baseWord = normalize(baseWord);
-
-		if (Math.abs(i) != 1)
+	{
+		if (i == 0)
 			return null;
+
+		i /= Math.abs(i);
 
 		String[] words = new String[k];
 		int wordPosition = -1;
@@ -271,9 +271,7 @@ public class WordStat
 	 */
 	public String[] mostCommonCollocsExc(int k, String baseWord, int i, String[] exclusions)
 	{
-		baseWord = normalize(baseWord);
-
-		if (Math.abs(i) != 1)
+		if (i == 0)
 			return null;
 
 		String[] possibleWords = mostCommonCollocs(k + exclusions.length, baseWord, i);
@@ -320,23 +318,6 @@ public class WordStat
 					return sb.substring(0, sb.length() - 1);
 			}
 		return sb.substring(0, sb.length() - 1);
-	}
-
-	/**
-	 * Helper method for both methods to normalize parameters to:
-	 * Convert words to lower case
-	 * Removes punctuation and spaces
-	 */
-	private static String normalize(String str)
-	{
-		// Make String LowerCase
-		str = str.toLowerCase();
-		// Remove all Punctuation
-		str = str.replaceAll("\\p{Punct}", "");
-		// Remove Leading/Trailing Spaces
-		//str = str.trim();
-		// Add every word to the ArrayList
-		return str.replaceAll(" ", "");
 	}
 
 	/**

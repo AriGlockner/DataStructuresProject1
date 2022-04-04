@@ -1,5 +1,8 @@
 import org.junit.*;
 
+/**
+ * This class tests the HashTable class. It tests the methods that aren't tested in the WordStat class
+ */
 public class TestHashTable
 {
 	/**
