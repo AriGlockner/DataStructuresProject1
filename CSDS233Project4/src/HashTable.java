@@ -1,8 +1,8 @@
-import java.lang.*;
-
 /**
  * The HashTable class represents a table of HashEntries. The HashTable class uses a HashCode to get a constant lookup
  * in all situations except when two or more HashEntries share the same key.
+ *
+ * @author ari
  */
 public class HashTable
 {
@@ -10,7 +10,7 @@ public class HashTable
 	private final HashEntry[] table;
 
 	/**
-	 * Initializes HashTable to a predetermined capacity
+	 * Initializes HashTable to a predetermined capacity of 1024
 	 */
 	public HashTable()
 	{
@@ -28,40 +28,44 @@ public class HashTable
 	}
 
 	/**
-	 * Adds value to
+	 * Creates a new HashEntry from key and value and adds it into the HashTable
 	 *
 	 * @param key   mapping to index in HashTable
 	 * @param value stored in HashEntry
 	 */
 	void put(String key, int value)
 	{
+		// Calculate position to insert in table
 		int position = Math.abs(key.hashCode() % table.length);
 
+		// Create a new HashEntry to add to the table
 		HashEntry newHash = new HashEntry(key, value);
 
-		// Add to HashTable
+		// Add newHash to HashTable at position if empty
 		if (table[position] == null)
 			table[position] = new HashEntry(key, value);
-			// Add to back of HashEntry Linked List
+			// Otherwise, add to back of HashEntry Linked List
 		else
 			table[position].setNext(newHash);
 	}
 
 	/**
-	 * @param key      what hash contains
+	 * @param key      mapping to index in HashTable
 	 * @param value    used for sorting purposes in the HastTable class
-	 * @param hashCode adds new HashEntry at position determined by hashCode in parameter
+	 * @param hashCode adds new HashEntry at position determined by hashCode in parameter rather than by key
 	 */
 	public void put(String key, int value, int hashCode)
 	{
+		// Calculate position to insert in table
 		int position = Math.abs(hashCode % table.length);
 
+		// Create a new HashEntry to add to the table
 		HashEntry newHash = new HashEntry(key, value);
 
-		// Add hash normally
+		// Add newHash to HashTable at position if empty
 		if (table[position] == null)
 			table[position] = new HashEntry(key, value);
-			// Add hash entry to back of linked list at that index
+			// Otherwise, add to back of HashEntry Linked List
 		else
 			table[position].setNext(newHash);
 	}
@@ -74,16 +78,21 @@ public class HashTable
 	 */
 	public void update(String key, int value)
 	{
+		// Calculate position to update in table
 		int position = Math.abs(key.hashCode() % table.length);
 
+		// Create pointer to first
 		HashEntry ptr = table[position];
 		while (ptr != null)
+			// Update HashEntry
 			if (ptr.getKey().equals(key))
 			{
 				ptr.setValue(value);
 				return;
+				// Iterate to next HashEntry in Linked List
 			} else
 				ptr = ptr.getNext();
+		// If table does not contain item with key, call put method
 		put(key, value);
 	}
 
@@ -95,19 +104,22 @@ public class HashTable
 	 */
 	public int get(String key)
 	{
+		// Get HashEntry at key
 		HashEntry hash = table[Math.abs(key.hashCode()) % table.length];
 
-		// if key does not exist in table, return -1
+		// If no HashEntry in table contains key's position in table return -1
 		if (hash == null)
 			return -1;
-		// Otherwise, return the hash's value
-		//return hash.getValue();
+
+		// Search for HashEntry with specified key
 		while (hash != null)
-		{
+			// If HashTable contains item with key, return that item's value
 			if (hash.getKey().equals(key))
 				return hash.getValue();
-			hash = hash.getNext();
-		}
+			else
+				// Go to next HashEntry in Linked List
+				hash = hash.getNext();
+		// Return -1 if no item contains key
 		return -1;
 	}
 
@@ -121,25 +133,30 @@ public class HashTable
 	 */
 	public int get(String key, int hashCode)
 	{
-		// Search every HashEntry with the key of hashCode for a HashEntry with a specific key
+		// Get HashEntry at the key of hashCode within the table
 		HashEntry hash = table[Math.abs(hashCode) % table.length];
 
+		// If no HashEntry in table contains key's position in table return -1
 		if (hash == null)
 			return -1;
 
+		// Search for HashEntry with specified key
 		while (hash != null)
 			if (key.equals(hash.getKey()))
+				// If HashTable contains item with key, return that item's value
 				return hash.getValue();
 			else
+				// Go to next HashEntry in Linked List
 				hash = hash.getNext();
 
+		// Return -1 if not in HashTable
 		return -1;
 	}
 
 	/**
 	 * Helper method for WordStat class
 	 *
-	 * @return the table
+	 * @return the table as an array
 	 */
 	HashEntry[] getTable()
 	{
@@ -160,10 +177,9 @@ public class HashTable
 				HashEntry ptr = h;
 				while (ptr != null)
 				{
-					sb.append(ptr);
+					sb.append(ptr).append(" ");
 					ptr = ptr.getNext();
 				}
-				//sb.append(h);
 			}
 
 		return sb.substring(0, sb.length() - 1);
@@ -178,62 +194,45 @@ public class HashTable
 	{
 		System.out.println("Demo:\n");
 
-		String[] strings = new String[] {"one", "ten", "five", "ten", "fifteen", "ten", "two", "twenty", "fifteen",
-				"ten"};
-		int[] values = new int[] {1, 10, 5, 314159, 15, 10, 2, 20, 15, 10};
-
+		// Initialize HashTables
 		HashTable table1 = new HashTable();
 		HashTable table2 = new HashTable(7);
+		HashTable table3 = new HashTable(3);
 
-		// Test put(key, value)
-		for (int i = 0; i < strings.length; i++)
-		{
-			table1.put(strings[i], values[i]);
-			table2.put(strings[i], values[i]);
-		}
-
-		System.out.println("\nput(key, value):");
-		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [twenty, 20] [two, 2] " +
-				"[one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
-		System.out.println("Expected:\n[two, 2] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
-				"[fifteen, 15] [fifteen, 15] [twenty, 20]\nActual:\n" + table2);
+		String[] keys = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
 
 		// Test put(key, value, hashCode)
-		System.out.println("\nput(key, value, hashCode):");
-		table1.put("hashCode=314159", 314159, 314159);
-		table2.put("hashCode=314159", 314159, 314159);
-		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [hashCode=314159, 314159] " +
-				"[twenty, 20] [two, 2] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
-		System.out.println("Expected:\n[two, 2] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
-				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
+		for (int i = 0; i < keys.length; i++)
+		{
+			// put normally
+			table1.put(keys[i], i * 2 + 1);
+			table2.put(keys[i], i * 2 + 1);
+			table3.put(keys[i], i * 2 + 1);
+			// put with hashcode
+			table1.put(keys[i], (i + 1) * 2, 60 + i);
+			table2.put(keys[i], (i + 1) * 2, 60 + i);
+			table3.put(keys[i], (i + 1) * 2, 60 + i);
+		}
 
-		// Test update
-		System.out.println("\nUpdate:");
-		table1.update("two", 22);
-		table2.update("two", 22);
-		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [hashCode=314159, 314159] " +
-				"[twenty, 20] [two, 22] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" + table1);
-		System.out.println("Expected:\n[two, 22] [ten, 10] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
-				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
-		// test update not there -> add
-		table1.update("MyPhoneNumber", 1234567890);
-		table2.update("MyPhoneNumber", 1234567890);
-		System.out.println("Expected:\n[ten, 10] [ten, 10] [ten, 10] [ten, 10] [five, 5] [MyPhoneNumber, 1234567890]" +
-				" [hashCode=314159, 314159] [twenty, 20] [two, 22] [one, 1] [fifteen, 15] [fifteen, 15]\nActual:\n" +
-				table1);
-		System.out.println("Expected:\n[two, 22] [ten, 1234567890] [ten, 10] [ten, 10] [ten, 10] [one, 1] [five, 5] " +
-				"[fifteen, 15] [fifteen, 15] [twenty, 20] [hashCode=314159, 314159]\nActual:\n" + table2);
+		System.out.println("Put:");
+		System.out.println("Expected:\n[A, 2] [B, 4] [C, 6] [D, 8] [E, 10] [A, 1] [F, 12] [B, 3] [G, 14] [C, 5] [H, 16]" +
+				" [D, 7] [I, 18] [E, 9] [J, 20] [F, 11] [K, 22] [G, 13] [H, 15] [I, 17] [J, 19] [K, 21]\nActual:\n"
+				+ table1);
+		System.out.println("Expected:\n[D, 8] [F, 11] [K, 22] [E, 10] [G, 13] [A, 1] [F, 12] [H, 15] [B, 3] [G, 14] " +
+				"[I, 17] [A, 2] [C, 5] [H, 16] [J, 19] [B, 4] [D, 7] [I, 18] [K, 21] [C, 6] [E, 9] [J, 20]\nActual:\n"
+				+ table2);
+		System.out.println("Expected:\n[A, 2] [B, 3] [D, 8] [E, 9] [G, 14] [H, 15] [J, 20] [K, 21] [B, 4] [C, 5] " +
+				"[E, 10] [F, 11] [H, 16] [I, 17] [K, 22] [A, 1] [C, 6] [D, 7] [F, 12] [G, 13] [I, 18] [J, 19]" +
+				"\nActual:\n" + table3);
 
-		// Test get(key)
-		System.out.println("\nget(key):");
-		System.out.println("Expected:\n-1\nActual:\n" + table1.get("great value"));
-		System.out.println("Expected:\n1234567890\nActual:\n" + table2.get("great value"));
-
-		// Test get(key, hashCode)
-		System.out.println("\nget(key, hashCode):");
-		System.out.println("Expected:\n-1\nActual:\n" + table1.get("ten", 8));
-		System.out.println("Expected:\n10\nActual:\n" + table1.get("ten", 17));
-		System.out.println("Expected:\n1234567890\nActual:\n" + table2.get("ten", 8));
-		System.out.println("Expected:\n-1\nActual:\n" + table2.get("ten", 17));
+		System.out.println("\nget:");
+		for (int i = 0; i < keys.length; i++)
+		{
+			System.out.println("Expected:\n" + ((i * 2) + 1) + " " + ((i * 2) + 1) + " " + ((i * 2) + 1) +
+					"\nActual:\n" + table1.get(keys[i]) + " " + table2.get(keys[i]) + " " + table3.get(keys[i]));
+			System.out.println("Expected:\n" + ((i + 1) * 2) + " " + ((i + 1) * 2) + " " + ((i + 1) * 2) +
+					"\nActual:\n" + table1.get(keys[i], 60 + i) + " " + table2.get(keys[i], 60 + i) +
+					" " + table3.get(keys[i], 60 + i) + " ");
+		}
 	}
 }

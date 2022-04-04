@@ -226,7 +226,7 @@ public class WordStat
 	 * mostCommonCollocs(10, "crash", -1) would return the 10 most common words that precede "crash"
 	 */
 	public String[] mostCommonCollocs(int k, String baseWord, int i)
-	{
+		{
 		baseWord = normalize(baseWord);
 
 		if (Math.abs(i) != 1)

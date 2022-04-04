@@ -11,7 +11,7 @@ public class HashEntry implements Comparable<HashEntry>
 	private final String key;
 	// Value stored in object
 	private int value;
-	// Next hash entry in case of multiple hashes having the same key
+	// Next hash entry in Linked List in case of multiple hashes sharing the same key
 	private HashEntry next;
 
 	/**
@@ -43,19 +43,21 @@ public class HashEntry implements Comparable<HashEntry>
 	}
 
 	/**
+	 * Helper method for HashTable class
+	 *
 	 * @return next Hash Entry in linked list when multiple Hash Entries share the same location in the Hash Table
 	 */
-	public HashEntry getNext()
+	HashEntry getNext()
 	{
 		return next;
 	}
 
 	/**
-	 * Method called when two or more HashEntry's share the same position in the HashTable
+	 * Helper method for HashTable class. Method called when two or more HashEntry's share the same position in the HashTable
 	 *
 	 * @param newHashEntry HashEntry to be added to the back of the linked list
 	 */
-	public void setNext(HashEntry newHashEntry)
+	void setNext(HashEntry newHashEntry)
 	{
 		if (next == null)
 			next = newHashEntry;
@@ -71,24 +73,6 @@ public class HashEntry implements Comparable<HashEntry>
 	public void setValue(int value)
 	{
 		this.value = value;
-	}
-
-	/**
-	 * @return "[key, value] " + any other objects in the LinkedList
-	 */
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		sb.append(key);
-		sb.append(", ");
-		sb.append(value);
-		sb.append("] ");
-		if (next != null)
-			sb.append(next);
-
-		return sb.toString();
 	}
 
 	/**
@@ -112,29 +96,20 @@ public class HashEntry implements Comparable<HashEntry>
 	}
 
 	/**
-	 * Compares this object to another HashEntry
+	 * Compares this HashEntry to another HashEntry
 	 *
 	 * @param h other hash entry
-	 * @return this value compared to other value
+	 * @return this value compared to other value. If value is same, returns output from compareKey method
 	 */
 	@Override
 	public int compareTo(HashEntry h)
 	{
-		// Returns -1 or 1 based on value. If value is same, returns output from compareKey
 		return (value != h.value) ? (value - h.value) / Math.abs(value - h.value) : compareKey(h);
 	}
 
-	/**
-	 * @param o other object
-	 * @return true if other object is a HashEntry and the keys are the same and the values are the same. Otherwise,
-	 * returns false
-	 */
 	@Override
-	public boolean equals(Object o)
+	public String toString()
 	{
-		if (!(o instanceof HashEntry))
-			return false;
-		HashEntry h = (HashEntry) o;
-		return key.equals(h.key) && value == h.value;
+		return "[" + key + ", " + value + "]";
 	}
 }
