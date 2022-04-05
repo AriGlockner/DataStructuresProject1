@@ -1,2 +1,5 @@
 10% Log (~10 min):
 This project should be very straight forward. I already wrote my own implementations of these methods using generic types, so I converted my existing code to useing ints rather than generics. All that's left is Cleaning up my code, writing test cases, benchmarking, and the extra credit
+
+50% Log (~10 min):
+Test cases were pretty simple to write
