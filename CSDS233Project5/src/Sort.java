@@ -1,6 +1,8 @@
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
+/**
+ * This class contains a bunch of sorting algorithms for arrays of integers
+ */
 public class Sort
 {
 	/**
@@ -14,11 +16,14 @@ public class Sort
 	 */
 	public static void insertionSort(int[] arr)
 	{
+		// Get length of arr
 		int len = arr.length;
 
+		// Iterate through arr. If element is not in order, rearrange it within the elements that are currently sorted
 		for (int i = 1; i < len; i++)
 			if (arr[i] < arr[i - 1])
 			{
+				// put i in the correct spot
 				int min = arr[i];
 				int j = i;
 				while (j > 0 && min < arr[j - 1])
@@ -45,8 +50,8 @@ public class Sort
 	 * Helper method for the quickSort method. Calls the partition method and sorts each half of the partition
 	 *
 	 * @param arr  array to sort.
-	 * @param low
-	 * @param high
+	 * @param low  front of array to shift
+	 * @param high back of array to shift
 	 */
 	private static void qSort(int[] arr, int low, int high)
 	{
@@ -64,32 +69,33 @@ public class Sort
 	/**
 	 * Helper method for the qSort method. Finds the partition for the array.
 	 *
-	 * @param arr
-	 * @param low
-	 * @param high
+	 * @param arr  array to pick a partition from
+	 * @param low  front of the array to shift
+	 * @param high back of the array to shift
 	 * @return the partition for the array
 	 */
 	private static int partition(int[] arr, int low, int high)
 	{
+		// pivot element
 		int pivot = arr[high];
 		int i = low - 1;
 
-
 		for (int j = low; j < high; j++)
+			// swap array's i and j elements
 			if (arr[j] <= pivot)
 			{
-				i++;
-
-				// swap array's i & j index's
-				int placeholder = arr[i];
+				// increment index of swap i and j elements
+				int placeholder = arr[++i];
 				arr[i] = arr[j];
 				arr[j] = placeholder;
 			}
 
+		// swap i and highest to be sorted
 		int temp = arr[++i];
 		arr[i] = arr[high];
 		arr[high] = temp;
 
+		// return index of pivot point
 		return i;
 	}
 
@@ -110,7 +116,7 @@ public class Sort
 		int len = arr.length;
 		if (len < 2)
 			return;
-		int mid = len/2;
+		int mid = len / 2;
 
 		// split into left and right
 		int[] left = Arrays.copyOfRange(arr, 0, mid);
@@ -125,8 +131,8 @@ public class Sort
 	/**
 	 * Helper method for the mergeSort method that merges the two arrays and stores the new array created as arr
 	 *
-	 * @param arr array to sort
-	 * @param left left sub-array
+	 * @param arr   array to sort
+	 * @param left  left sub-array
 	 * @param right right sub-array
 	 */
 	private static void merge(int[] arr, int[] left, int[] right)
@@ -136,7 +142,7 @@ public class Sort
 		int rIndex = 0;
 		int i = 0;
 
-		// Iterate through left and right and pulling out the smallest value to add to arr
+		// Iterate through left and right sub-arrays and pulling out the smallest value to add to arr
 		while (i < arr.length)
 		{
 			// Can't compare any longer
