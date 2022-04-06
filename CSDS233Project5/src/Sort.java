@@ -192,14 +192,35 @@ public class Sort
 	}
 
 	/* More Extra Credit Methods: */
-	public static int[] bucketSort(int[] arr)
+
+	/**
+	 * Sorts the array using a bucket sort algorithm.
+	 * Runtimes:
+	 * Worse Case: O()
+	 * Best Case: O()
+	 * Average Case: O()
+	 *
+	 * @param arr integer array to sort
+	 */
+	public static void bucketSort(int[] arr)
 	{
+		/*
+		integer keys in range [0, M]
+
+		Basic Idea:
+		1. Create M linked lists (buckets), 1 per possible key
+		2. Add each input element to appropriate bucket
+		3. Concatenate the buckets
+
+		Expected total time is O(M + N) with N = size of original sequence
+		 */
+
 		int max = arr[0];
 		for (int num : arr)
 			max = Math.max(max, num);
 
 		// Create M buckets
-		List<Integer>[] lists = new List[max+1]; //new LinkedList<>()[max];
+		List<Integer>[] lists = new List[max + 1];
 		for (int i = 0; i < lists.length; i++)
 			lists[i] = new LinkedList<>();
 
@@ -209,14 +230,27 @@ public class Sort
 
 		// Concatenate the buckets
 		int index = 0;
-
 		for (List<Integer> ll : lists)
 			while (!ll.isEmpty())
 				arr[index++] = ll.remove(0);
-		return arr;
 	}
 
+	/**
+	 * Sorts array using a heap
+	 *
+	 * @param arr array to sort
+	 */
+	public static void heapSort(int[] arr)
+	{
+		// Create heap and add every element from arr to the heap
+		PriorityQueue<Integer> heap = new PriorityQueue<>();
+		for (int num : arr)
+			heap.add(num);
 
+		// Remove each element from the heap and add it to arr
+		for (int i = 0; i < arr.length; i++)
+			arr[i] = heap.remove();
+	}
 
 	/**
 	 * Demo
@@ -227,7 +261,7 @@ public class Sort
 	{
 		// Initialize Arrays
 		int[] array = randomArray(10, 0, 100);
-		int[][] arrays = new int[5][10];
+		int[][] arrays = new int[6][10];
 
 		// assign each array of ints in arrays to be a clone of array
 		for (int i = 0; i < arrays.length; i++)
@@ -238,9 +272,10 @@ public class Sort
 		quickSort(arrays[2]);
 		mergeSort(arrays[3]);
 		bucketSort(arrays[4]);
+		heapSort(arrays[5]);
 
 		// Print Arrays
-		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge", "Bucket"};
+		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge", "Bucket", "Heap"};
 		for (int i = 0; i < arrayTypes.length; i++)
 			System.out.println(arrayTypes[i] + ":\n" + Arrays.toString(arrays[i]));
 	}

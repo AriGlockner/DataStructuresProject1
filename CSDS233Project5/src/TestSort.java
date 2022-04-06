@@ -12,7 +12,7 @@ public class TestSort
 	// index for indexing for insertion into nanoTimes
 	private int nIndex = 0;
 	// Sorts are: API, insertion, quick, merge
-	private final long[][] nanoTimes = new long[9][5];
+	private final long[][] nanoTimes = new long[9][6];
 
 	/**
 	 * Tests the sort class. Calls generateRandomArray method with n = 10, 20, 50, 100, 200, 500, 1000, 2000, and 5000
@@ -28,7 +28,7 @@ public class TestSort
 
 		// Benchmarking
 		System.out.println("\nRuntime using Java's System.nanoTime():");
-		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:");
+		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:\t\tHeap:");
 
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
@@ -73,6 +73,8 @@ public class TestSort
 		updateNanoTime(3);
 		testBucketSort(unsortedArray.clone(), sortedArray);
 		updateNanoTime(4);
+		testHeapSort(unsortedArray.clone(), sortedArray);
+		updateNanoTime(5);
 
 		nIndex++;
 	}
@@ -127,6 +129,18 @@ public class TestSort
 	 * @param sorted   already sorted array
 	 */
 	private void testBucketSort(int[] unsorted, int[] sorted)
+	{
+		Sort.bucketSort(unsorted);
+		Assert.assertArrayEquals(unsorted, sorted);
+	}
+
+	/**
+	 * Tests heap sort algorithm. Compares already sorted array to unsorted array after calling sort
+	 *
+	 * @param unsorted array to sort
+	 * @param sorted   already sorted array
+	 */
+	private void testHeapSort(int[] unsorted, int[] sorted)
 	{
 		Sort.bucketSort(unsorted);
 		Assert.assertArrayEquals(unsorted, sorted);
