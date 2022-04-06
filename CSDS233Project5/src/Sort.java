@@ -191,6 +191,33 @@ public class Sort
 		return array;
 	}
 
+	/* More Extra Credit Methods: */
+	public static int[] bucketSort(int[] arr)
+	{
+		int max = arr[0];
+		for (int num : arr)
+			max = Math.max(max, num);
+
+		// Create M buckets
+		List<Integer>[] lists = new List[max+1]; //new LinkedList<>()[max];
+		for (int i = 0; i < lists.length; i++)
+			lists[i] = new LinkedList<>();
+
+		// Add items from array to buckets
+		for (int num : arr)
+			lists[num].add(num);
+
+		// Concatenate the buckets
+		int index = 0;
+
+		for (List<Integer> ll : lists)
+			while (!ll.isEmpty())
+				arr[index++] = ll.remove(0);
+		return arr;
+	}
+
+
+
 	/**
 	 * Demo
 	 *
@@ -200,15 +227,20 @@ public class Sort
 	{
 		// Initialize Arrays
 		int[] array = randomArray(10, 0, 100);
-		int[][] arrays = new int[][] {array.clone(), array.clone(), array.clone(), array.clone()};
+		int[][] arrays = new int[5][10];
+
+		// assign each array of ints in arrays to be a clone of array
+		for (int i = 0; i < arrays.length; i++)
+			arrays[i] = array.clone();
 
 		// Sort Arrays
 		insertionSort(arrays[1]);
 		quickSort(arrays[2]);
 		mergeSort(arrays[3]);
+		bucketSort(arrays[4]);
 
 		// Print Arrays
-		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge"};
+		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge", "Bucket"};
 		for (int i = 0; i < arrayTypes.length; i++)
 			System.out.println(arrayTypes[i] + ":\n" + Arrays.toString(arrays[i]));
 	}

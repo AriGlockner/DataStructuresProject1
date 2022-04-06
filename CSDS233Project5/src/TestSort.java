@@ -12,7 +12,7 @@ public class TestSort
 	// index for indexing for insertion into nanoTimes
 	private int nIndex = 0;
 	// Sorts are: API, insertion, quick, merge
-	private final long[][] nanoTimes = new long[9][4];
+	private final long[][] nanoTimes = new long[9][5];
 
 	/**
 	 * Tests the sort class. Calls generateRandomArray method with n = 10, 20, 50, 100, 200, 500, 1000, 2000, and 5000
@@ -28,7 +28,7 @@ public class TestSort
 
 		// Benchmarking
 		System.out.println("\nRuntime using Java's System.nanoTime():");
-		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:");
+		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:");
 
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
@@ -71,6 +71,8 @@ public class TestSort
 		updateNanoTime(2);
 		testMergeSort(unsortedArray.clone(), sortedArray);
 		updateNanoTime(3);
+		testBucketSort(unsortedArray.clone(), sortedArray);
+		updateNanoTime(4);
 
 		nIndex++;
 	}
@@ -115,6 +117,18 @@ public class TestSort
 	private void testMergeSort(int[] unsorted, int[] sorted)
 	{
 		Sort.mergeSort(unsorted);
+		Assert.assertArrayEquals(unsorted, sorted);
+	}
+
+	/**
+	 * Tests merge sort algorithm. Compares already sorted array to unsorted array after calling sort
+	 *
+	 * @param unsorted array to sort
+	 * @param sorted   already sorted array
+	 */
+	private void testBucketSort(int[] unsorted, int[] sorted)
+	{
+		Sort.bucketSort(unsorted);
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 }
