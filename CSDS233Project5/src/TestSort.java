@@ -27,13 +27,14 @@ public class TestSort
 			generateRandomArray(k);
 
 		// Benchmarking
-		System.out.println("\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:");
+		System.out.println("\nRuntime using Java's System.nanoTime():");
+		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:");
 
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
-			System.out.print("n = " + size[i] + ":\t");
+			System.out.print("size = " + size[i] + ":\t");
 			// format
-			if (size[i] < 100)
+			if (size[i] < 1000)
 				System.out.print("\t");
 
 			for (int j = 0; j < nanoTimes[i].length; j++)
