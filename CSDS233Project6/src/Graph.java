@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 /**
  *
  *
@@ -5,17 +7,56 @@
  */
 public class Graph
 {
+	static class Node {
+		private String name;
 
-	/* Part 1 */
+		// Matrix Representation
+		private Edge edgeHead; // adjacency list
+		/*
+		// List Representation
+		private LinkedList<Edge> edges; // adjacency list
+		*/
+
+		private boolean encountered;
+		private boolean done;
+		private Node parent;
+		//private double cost;
+
+		public Node(String name)
+		{
+			this.name = name;
+		}
+	}
+
+	static class Edge {
+		private int endNode;
+		//private double cost;
+		private Edge next; // Matrix Representation
+	}
+
+	private Node[] nodes;
+	private int numNodes;
+	private int maxNum;
+
+	public Graph(int maximum)
+	{
+		maxNum = maximum;
+		nodes = new Node[maximum];
+		numNodes = 0;
+	}
 
 	/**
 	 * Adds a node to the graph and checks for duplicates
 	 *
-	 * @param name
+	 * @param name of the node created
 	 * @return true if successful, false otherwise
 	 */
 	boolean addNode(String name)
 	{
+		if (numNodes + 1 == maxNum)
+			return false;
+
+		nodes[numNodes++] = new Node(name);
 		return true;
 	}
 
@@ -27,7 +68,13 @@ public class Graph
 	 */
 	public boolean addNodes(String[] nodes)
 	{
-		return true;
+		boolean successful = true;
+
+		for (String n : nodes)
+			if (!addNode(n) && successful)
+				successful = false;
+
+		return successful;
 	}
 
 	/**
@@ -39,6 +86,8 @@ public class Graph
 	 */
 	public boolean addEdge(String from, String to)
 	{
+		Edge newEdge = new Edge();
+
 		return true;
 	}
 
@@ -51,7 +100,13 @@ public class Graph
 	 */
 	public boolean addEdges(String from, String[] tolist)
 	{
-		return true;
+		boolean successful = true;
+
+		for (String to : tolist)
+			if (!addEdge(from, to) && successful)
+				successful = false;
+
+		return successful;
 	}
 
 	/**
@@ -88,8 +143,25 @@ public class Graph
 	/* Part 2 */
 
 	/**
-	 * @param from
-	 * @param to
+	 * Constructs a graph from a text file using the following format:
+	 * <nodename1> <nodename1> <nodename2> ...
+	 * <nodename2> <nodename1> <nodename2> ...
+	 * ...
+	 *
+	 * @param filename filepath to create nodes from
+	 * @return a new Graph created from the filename
+	 */
+	public Graph read(String filename)
+	{
+		return null;
+	}
+
+	/* Part 3 */
+	/**
+	 * Visits a vertex, then make recursive calls on all of its yet-to-be-visited neighbors
+	 *
+	 * @param from starting point
+	 * @param to end point
 	 * @param neighborOrder
 	 * @return the path or a list of node names, of depth-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
@@ -101,8 +173,8 @@ public class Graph
 	}
 
 	/**
-	 * @param from
-	 * @param to
+	 * @param from starting point
+	 * @param to end point
 	 * @param neighborOrder
 	 * @return the path or a list of node names, of breath-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
@@ -114,13 +186,23 @@ public class Graph
 	}
 
 	/**
-	 * @param from
-	 * @param to
-	 * @return the second shortest path between nodes from and to. Only returns one path in the case of multiple
+	 * @param from starting point
+	 * @param to end point
+	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
 	 * equivalent results
 	 */
 	public String[] secondShortestPath(String from, String to)
 	{
 		return null;
+	}
+
+	/**
+	 * Demo
+	 *
+	 * @param args arguments
+	 */
+	public static void main(String[] args)
+	{
+
 	}
 }
