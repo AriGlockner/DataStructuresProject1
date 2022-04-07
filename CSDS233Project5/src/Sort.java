@@ -83,18 +83,11 @@ public class Sort
 		for (int j = low; j < high; j++)
 			// swap array's i and j elements
 			if (arr[j] <= pivot)
-			{
-				// increment index of swap i and j elements
-				int placeholder = arr[++i];
-				arr[i] = arr[j];
-				arr[j] = placeholder;
-			}
+				// increment index of i, then swap i and j elements
+				swap(arr, ++i, j);
 
-		// swap i and highest to be sorted
-		int temp = arr[++i];
-		arr[i] = arr[high];
-		arr[high] = temp;
-
+		// increment i, then swap i and highest to be sorted
+		swap(arr, ++i, high);
 		// return index of pivot point
 		return i;
 	}
@@ -191,8 +184,6 @@ public class Sort
 		return array;
 	}
 
-	/* More Extra Credit Methods: */
-
 	/**
 	 * Sorts the array using a bucket sort algorithm.
 	 * Runtimes:
@@ -253,6 +244,113 @@ public class Sort
 	}
 
 	/**
+	 * Sorts the array using a bubble sort algorithm.
+	 * Runtimes:
+	 * Worse Case: O(N^2)
+	 * Best Case: O(N^2)
+	 * Average Case: O(N^2)
+	 *
+	 * @param arr integer array to sort
+	 */
+	public static void bubbleSort(int[] arr)
+	{
+		// Iterate through each element in the array from back to front
+		for (int i = arr.length - 1; i > 0; i--)
+			// On each pass, if the larger element is in front of the smaller element, swap them
+			for (int j = 0; j < i; j++)
+				if (arr[j] > arr[j + 1])
+					swap(arr, j, j + 1);
+	}
+
+	/**
+	 * Sorts the array using a selection sort algorithm.
+	 * Runtimes:
+	 * Worse Case: O(N^2)
+	 * Best Case: O(N^2)
+	 * Average Case: O(N^2)
+	 *
+	 * @param arr integer array to sort
+	 */
+	public static void selectionSort(int[] arr)
+	{
+		for (int i = 0; i < arr.length - 1; i++)
+		{
+			// swap i with the minimum value after i
+			int j = getMinIndex(arr, i);
+			swap(arr, i, j);
+		}
+	}
+
+	/**
+	 * Helper method that returns the index of the min element that is or is after i
+	 *
+	 * @param arr array to search
+	 * @param i   starting index
+	 * @return index of the min element starting at index i
+	 */
+	private static int getMinIndex(int[] arr, int i)
+	{
+		int minIndex = i;
+		for (int j = i + 1; j < arr.length; j++)
+			if (arr[j] < arr[minIndex])
+				minIndex = j;
+		return minIndex;
+	}
+
+	/**
+	 * Sorts the array using a shell sort algorithm
+	 * Runtime:
+	 * Worst Case: O(N^1.5)
+	 * Best Case: O(N log(N)) -> difficult to analyze
+	 * Average Case: O(N^1.25) -> difficult to analyze
+	 *
+	 * @param arr Integer array to sort
+	 */
+	public static void shellSort(int[] arr)
+	{
+		// Calculate increment
+		int increment = 1;
+		while (2 * increment <= arr.length) increment *= 2;
+		increment--;
+
+		// Sort every element based on the increment level
+		// Ex: increment = 3 -> sort indexes 0, 3, 6 together, 1, 4, 7 together, etc.
+		while (increment >= 1)
+		{
+			for (int i = increment; i < arr.length; i++)
+			{
+				if (arr[i] < arr[i - increment])
+				{
+					int toInsert = arr[i];
+					int j = i;
+					while (j > increment - 1 && toInsert < arr[j - increment])
+					{
+						arr[j] = arr[j - increment];
+						j -= increment;
+					}
+					arr[j] = toInsert;
+				}
+			}
+			// decrease the size of the increment
+			increment /= 2;
+		}
+	}
+
+	/**
+	 * Helper method that swaps 2 elements in an array
+	 *
+	 * @param arr array to swap elements in
+	 * @param a   first element to swap
+	 * @param b   2nd element to swap
+	 */
+	private static void swap(int[] arr, int a, int b)
+	{
+		int placeholder = arr[a];
+		arr[a] = arr[b];
+		arr[b] = placeholder;
+	}
+
+	/**
 	 * Demo
 	 *
 	 * @param args arguments
@@ -261,7 +359,7 @@ public class Sort
 	{
 		// Initialize Arrays
 		int[] array = randomArray(10, 0, 100);
-		int[][] arrays = new int[6][10];
+		int[][] arrays = new int[9][10];
 
 		// assign each array of ints in arrays to be a clone of array
 		for (int i = 0; i < arrays.length; i++)
@@ -273,9 +371,12 @@ public class Sort
 		mergeSort(arrays[3]);
 		bucketSort(arrays[4]);
 		heapSort(arrays[5]);
+		selectionSort(arrays[6]);
+		shellSort(arrays[7]);
+		bubbleSort(arrays[8]);
 
 		// Print Arrays
-		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge", "Bucket", "Heap"};
+		String[] arrayTypes = new String[] {"Unsorted", "Insertion", "Quick", "Merge", "Bucket", "Heap", "Selection", "Shell", "Bubble"};
 		for (int i = 0; i < arrayTypes.length; i++)
 			System.out.println(arrayTypes[i] + ":\n" + Arrays.toString(arrays[i]));
 	}

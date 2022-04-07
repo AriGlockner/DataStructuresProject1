@@ -7,19 +7,19 @@ import java.util.Arrays;
  */
 public class TestSort
 {
-	// index for indexing for insertion into nanoTimes
-	private int nIndex = 0;
 	// Sorts are: API, insertion, quick, merge
-	private final long[][] nanoTimes = new long[9][6];
+	private final long[][] nanoTimes = new long[9][7];
 
 	/**
-	 * Tests the sort class. Calls generateRandomArray method with n = 10, 20, 50, 100, 200, 500, 1000, 2000, and 5000
+	 * Tests the sort class. Calls generateRandomArray method with sizes of n = 10, 20, 50, 100, 200, 500, 1000, 2000,
+	 * and 5000. Averages out the runtime over 100 times and prints it out in a table
 	 */
 	@Test
 	public void testSort()
 	{
-		int[] size = new int[] { 10, 20, 50, 100, 200, 500, 1000, 2000, 5000 };
-		long[][][] allNanoTimes = new long[10][9][6];
+		int[] size = new int[] {10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
+		int numTimesRun = 100;
+		long[][][] allNanoTimes = new long[numTimesRun][9][6];
 
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
@@ -31,28 +31,21 @@ public class TestSort
 			allNanoTimes[i] = nanoTimes.clone();
 		}
 
-		for (int j = 0; j < allNanoTimes[0].length; j++)
+		for (int j = 0; j < 9; j++)
 		{
-			for (int k = 0; j < allNanoTimes[0][0].length; k++)
+			for (int k = 0; k < 6; k++)
 			{
-				long avg = 0;
+				int sum = 0;
+				for (int i = 0; i < numTimesRun; i++)
+					sum += allNanoTimes[i][j][k];
 
-				for (long[][] allNanoTime : allNanoTimes)
-				{
-					avg += allNanoTime[j][k];
-				}
-
-				avg /= allNanoTimes.length;
-
-				nanoTimes[j][k] = avg;
+				nanoTimes[j][k] = sum / numTimesRun;
 			}
 		}
-
 
 		// Benchmarking
 		System.out.println("\nRuntime using Java's System.nanoTime():");
 		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:\t\tHeap:");
-
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
 			System.out.print("size = " + size[i] + ":\t");
@@ -64,11 +57,14 @@ public class TestSort
 			{
 				System.out.print(nanoTimes[i][j] + "\t");
 				if (nanoTimes[i][j] < 10000000)
+				{
 					System.out.print("\t");
+					if (nanoTimes[i][j] < 1000)
+						System.out.print("\t");
+				}
 			}
 			System.out.println();
 		}
-
 	}
 
 	/**
@@ -84,25 +80,34 @@ public class TestSort
 		//int[] sortedArray = unsortedArray.clone();
 
 		// Use api sort as a default sort to compare sorts to
-		int[] sortedArray = apiSort(unsortedArray.clone());
+		int[] sortedArray = apiSort(unsortedArray.clone(), i);
 
 		// call methods that test sorts
-		testInsertionSort(unsortedArray.clone(), sortedArray);
-		testQuickSort(unsortedArray.clone(), sortedArray);
-		testMergeSort(unsortedArray.clone(), sortedArray);
-		testBucketSort(unsortedArray.clone(), sortedArray);
-		testHeapSort(unsortedArray.clone(), sortedArray);
+		testInsertionSort(unsortedArray.clone(), sortedArray, i);
+		testQuickSort(unsortedArray.clone(), sortedArray, i);
+		testMergeSort(unsortedArray.clone(), sortedArray, i);
+		testBucketSort(unsortedArray.clone(), sortedArray, i);
+		testHeapSort(unsortedArray.clone(), sortedArray, i);
 
-		// update index in array
-		nIndex++;
+		// TODO: Add the following sorts:
+		// Bubble
+		// Selection
+		// Shell
 	}
 
-	private int[] apiSort(int[] array)
+	/**
+	 * Tests runtime length of java's API sort method
+	 *
+	 * @param array unsorted array to sort
+	 * @param n
+	 * @return the sorted array
+	 */
+	private int[] apiSort(int[] array, int n)
 	{
 		long lastTime = System.nanoTime();
 		Arrays.sort(array);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][0] = deltaTime;
+		nanoTimes[n][0] = deltaTime;
 		return array;
 	}
 
@@ -112,12 +117,12 @@ public class TestSort
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
 	 */
-	private void testInsertionSort(int[] unsorted, int[] sorted)
+	private void testInsertionSort(int[] unsorted, int[] sorted, int n)
 	{
 		long lastTime = System.nanoTime();
 		Sort.insertionSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][1] = deltaTime;
+		nanoTimes[n][1] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 
@@ -127,12 +132,12 @@ public class TestSort
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
 	 */
-	private void testQuickSort(int[] unsorted, int[] sorted)
+	private void testQuickSort(int[] unsorted, int[] sorted, int n)
 	{
 		long lastTime = System.nanoTime();
 		Sort.quickSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][2] = deltaTime;
+		nanoTimes[n][2] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 
@@ -142,12 +147,12 @@ public class TestSort
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
 	 */
-	private void testMergeSort(int[] unsorted, int[] sorted)
+	private void testMergeSort(int[] unsorted, int[] sorted, int n)
 	{
 		long lastTime = System.nanoTime();
 		Sort.mergeSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][3] = deltaTime;
+		nanoTimes[n][3] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 
@@ -157,12 +162,12 @@ public class TestSort
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
 	 */
-	private void testBucketSort(int[] unsorted, int[] sorted)
+	private void testBucketSort(int[] unsorted, int[] sorted, int n)
 	{
 		long lastTime = System.nanoTime();
 		Sort.bucketSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][4] = deltaTime;
+		nanoTimes[n][4] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 
@@ -172,12 +177,12 @@ public class TestSort
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
 	 */
-	private void testHeapSort(int[] unsorted, int[] sorted)
+	private void testHeapSort(int[] unsorted, int[] sorted, int n)
 	{
 		long lastTime = System.nanoTime();
 		Sort.heapSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
-		nanoTimes[nIndex][5] = deltaTime;
+		nanoTimes[n][5] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 }
