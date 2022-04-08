@@ -1,13 +1,12 @@
 import org.junit.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * This class tests the Sort class
  */
 public class TestSort
 {
-	// Sorts are: API, insertion, quick, merge
 	private final long[][] nanoTimes = new long[9][9];
 
 	/**
@@ -17,11 +16,15 @@ public class TestSort
 	@Test
 	public void testSort()
 	{
+		// size of unsorted arrays to compute
 		int[] size = new int[] {10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
+		// number of times to run each test - used for generating an average
 		int numTimesRun = 100;
+		// stores every nanoTime result
 		long[][][] allNanoTimes = new long[numTimesRun][9][9];
 
-		for (int i = 0; i < nanoTimes.length; i++)
+		// run 100 random tests of each type and add store each nanoTime in allNanoTimes
+		for (int i = 0; i < numTimesRun; i++)
 		{
 			// Generate nanoTimes and test
 			int index = 0;
@@ -31,19 +34,19 @@ public class TestSort
 			allNanoTimes[i] = nanoTimes.clone();
 		}
 
+		// Average out the data and store it in nanoTimes
 		for (int j = 0; j < 9; j++)
 		{
 			for (int k = 0; k < 9; k++)
 			{
 				int sum = 0;
 				for (int i = 0; i < numTimesRun; i++)
-					sum += allNanoTimes[i][j][k];
-
-				nanoTimes[j][k] = sum / numTimesRun;
+					sum += allNanoTimes[i][j][k] / numTimesRun;
+				nanoTimes[j][k] = sum;
 			}
 		}
 
-		// Benchmarking
+		// Benchmarking - print average nanoTime
 		System.out.println("\nRuntime using Java's System.nanoTime():");
 		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:\t\tHeap:\t\tSelection:\tBubble:\t\tShell");
 		for (int i = 0; i < nanoTimes.length; i++)
@@ -77,9 +80,8 @@ public class TestSort
 	{
 		// Generate random arrays
 		int[] unsortedArray = Sort.randomArray(n, 0, n * 2);
-		//int[] sortedArray = unsortedArray.clone();
 
-		// Use api sort as a default sort to compare sorts to
+		// Use api sort as a default sort to compare other sorts to
 		int[] sortedArray = apiSort(unsortedArray.clone(), i);
 
 		// call methods that test sorts
@@ -97,7 +99,7 @@ public class TestSort
 	 * Tests runtime length of java's API sort method
 	 *
 	 * @param array unsorted array to sort
-	 * @param n first index to slot change in nanoTime into
+	 * @param n     first index to slot change in nanoTime into
 	 * @return the sorted array
 	 */
 	private int[] apiSort(int[] array, int n)
@@ -114,7 +116,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testInsertionSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -130,7 +132,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testQuickSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -146,7 +148,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testMergeSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -162,7 +164,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testBucketSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -178,7 +180,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testHeapSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -194,7 +196,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testSelectionSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -210,7 +212,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testBubbleSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -226,7 +228,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
-	 * @param n first index to slot change in nanoTime into
+	 * @param n        first index to slot change in nanoTime into
 	 */
 	private void testShellSort(int[] unsorted, int[] sorted, int n)
 	{
