@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class TestSort
 {
 	// Sorts are: API, insertion, quick, merge
-	private final long[][] nanoTimes = new long[9][7];
+	private final long[][] nanoTimes = new long[9][9];
 
 	/**
 	 * Tests the sort class. Calls generateRandomArray method with sizes of n = 10, 20, 50, 100, 200, 500, 1000, 2000,
@@ -19,7 +19,7 @@ public class TestSort
 	{
 		int[] size = new int[] {10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
 		int numTimesRun = 100;
-		long[][][] allNanoTimes = new long[numTimesRun][9][6];
+		long[][][] allNanoTimes = new long[numTimesRun][9][9];
 
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
@@ -33,7 +33,7 @@ public class TestSort
 
 		for (int j = 0; j < 9; j++)
 		{
-			for (int k = 0; k < 6; k++)
+			for (int k = 0; k < 9; k++)
 			{
 				int sum = 0;
 				for (int i = 0; i < numTimesRun; i++)
@@ -45,7 +45,7 @@ public class TestSort
 
 		// Benchmarking
 		System.out.println("\nRuntime using Java's System.nanoTime():");
-		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:\t\tHeap:");
+		System.out.println("\t\t\t\tAPI:\t\tInsertion:\tQuick:\t\tMerge:\t\tBucket:\t\tHeap:\t\tSelection:\tBubble:\t\tShell");
 		for (int i = 0; i < nanoTimes.length; i++)
 		{
 			System.out.print("size = " + size[i] + ":\t");
@@ -88,18 +88,16 @@ public class TestSort
 		testMergeSort(unsortedArray.clone(), sortedArray, i);
 		testBucketSort(unsortedArray.clone(), sortedArray, i);
 		testHeapSort(unsortedArray.clone(), sortedArray, i);
-
-		// TODO: Add the following sorts:
-		// Bubble
-		// Selection
-		// Shell
+		testBubbleSort(unsortedArray.clone(), sortedArray, i);
+		testSelectionSort(unsortedArray.clone(), sortedArray, i);
+		testShellSort(unsortedArray.clone(), sortedArray, i);
 	}
 
 	/**
 	 * Tests runtime length of java's API sort method
 	 *
 	 * @param array unsorted array to sort
-	 * @param n
+	 * @param n first index to slot change in nanoTime into
 	 * @return the sorted array
 	 */
 	private int[] apiSort(int[] array, int n)
@@ -116,6 +114,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
 	 */
 	private void testInsertionSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -131,6 +130,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
 	 */
 	private void testQuickSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -146,6 +146,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
 	 */
 	private void testMergeSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -161,6 +162,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
 	 */
 	private void testBucketSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -176,6 +178,7 @@ public class TestSort
 	 *
 	 * @param unsorted array to sort
 	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
 	 */
 	private void testHeapSort(int[] unsorted, int[] sorted, int n)
 	{
@@ -183,6 +186,54 @@ public class TestSort
 		Sort.heapSort(unsorted);
 		long deltaTime = System.nanoTime() - lastTime;
 		nanoTimes[n][5] = deltaTime;
+		Assert.assertArrayEquals(unsorted, sorted);
+	}
+
+	/**
+	 * Tests selection sort algorithm. Compares already sorted array to unsorted array after calling sort
+	 *
+	 * @param unsorted array to sort
+	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
+	 */
+	private void testSelectionSort(int[] unsorted, int[] sorted, int n)
+	{
+		long lastTime = System.nanoTime();
+		Sort.selectionSort(unsorted);
+		long deltaTime = System.nanoTime() - lastTime;
+		nanoTimes[n][6] = deltaTime;
+		Assert.assertArrayEquals(unsorted, sorted);
+	}
+
+	/**
+	 * Tests bubble sort algorithm. Compares already sorted array to unsorted array after calling sort
+	 *
+	 * @param unsorted array to sort
+	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
+	 */
+	private void testBubbleSort(int[] unsorted, int[] sorted, int n)
+	{
+		long lastTime = System.nanoTime();
+		Sort.bubbleSort(unsorted);
+		long deltaTime = System.nanoTime() - lastTime;
+		nanoTimes[n][7] = deltaTime;
+		Assert.assertArrayEquals(unsorted, sorted);
+	}
+
+	/**
+	 * Tests shell sort algorithm. Compares already sorted array to unsorted array after calling sort
+	 *
+	 * @param unsorted array to sort
+	 * @param sorted   already sorted array
+	 * @param n first index to slot change in nanoTime into
+	 */
+	private void testShellSort(int[] unsorted, int[] sorted, int n)
+	{
+		long lastTime = System.nanoTime();
+		Sort.shellSort(unsorted);
+		long deltaTime = System.nanoTime() - lastTime;
+		nanoTimes[n][8] = deltaTime;
 		Assert.assertArrayEquals(unsorted, sorted);
 	}
 }
