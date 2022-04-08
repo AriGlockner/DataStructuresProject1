@@ -3,3 +3,6 @@ This project should be very straight forward. I already wrote my own implementat
 
 50% Log (~10 min):
 Test cases were pretty simple to write
+
+90% Log (~1 hour):
+Finished writing everything for code. Will need to write benchmarking pdf and double check code one last time
