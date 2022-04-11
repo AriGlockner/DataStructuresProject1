@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  *
@@ -7,33 +7,6 @@ import java.util.LinkedList;
  */
 public class Graph
 {
-	static class Node {
-		private String name;
-
-		// Matrix Representation
-		private Edge edgeHead; // adjacency list
-		/*
-		// List Representation
-		private LinkedList<Edge> edges; // adjacency list
-		*/
-
-		private boolean encountered;
-		private boolean done;
-		private Node parent;
-		//private double cost;
-
-		public Node(String name)
-		{
-			this.name = name;
-		}
-	}
-
-	static class Edge {
-		private int endNode;
-		//private double cost;
-		private Edge next; // Matrix Representation
-	}
-
 	private Node[] nodes;
 	private int numNodes;
 	private int maxNum;
@@ -45,6 +18,15 @@ public class Graph
 		numNodes = 0;
 	}
 
+	private boolean contains(String name)
+	{
+		for (Node n : nodes)
+			if (n.getName().equals(name))
+				return true;
+		return false;
+	}
+
+
 	/**
 	 * Adds a node to the graph and checks for duplicates
 	 *
@@ -53,7 +35,7 @@ public class Graph
 	 */
 	boolean addNode(String name)
 	{
-		if (numNodes + 1 == maxNum)
+		if (List.of(nodes).contains(name) || numNodes + 1 == maxNum)
 			return false;
 
 		nodes[numNodes++] = new Node(name);
@@ -63,14 +45,14 @@ public class Graph
 	/**
 	 * Adds a list of nodes to the graph and checks for duplicates
 	 *
-	 * @param nodes
+	 * @param names
 	 * @return true if successful, false otherwise
 	 */
-	public boolean addNodes(String[] nodes)
+	public boolean addNodes(String[] names)
 	{
 		boolean successful = true;
 
-		for (String n : nodes)
+		for (String n : names)
 			if (!addNode(n) && successful)
 				successful = false;
 
@@ -137,7 +119,11 @@ public class Graph
 	 */
 	public void printGraph()
 	{
-
+		for (Node n : nodes)
+			if (n != null)
+			{
+				System.out.print("<" + n.getName() + "> ");
+			}
 	}
 
 	/* Part 2 */
@@ -153,7 +139,29 @@ public class Graph
 	 */
 	public Graph read(String filename)
 	{
-		return null;
+		Scanner scanner = new Scanner(filename);
+		ArrayList<String> lines = new ArrayList<>();
+
+		while (scanner.hasNextLine())
+			lines.add(scanner.nextLine());
+
+		Graph graph = new Graph(lines.size());
+
+		for (String s : lines)
+		{
+			// Split into nodes
+			String[] nodes = s.split(" ");
+
+			// Add nodes
+			for (String n : nodes)
+				if (!graph.contains(n))
+					graph.addNode(n);
+
+			// Add edges
+			graph.addEdges(nodes[0], Arrays.copyOfRange(nodes, 1, nodes.length));
+		}
+
+		return graph;
 	}
 
 	/* Part 3 */
@@ -203,6 +211,7 @@ public class Graph
 	 */
 	public static void main(String[] args)
 	{
-
+		Graph g = new Graph(0).read("graph.txt");
+		g.printGraph();
 	}
 }
