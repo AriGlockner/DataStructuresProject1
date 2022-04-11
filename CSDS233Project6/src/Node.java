@@ -1,6 +1,6 @@
 public class Node
 {
-	private String name;
+	private final String name;
 
 	// Matrix Representation
 	private Edge edgeHead; // adjacency list
