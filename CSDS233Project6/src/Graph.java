@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.util.*;
+import java.io.FileInputStream;
 
 /**
  *
@@ -7,25 +9,31 @@ import java.util.*;
  */
 public class Graph
 {
-	private Node[] nodes;
+	//private Node[] nodes;
+	private ArrayList<Vertex> verticies;
 	private int numNodes;
 	private int maxNum;
 
 	public Graph(int maximum)
 	{
 		maxNum = maximum;
-		nodes = new Node[maximum];
+		verticies = new ArrayList<>(maximum);
 		numNodes = 0;
 	}
 
-	private boolean contains(String name)
+	/**
+	 * @param name to find vertex of
+	 * @return vertex belonging to name or null if name does not exist in Graph
+	 */
+	private Vertex getVertex(String name)
 	{
-		for (Node n : nodes)
-			if (n.getName().equals(name))
-				return true;
-		return false;
+		// Find the vertex
+		for (Vertex v : verticies)
+			if (v.getName().equals(name))
+				return v;
+		// Return null if name does not exist
+		return null;
 	}
-
 
 	/**
 	 * Adds a node to the graph and checks for duplicates
@@ -35,10 +43,11 @@ public class Graph
 	 */
 	boolean addNode(String name)
 	{
-		if (List.of(nodes).contains(name) || numNodes + 1 == maxNum)
+		// Can't add new vertex
+		if (getVertex(name) != null)
 			return false;
-
-		nodes[numNodes++] = new Node(name);
+		// Add a new vertex
+		verticies.add(new Vertex(name));
 		return true;
 	}
 
@@ -62,15 +71,22 @@ public class Graph
 	/**
 	 * Adds an edge from node from to node to
 	 *
-	 * @param from
-	 * @param to
+	 * @param from starting point
+	 * @param to   destination to add
 	 * @return true if successful, false otherwise
 	 */
 	public boolean addEdge(String from, String to)
 	{
-		Edge newEdge = new Edge();
+		// Get Vertex to add to
+		Vertex start = getVertex(from);
+		Vertex destination = getVertex(to);
 
-		return true;
+		// Return false if either vertex does not exist does not exist
+		if (start == null || destination == null)
+			return false;
+
+		// Add edge in Vertex Class
+		return start.addEdge(destination);
 	}
 
 	/**
@@ -99,18 +115,34 @@ public class Graph
 	 */
 	public boolean removeNode(String name)
 	{
-		return true;
+		Vertex toRemove = getVertex(name);
+		// Vertex to remove does not exist
+		if (toRemove == null)
+			return false;
+
+		// Remove toRemove's edges
+		LinkedList<Vertex> parents = toRemove.getParents();
+		for (Vertex p : parents)
+			p.removeEdge(toRemove);
+
+		// Remove toRemove
+		return verticies.remove(toRemove);
 	}
 
 	/**
 	 * Removes each node in nodelist and their edges from the  graph
 	 *
-	 * @param nodelist
+	 * @param nodelist remove each node in list
 	 * @return true if successful, false otherwise
 	 */
 	public boolean removeNodes(String[] nodelist)
 	{
-		return true;
+		boolean successful = true;
+
+		for (String vertex : nodelist)
+			successful = removeNode(vertex) && successful;
+
+		return successful;
 	}
 
 	/**
@@ -119,10 +151,15 @@ public class Graph
 	 */
 	public void printGraph()
 	{
-		for (Node n : nodes)
-			if (n != null)
+		for (Vertex v : verticies)
+			if (v != null)
 			{
-				System.out.print("<" + n.getName() + "> ");
+				StringBuilder sb = new StringBuilder(v + " ");
+
+				for (Edge e : v.getEdges())
+					sb.append(e.getTo()).append(" ");
+
+				System.out.println(sb.substring(0, sb.length() - 1));
 			}
 	}
 
@@ -139,7 +176,15 @@ public class Graph
 	 */
 	public Graph read(String filename)
 	{
-		Scanner scanner = new Scanner(filename);
+		Scanner scanner;
+		try
+		{
+			scanner = new Scanner(new FileInputStream(filename));
+		} catch (FileNotFoundException e)
+		{
+			scanner = new Scanner(filename);
+			e.printStackTrace();
+		}
 		ArrayList<String> lines = new ArrayList<>();
 
 		while (scanner.hasNextLine())
@@ -154,13 +199,12 @@ public class Graph
 
 			// Add nodes
 			for (String n : nodes)
-				if (!graph.contains(n))
-					graph.addNode(n);
+				graph.addNode(n);
 
 			// Add edges
 			graph.addEdges(nodes[0], Arrays.copyOfRange(nodes, 1, nodes.length));
 		}
-
+		System.out.println(lines);
 		return graph;
 	}
 
@@ -211,7 +255,17 @@ public class Graph
 	 */
 	public static void main(String[] args)
 	{
-		Graph g = new Graph(0).read("graph.txt");
-		g.printGraph();
+		Graph g1 = new Graph(0).read("graph.txt");
+		g1.printGraph();
+
+		System.out.println();
+
+		Graph g2 = new Graph(10);
+		g2.addNodes(new String[] { "A", "B", "C", "D" });
+		g2.addEdges("A", new String[]{"B", "C", "D"});
+		g2.addEdges("B", new String[]{"A", "C"});
+		g2.addEdges("C", new String[]{"A", "B"});
+		g2.addEdge("D", "A");
+		g2.printGraph();
 	}
 }
