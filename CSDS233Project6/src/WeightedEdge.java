@@ -1,15 +1,15 @@
 public class WeightedEdge extends Edge
 {
-	private double cost;
+	private final int weight;
 
-	public WeightedEdge(Vertex from, Vertex to, double cost)
+	public WeightedEdge(Vertex from, Vertex to, int weight)
 	{
 		super(from, to);
-		this.cost = cost;
+		this.weight = weight;
 	}
 
-	public double getCost()
+	public int getWeight()
 	{
-		return cost;
+		return weight;
 	}
 }

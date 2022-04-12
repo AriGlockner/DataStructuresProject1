@@ -3,8 +3,6 @@ import java.util.*;
 import java.io.FileInputStream;
 
 /**
- *
- *
  * @author ari
  */
 public class Graph
@@ -25,7 +23,7 @@ public class Graph
 	 * @param name to find vertex of
 	 * @return vertex belonging to name or null if name does not exist in Graph
 	 */
-	private Vertex getVertex(String name)
+	Vertex getVertex(String name)
 	{
 		// Find the vertex
 		for (Vertex v : verticies)
@@ -156,8 +154,10 @@ public class Graph
 			{
 				StringBuilder sb = new StringBuilder(v + " ");
 
-				for (Edge e : v.getEdges())
-					sb.append(e.getTo()).append(" ");
+				//for (Edge e : v.getEdges())
+					//sb.append(e.getTo()).append(" ");
+				for (Vertex n : v.getChildren())
+					sb.append(n).append(" ");
 
 				System.out.println(sb.substring(0, sb.length() - 1));
 			}
@@ -212,8 +212,8 @@ public class Graph
 	/**
 	 * Visits a vertex, then make recursive calls on all of its yet-to-be-visited neighbors
 	 *
-	 * @param from starting point
-	 * @param to end point
+	 * @param from          starting point
+	 * @param to            end point
 	 * @param neighborOrder
 	 * @return the path or a list of node names, of depth-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
@@ -221,12 +221,31 @@ public class Graph
 	 */
 	public String[] DFS(String from, String to, String neighborOrder)
 	{
-		return null;
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Either from or to does not exist in graph
+		if (start == null || end == null)
+			return null;
+
+		// Case start is the same as end
+		if (start == end)
+			return new String[] { from };
+
+		/*
+		proceed as far as possible along a given path (via a neighbor)
+		before going to the next neighbor
+		 */
+
+		String[] children = (String[]) start.getChildren().toArray();
+		return DFS(children[0], to, neighborOrder);
 	}
 
+
+
 	/**
-	 * @param from starting point
-	 * @param to end point
+	 * @param from          starting point
+	 * @param to            end point
 	 * @param neighborOrder
 	 * @return the path or a list of node names, of breath-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
@@ -234,12 +253,59 @@ public class Graph
 	 */
 	public String[] BFS(String from, String to, String neighborOrder)
 	{
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+		// Either from or to does not exist in graph
+		if (start == null || end == null)
+			return null;
+
+		// Case start is the same as end
+		if (start.equals(end))
+			return new String[] { from };
+
+		/*
+		visit a vertex
+		visit all of its neighbors
+		visit all unvisited vertices 2 edges away
+		visit all unvisited vertices 3 edges away, etc
+		 */
+		// Get children
+		List<Vertex> children = start.getChildren();
+
+		// search if to is in edge of current vertex
+		for (Vertex c : children)
+			if (c.getName().equals(to))
+				return new String[] { from, to };
+
+		// sort children according to alphabetical or reverse order
+		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
+			Collections.sort(children);
+		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
+			children.sort(Collections.reverseOrder());
+
+		// Recursively call to find to
+		for (Vertex c : children)
+		{
+			String[] path = BFS(c.getName(), to, neighborOrder);
+			if (path[path.length - 1].equals(to))
+			{
+				String[] newPath = new String[path.length + 1];
+				newPath[0] = from;
+				System.arraycopy(path, 0, newPath, 1, path.length);
+				return newPath;
+			}
+		}
+
+		//String[] children = (String[]) start.getChildren().toArray();
+
+
+		//return DFS(children[0], to, neighborOrder);
 		return null;
 	}
 
 	/**
 	 * @param from starting point
-	 * @param to end point
+	 * @param to   end point
 	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
 	 * equivalent results
 	 */
@@ -261,11 +327,17 @@ public class Graph
 		System.out.println();
 
 		Graph g2 = new Graph(10);
-		g2.addNodes(new String[] { "A", "B", "C", "D" });
-		g2.addEdges("A", new String[]{"B", "C", "D"});
-		g2.addEdges("B", new String[]{"A", "C"});
-		g2.addEdges("C", new String[]{"A", "B"});
+		g2.addNodes(new String[] {"A", "B", "C", "D"});
+		g2.addEdges("A", new String[] {"B", "C", "D"});
+		g2.addEdges("B", new String[] {"A", "C"});
+		g2.addEdges("C", new String[] {"A", "B"});
 		g2.addEdge("D", "A");
 		g2.printGraph();
+		System.out.println();
+
+		g2.removeNode("A");
+		g2.printGraph();
+		System.out.println();
+		System.out.print(Arrays.toString(g2.BFS("A", "A", "alphabetical")));
 	}
 }
