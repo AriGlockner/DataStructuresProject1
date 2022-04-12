@@ -1,0 +1,2 @@
+10% Log (~3 hours):
+For once, I spent a little time writing the theory out on pencil and paper before I actually started coding. This kind of felt necessary for me even though I am not a theory sort of person. Since I took the time to draw out adding/removing, it was pretty easy to write.
