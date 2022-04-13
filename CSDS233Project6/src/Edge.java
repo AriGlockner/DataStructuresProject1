@@ -14,4 +14,12 @@ public class Edge {
 	{
 		return to;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Edge)
+			return to.equals(((Edge) o).to) && from.equals(((Edge) o).from);
+		return false;
+	}
 }

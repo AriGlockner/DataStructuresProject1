@@ -8,7 +8,6 @@ public class Vertex implements Comparable<Vertex>
 {
 	// ID belonging to this specific Vertex
 	private final String name;
-
 	private LinkedList<Edge> edges; // adjacency list
 	private LinkedList<Vertex> parents;
 
@@ -24,14 +23,6 @@ public class Vertex implements Comparable<Vertex>
 		this.name = name;
 		edges = new LinkedList<>();
 		parents = new LinkedList<>();
-	}
-
-	/**
-	 * @return name
-	 */
-	public String getName()
-	{
-		return name;
 	}
 
 	/**
@@ -85,7 +76,7 @@ public class Vertex implements Comparable<Vertex>
 
 	public void removeEdge(Vertex v)
 	{
-		edges.remove(v);
+		edges.remove(new Edge(this, v));
 	}
 
 	private boolean addParent(Vertex parent)
@@ -157,7 +148,7 @@ public class Vertex implements Comparable<Vertex>
 	/**
 	 * @param o other object
 	 * @return true if other object is an instance of Vertex, and they share the same name, otherwise false
-	 *
+	 */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -165,5 +156,4 @@ public class Vertex implements Comparable<Vertex>
 			return name.equals(v.name);
 		return false;
 	}
-	*/
 }
