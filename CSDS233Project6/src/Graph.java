@@ -227,7 +227,7 @@ public class Graph
 
 		// Either from or to does not exist in graph
 		if (start == null || end == null)
-			return null;
+			return new String[0];
 
 		// Case start is the same as end
 		if (start == end)
@@ -238,18 +238,49 @@ public class Graph
 		before going to the next neighbor
 		 */
 
-		String[] children = (String[]) start.getChildren().toArray();
-		return DFS(children[0], to, neighborOrder);
+		// Get children
+		LinkedList<Vertex> children = start.getChildren();
+
+		// Set children in order
+		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
+			Collections.sort(children);
+		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
+			children.sort(Collections.reverseOrder());
+
+		// Search through all children in the order determined by parameter neighborOrder
+		for (Vertex v : children)
+			if (v != null)
+			{
+				// Search for this child's path for String to
+				String[] path = BFS(v.toString(), to, neighborOrder);
+				if (path[path.length - 1].equals(to))
+				{
+					// If to is found, return this method's from + the array from the path called recursively
+					String[] newPath = new String[path.length + 1];
+					newPath[0] = from;
+					System.arraycopy(path, 0, newPath, 1, path.length);
+					return newPath;
+				}
+			}
+
+		return new String[0];
 	}
 
 
 	/**
+	 * Breath-first search finds verticies by:
+	 * 1) visit a vertex
+	 * 2) visit all of its neighbors
+	 * 3) visit all unvisited vertices 2 edges away
+	 * 4) visit all unvisited vertices 3 edges away,
+	 * etc.
+	 *
 	 * @param from          starting point
 	 * @param to            end point
-	 * @param neighborOrder
+	 * @param neighborOrder either alphabetical or reverse order
 	 * @return the path or a list of node names, of breath-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
-	 * alphabetical order. It should return an empty String if no path exists
+	 * alphabetical order. It should return an empty String if no path exists.
 	 */
 	public String[] BFS(String from, String to, String neighborOrder)
 	{
@@ -257,18 +288,12 @@ public class Graph
 		Vertex end = vertices.get(to); //getVertex(to);
 		// Either from or to does not exist in graph
 		if (start == null || end == null)
-			return null;
+			return new String[0];
 
 		// Case start is the same as end
 		if (start.equals(end))
 			return new String[] {from};
 
-		/*
-		visit a vertex
-		visit all of its neighbors
-		visit all unvisited vertices 2 edges away
-		visit all unvisited vertices 3 edges away, etc
-		 */
 		// Get children
 		List<Vertex> children = start.getChildren();
 
@@ -296,11 +321,8 @@ public class Graph
 			}
 		}
 
-		//String[] children = (String[]) start.getChildren().toArray();
-
-
-		//return DFS(children[0], to, neighborOrder);
-		return null;
+		// Return an empty String array if to does not exist in this path
+		return new String[0];
 	}
 
 	/**
@@ -329,14 +351,32 @@ public class Graph
 		*/
 
 		Graph g2 = new Graph(10);
-		g2.addNodes(new String[]{"A", "B", "C", "D"});
-		g2.addEdges("A", new String[]{"B", "C", "D"});
-		g2.addEdges("B", new String[]{"D"});
-		g2.addEdges("C", new String[]{"B", "D"});
+		g2.addNodes(new String[] {"A", "B", "C", "D"});
+		g2.addEdges("A", new String[] {"B", "C"});
+		g2.addEdges("B", new String[] {"D"});
+		g2.addEdges("C", new String[] {"B", "D"});
 		g2.printGraph();
+		System.out.println();
 
+		// BFS
+		System.out.println(Arrays.toString(g2.BFS("A", "D", "alphabetical")));
+		System.out.println(Arrays.toString(g2.BFS("D", "A", "alphabetical")));
+		System.out.println(Arrays.toString(g2.BFS("DoesNotExist", "DoesNotExist", "alphabetical")));
+		System.out.println(Arrays.toString(g2.BFS("A", "D", "reverse")));
+		System.out.println();
+
+		// BDS
+		System.out.println(Arrays.toString(g2.DFS("A", "D", "alphabetical")));
+		System.out.println(Arrays.toString(g2.DFS("D", "A", "alphabetical")));
+		System.out.println(Arrays.toString(g2.DFS("DoesNotExist", "DoesNotExist", "alphabetical")));
+		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
+		System.out.println();
+
+		// Remove
+		/*
 		System.out.println();
 		g2.removeNode("B");
 		g2.printGraph();
+		 */
 	}
 }
