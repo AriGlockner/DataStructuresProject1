@@ -266,7 +266,6 @@ public class Graph
 		return new String[0];
 	}
 
-
 	/**
 	 * Breath-first search finds verticies by:
 	 * 1) visit a vertex

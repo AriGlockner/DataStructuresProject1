@@ -1,3 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class WeightedGraph extends Graph
 {
 	public WeightedGraph(int maximum)
@@ -43,6 +49,74 @@ public class WeightedGraph extends Graph
 	 */
 	public void printWeightedGraph()
 	{
+		/*
+		// Iterate through each vertex by order created
+		for (int i = 0; i < vertexOrderCreated; i++)
+		{
+			// Get current vertex
+			Vertex v = vertices.get(orderCreated.get(i));
+			// Do nothing if vertex does not exist
+			if (v != null)
+			{
+				// Add parents
+				StringBuilder sb = new StringBuilder(v + " ");
+				// Add children
+				for (Vertex next : v.getChildren())
+					sb.append(next).append(" ");
+				// print everything out
+				System.out.println(sb.substring(0, sb.length() - 1));
+			}
+		}
+		
+		 */
+	}
 
+	public static WeightedGraph readWeightedGraph(String filename)
+	{
+		Scanner scanner;
+		try
+		{
+			scanner = new Scanner(new FileInputStream(filename));
+		} catch (FileNotFoundException e)
+		{
+			scanner = new Scanner(filename);
+			e.printStackTrace();
+		}
+		ArrayList<String> lines = new ArrayList<>();
+
+		while (scanner.hasNextLine())
+			lines.add(scanner.nextLine());
+
+		WeightedGraph graph = new WeightedGraph(lines.size());
+
+		for (String s : lines)
+		{
+			// Split into nodes
+			String[] nodes = s.split(" ");
+
+			// Add nodes
+			/*
+			for (String n : nodes)
+				graph.addNode(n);
+			*/
+			for (int i = 0; i < nodes.length; i++)
+				if (i % 2 == 0)
+					graph.addNode(nodes[i]);
+
+			// Add edges
+			//graph.addEdges(nodes[0], Arrays.copyOfRange(nodes, 1, nodes.length));
+			for (int i = 2; i < nodes.length; i+=2)
+			{
+				graph.addWeightedEdge(nodes[0], nodes[i], Integer.parseInt(nodes[i - 1]));
+
+			}
+		}
+		return graph;
+	}
+
+	public static void main(String[] args)
+	{
+		WeightedGraph g = WeightedGraph.readWeightedGraph("weightedgraph.txt");
+		g.printWeightedGraph();
 	}
 }
