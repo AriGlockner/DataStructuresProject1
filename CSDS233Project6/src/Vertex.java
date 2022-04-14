@@ -104,6 +104,32 @@ public class Vertex implements Comparable<Vertex>
 		return edges;
 	}
 
+	public WeightedEdge getWeightedEdge(Vertex to)
+	{
+		Edge e = new Edge(this, to);
+
+		for (Edge edge : edges)
+			if (e.equals(edge))
+				if (edge instanceof WeightedEdge)
+					return (WeightedEdge) edge;
+				else
+					return null;
+		return null;
+	}
+
+	public LinkedList<WeightedEdge> getWeightedEdges()
+	{
+		LinkedList<WeightedEdge> weightedEdges = new LinkedList<>();
+		for (Edge e : edges)
+			if (e instanceof WeightedEdge)
+				weightedEdges.add((WeightedEdge) e);
+		return weightedEdges;
+	}
+
+
+	/**
+	 * @return name of this Vertex
+	 */
 	@Override
 	public String toString()
 	{

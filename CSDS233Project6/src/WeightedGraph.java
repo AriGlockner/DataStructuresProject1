@@ -8,9 +8,9 @@ import java.util.*;
  */
 public class WeightedGraph extends Graph
 {
-	public WeightedGraph(int maximum)
+	public WeightedGraph()
 	{
-		super(maximum);
+		super();
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class WeightedGraph extends Graph
 		while (scanner.hasNextLine())
 			lines.add(scanner.nextLine());
 
-		WeightedGraph graph = new WeightedGraph(lines.size());
+		WeightedGraph graph = new WeightedGraph();
 
 		String[][] nodes = new String[lines.size()][];
 
@@ -125,9 +125,98 @@ public class WeightedGraph extends Graph
 		return graph;
 	}
 
+	/* Part 2 */
+	/**
+	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
+	 * equivalent length, you only need to return one of them. If the path does not exist, return an empty array.
+	 *
+	 * @param from starting point
+	 * @param to   end point
+	 * @return shortest path if it exists, otherwise return an empty array
+	 */
+	public String[] shortestPath(String from, String to)
+	{
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Start or end do not exist
+		if (start == null || end == null)
+			return new String[0];
+
+		// start and end are same
+		if (from.equals(to))
+			return new String[] {to};
+
+		// Calculate path
+
+		// Check shortest path
+		List<WeightedEdge> paths = start.getWeightedEdges();
+		// Remove paths that loop back to from
+		paths.removeIf(we -> we.getTo().toString().equals(from));
+		// Error due to path forming a circle. Have to add in encountered variable
+		Collections.sort(paths);
+
+		String[] shortestPath = new String[0];
+		int weight = 0;
+
+		for (WeightedEdge path : paths)
+		{
+			String[] potentialPath = shortestPath(paths.get(0).getTo().toString(), to);
+			// Path is successful
+			if (!Arrays.equals(potentialPath, new String[0]) && potentialPath[potentialPath.length - 1].equals(to))
+			{
+				int potentialWeight = calculatePathWeight();
+				// No prior successful path exists or new route is faster than old route
+				if (Arrays.equals(shortestPath, new String[0]) || potentialWeight < weight)
+				{
+					// Update route
+					shortestPath = potentialPath;
+					weight = potentialWeight;
+				}
+			}
+		}
+		/*
+		String[] shortestPath = shortestPath(paths.get(0).getTo().toString(), to);
+		int smallestWeight = 0;
+
+		for (int i = 0; i < shortestPath.length - 1; i++)
+		{
+			Vertex v = getVertex(shortestPath[i]);
+			WeightedEdge e = v.getWeightedEdge(getVertex(shortestPath[i + 1]));
+		}
+
+		for (WeightedEdge w : paths)
+		{
+			String[] potentialPath = shortestPath(w.getTo().toString(), to);
+		}
+		 */
+
+		// Path does not exist
+		return shortestPath;
+	}
+
+	private int calculatePathWeight()
+	{
+		int weight = 0;
+
+		return weight;
+	}
+
+	/**
+	 * @param from starting point
+	 * @param to   end point
+	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
+	 * equivalent results
+	 */
+	public String[] secondShortestPath(String from, String to)
+	{
+		return new String[0];
+	}
+
 	public static void main(String[] args)
 	{
 		WeightedGraph g = WeightedGraph.readWeightedGraph("weightedgraph.txt");
 		g.printWeightedGraph();
+		System.out.println(Arrays.toString(g.shortestPath("A", "F")));
 	}
 }

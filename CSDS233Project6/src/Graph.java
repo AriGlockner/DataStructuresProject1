@@ -6,17 +6,16 @@ import java.util.*;
  */
 public class Graph
 {
-	Hashtable<String, Vertex> vertices;
-	int vertexOrderCreated;
-	Hashtable<Integer, String> orderCreated;
-	//private int maxNum;
+	private Hashtable<String, Vertex> vertices;
+	private ArrayList<String> order;
 
-	public Graph(int maximum)
+	/**
+	 * Initializes a new Empty Graph
+	 */
+	public Graph()
 	{
-		//maxNum = maximum;
-		vertices = new Hashtable<>(maximum);
-		vertexOrderCreated = 0;
-		orderCreated = new Hashtable<>(maximum);
+		vertices = new Hashtable<>();
+		order = new ArrayList<>();
 	}
 
 	/**
@@ -41,7 +40,8 @@ public class Graph
 			return false;
 		// Add a new vertex
 		vertices.put(name, new Vertex(name));
-		orderCreated.put(vertexOrderCreated++, name);
+		//orderCreated.put(vertexOrderCreated++, name);
+		order.add(name);
 		return true;
 	}
 
@@ -122,6 +122,7 @@ public class Graph
 			p.removeEdge(toRemove);
 
 		// Remove toRemove
+		order.remove(name);
 		return vertices.remove(name, toRemove);
 	}
 
@@ -146,10 +147,11 @@ public class Graph
 	public void printGraph()
 	{
 		// Iterate through each vertex by order created
-		for (int i = 0; i < vertexOrderCreated; i++)
+		//for (int i = 0; i < vertexOrderCreated; i++)
+		for (String s : order)
 		{
 			// Get current vertex
-			Vertex v = vertices.get(orderCreated.get(i));
+			Vertex v = vertices.get(s); //orderCreated.get(i));
 			// Do nothing if vertex does not exist
 			if (v != null)
 			{
@@ -193,14 +195,16 @@ public class Graph
 
 		String[][] nodes = new String[lines.size()][];
 
-		Graph graph = new Graph(lines.size());
+		Graph graph = new Graph();
 
 		for (int i = 0; i < lines.size(); i++)
 			nodes[i] = lines.get(i).split(" ");
 
+		// Add Nodes
 		for (String[] strArray : nodes)
 			graph.addNode(strArray[0]);
 
+		// Add Edges
 		for (String[] strArray : nodes)
 			graph.addEdges(strArray[0], Arrays.copyOfRange(strArray, 1, nodes.length));
 
@@ -324,6 +328,33 @@ public class Graph
 	}
 
 	/**
+	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
+	 * equivalent length, you only need to return one of them. If the path does not exist, return an empty array.
+	 *
+	 * @param from starting point
+	 * @param to   end point
+	 * @return shortest path if it exists, otherwise return an empty array
+	 */
+	public String[] shortestPath(String from, String to)
+	{
+		Vertex start = vertices.get(from);
+		Vertex end = vertices.get(to);
+
+		// Start or end do not exist
+		if (start == null || end == null)
+			return new String[0];
+
+		// start and end are same
+		if (from.equals(to))
+			return new String[] {to};
+
+		// Calculate path
+
+		// Path does not exist
+		return new String[0];
+	}
+
+	/**
 	 * @param from starting point
 	 * @param to   end point
 	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
@@ -331,7 +362,7 @@ public class Graph
 	 */
 	public String[] secondShortestPath(String from, String to)
 	{
-		return null;
+		return new String[0];
 	}
 
 	/**
@@ -347,7 +378,7 @@ public class Graph
 		System.out.println();
 		*/
 
-		Graph g2 = new Graph(10);
+		Graph g2 = new Graph();
 		g2.addNodes(new String[] {"A", "B", "C", "D"});
 		g2.addEdges("A", new String[] {"B", "C"});
 		g2.addEdges("B", new String[] {"D"});

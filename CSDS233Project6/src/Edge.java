@@ -1,15 +1,23 @@
-public class Edge {
-	//private int endNode;
-	//private Edge next; // Matrix Representation
-	private Vertex from;
-	private Vertex to;
+public class Edge
+{
+	private final Vertex from;
+	private final Vertex to;
 
+	/**
+	 * Initializes a new Edge
+	 *
+	 * @param from Start Vertex
+	 * @param to   End Vertex
+	 */
 	public Edge(Vertex from, Vertex to)
 	{
 		this.from = from;
 		this.to = to;
 	}
 
+	/**
+	 * @return destination of this Edge
+	 */
 	public Vertex getTo()
 	{
 		return to;
@@ -23,6 +31,9 @@ public class Edge {
 		return false;
 	}
 
+	/**
+	 * @return Vertex To
+	 */
 	@Override
 	public String toString()
 	{
