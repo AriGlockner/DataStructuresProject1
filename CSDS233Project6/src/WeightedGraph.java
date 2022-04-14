@@ -36,8 +36,8 @@ public class WeightedGraph extends Graph
 	/**
 	 * Adds a weighted edge from node from to each node in toList with a weight from the weightList
 	 *
-	 * @param from starting node
-	 * @param toList destination node
+	 * @param from       starting node
+	 * @param toList     destination node
 	 * @param weightList weight associated with transversal
 	 * @return true if successful, false otherwise
 	 */
@@ -119,13 +119,14 @@ public class WeightedGraph extends Graph
 
 		// Add Edges
 		for (String[] strArray : nodes)
-			for (int i = 2; i < strArray.length; i+=2) //String[] strArray : nodes)
+			for (int i = 2; i < strArray.length; i += 2) //String[] strArray : nodes)
 				graph.addWeightedEdge(strArray[0], strArray[i], Integer.parseInt(strArray[i - 1]));
 
 		return graph;
 	}
 
 	/* Part 2 */
+
 	/**
 	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
 	 * equivalent length, you only need to return one of them. If the path does not exist, return an empty array.
@@ -134,6 +135,7 @@ public class WeightedGraph extends Graph
 	 * @param to   end point
 	 * @return shortest path if it exists, otherwise return an empty array
 	 */
+	//TODO: Fix stack overflow error when path forms a circle
 	public String[] shortestPath(String from, String to)
 	{
 		Vertex start = getVertex(from);
@@ -158,46 +160,34 @@ public class WeightedGraph extends Graph
 
 		String[] shortestPath = new String[0];
 		int weight = 0;
+		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
 
 		for (WeightedEdge path : paths)
 		{
 			String[] potentialPath = shortestPath(paths.get(0).getTo().toString(), to);
-			// Path is successful
+
+			// Add paths
 			if (!Arrays.equals(potentialPath, new String[0]) && potentialPath[potentialPath.length - 1].equals(to))
-			{
-				int potentialWeight = calculatePathWeight();
-				// No prior successful path exists or new route is faster than old route
-				if (Arrays.equals(shortestPath, new String[0]) || potentialWeight < weight)
-				{
-					// Update route
-					shortestPath = potentialPath;
-					weight = potentialWeight;
-				}
-			}
+				successfulPaths.add(new PathWeights(potentialPath, calculatePathWeight(potentialPath)));
 		}
-		/*
-		String[] shortestPath = shortestPath(paths.get(0).getTo().toString(), to);
-		int smallestWeight = 0;
-
-		for (int i = 0; i < shortestPath.length - 1; i++)
-		{
-			Vertex v = getVertex(shortestPath[i]);
-			WeightedEdge e = v.getWeightedEdge(getVertex(shortestPath[i + 1]));
-		}
-
-		for (WeightedEdge w : paths)
-		{
-			String[] potentialPath = shortestPath(w.getTo().toString(), to);
-		}
-		 */
 
 		// Path does not exist
-		return shortestPath;
+		if (successfulPaths.isEmpty())
+			return new String[0];
+		// Return shortest path
+		return successfulPaths.remove().path;
 	}
 
-	private int calculatePathWeight()
+	private int calculatePathWeight(String[] path)
 	{
 		int weight = 0;
+
+		for (int i = 0; i < path.length - 1; i++)
+		{
+			Vertex start = getVertex(path[i]);
+			WeightedEdge weightedEdge = start.getWeightedEdge(getVertex(path[i + 1]));
+			weight += weightedEdge.getWeight();
+		}
 
 		return weight;
 	}
@@ -210,7 +200,58 @@ public class WeightedGraph extends Graph
 	 */
 	public String[] secondShortestPath(String from, String to)
 	{
+		//TODO: Implement like shortestPath. Use a heap to store all paths and get the 2nd smallest min
 		return new String[0];
+	}
+
+	static class PathWeights implements Comparable<PathWeights>
+	{
+		private final String[] path;
+		private final double weight;
+
+		public PathWeights(String[] path, double weight)
+		{
+			this.path = path;
+			this.weight = weight;
+		}
+
+		/**
+		 * Compares this object with the specified object for order.  Returns a
+		 * negative integer, zero, or a positive integer as this object is less
+		 * than, equal to, or greater than the specified object.
+		 *
+		 * <p>The implementor must ensure {@link Integer#signum
+		 * signum}{@code (x.compareTo(y)) == -signum(y.compareTo(x))} for
+		 * all {@code x} and {@code y}.  (This implies that {@code
+		 * x.compareTo(y)} must throw an exception if and only if {@code
+		 * y.compareTo(x)} throws an exception.)
+		 *
+		 * <p>The implementor must also ensure that the relation is transitive:
+		 * {@code (x.compareTo(y) > 0 && y.compareTo(z) > 0)} implies
+		 * {@code x.compareTo(z) > 0}.
+		 *
+		 * <p>Finally, the implementor must ensure that {@code
+		 * x.compareTo(y)==0} implies that {@code signum(x.compareTo(z))
+		 * == signum(y.compareTo(z))}, for all {@code z}.
+		 *
+		 * @param o the object to be compared.
+		 * @return a negative integer, zero, or a positive integer as this object
+		 * is less than, equal to, or greater than the specified object.
+		 * @throws NullPointerException if the specified object is null
+		 * @throws ClassCastException   if the specified object's type prevents it
+		 *                              from being compared to this object.
+		 * @apiNote It is strongly recommended, but <i>not</i> strictly required that
+		 * {@code (x.compareTo(y)==0) == (x.equals(y))}.  Generally speaking, any
+		 * class that implements the {@code Comparable} interface and violates
+		 * this condition should clearly indicate this fact.  The recommended
+		 * language is "Note: this class has a natural ordering that is
+		 * inconsistent with equals."
+		 */
+		@Override
+		public int compareTo(PathWeights o)
+		{
+			return Double.compare(weight, o.weight);
+		}
 	}
 
 	public static void main(String[] args)
