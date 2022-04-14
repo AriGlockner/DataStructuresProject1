@@ -16,7 +16,7 @@ public class WeightedEdge extends Edge
 	@Override
 	public String toString()
 	{
-		return "" + weight;
+		return weight + " " + super.toString();
 		//return super.toString() + " " + weight;
 	}
 }

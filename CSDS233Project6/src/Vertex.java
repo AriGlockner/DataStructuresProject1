@@ -99,6 +99,10 @@ public class Vertex implements Comparable<Vertex>
 		return children;
 	}
 
+	public LinkedList<Edge> getEdges()
+	{
+		return edges;
+	}
 
 	@Override
 	public String toString()

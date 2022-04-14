@@ -6,9 +6,9 @@ import java.util.*;
  */
 public class Graph
 {
-	private Hashtable<String, Vertex> vertices;
-	private int vertexOrderCreated;
-	private Hashtable<Integer, String> orderCreated;
+	Hashtable<String, Vertex> vertices;
+	int vertexOrderCreated;
+	Hashtable<Integer, String> orderCreated;
 	//private int maxNum;
 
 	public Graph(int maximum)
@@ -156,7 +156,7 @@ public class Graph
 				// Add parents
 				StringBuilder sb = new StringBuilder(v + " ");
 				// Add children
-				for (Vertex next : v.getChildren())
+				for (Edge next : v.getEdges())
 					sb.append(next).append(" ");
 				// print everything out
 				System.out.println(sb.substring(0, sb.length() - 1));
@@ -191,20 +191,19 @@ public class Graph
 		while (scanner.hasNextLine())
 			lines.add(scanner.nextLine());
 
+		String[][] nodes = new String[lines.size()][];
+
 		Graph graph = new Graph(lines.size());
 
-		for (String s : lines)
-		{
-			// Split into nodes
-			String[] nodes = s.split(" ");
+		for (int i = 0; i < lines.size(); i++)
+			nodes[i] = lines.get(i).split(" ");
 
-			// Add nodes
-			for (String n : nodes)
-				graph.addNode(n);
+		for (String[] strArray : nodes)
+			graph.addNode(strArray[0]);
 
-			// Add edges
-			graph.addEdges(nodes[0], Arrays.copyOfRange(nodes, 1, nodes.length));
-		}
+		for (String[] strArray : nodes)
+			graph.addEdges(strArray[0], Arrays.copyOfRange(strArray, 1, nodes.length));
+
 		return graph;
 	}
 
@@ -345,7 +344,6 @@ public class Graph
 		/*
 		Graph g1 = new Graph(0).read("graph.txt");
 		g1.printGraph();
-
 		System.out.println();
 		*/
 

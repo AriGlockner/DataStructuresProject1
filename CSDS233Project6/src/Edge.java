@@ -22,4 +22,10 @@ public class Edge {
 			return to.equals(((Edge) o).to) && from.equals(((Edge) o).from);
 		return false;
 	}
+
+	@Override
+	public String toString()
+	{
+		return to.toString();
+	}
 }
