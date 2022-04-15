@@ -9,8 +9,7 @@ public class Vertex implements Comparable<Vertex>
 	private final String name;
 	private LinkedList<Edge> edges; // adjacency list
 	private LinkedList<Vertex> parents;
-
-	//public boolean encountered;
+	public boolean visited;
 	//private boolean done;
 
 	/**
@@ -22,6 +21,7 @@ public class Vertex implements Comparable<Vertex>
 		this.name = name;
 		edges = new LinkedList<>();
 		parents = new LinkedList<>();
+		visited = false;
 	}
 
 	/**
@@ -77,6 +77,7 @@ public class Vertex implements Comparable<Vertex>
 	{
 		edges.remove(new Edge(this, v));
 	}
+
 
 	private boolean addParent(Vertex parent)
 	{

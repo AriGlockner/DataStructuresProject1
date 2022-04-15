@@ -149,6 +149,60 @@ public class WeightedGraph extends Graph
 		if (from.equals(to))
 			return new String[] {to};
 
+
+		setVisited(false);
+		//return helpShortestPath(from, to);
+
+		// Start by getting the Breadth-First Traversal from x to y as the shortest path in terms of the number of edges
+		String[] path = BFS(from, to, "alphabetical");
+		double weight = calculatePathWeight(path);
+
+		// Return empty String array if no such path exists
+		if (Arrays.equals(path, new String[0]))
+			return path;
+
+		// Handle case where BFS is not the fastest path
+		// Set the vertices in path as encountered
+		for (String name : path)
+			getVertex(name).visited = true;
+
+		PriorityQueue<Vertex> queue = new PriorityQueue<>(Collections.reverseOrder());
+
+
+		return path;
+	}
+
+	private String[] helpShortestPath(String from, String to)
+	{
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Start or end do not exist
+		if (start == null || end == null)
+			return new String[0];
+
+		// start and end are same
+		if (from.equals(to))
+			return new String[] {to};
+
+
+		return null;
+	}
+
+	/*
+	private String[] helpShortestPath(String from, String to)
+	{
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Start or end do not exist
+		if (start == null || end == null)
+			return new String[0];
+
+		// start and end are same
+		if (from.equals(to))
+			return new String[] {to};
+
 		// Calculate path
 
 		// Check shortest path
@@ -158,17 +212,20 @@ public class WeightedGraph extends Graph
 		// Error due to path forming a circle. Have to add in encountered variable
 		Collections.sort(paths);
 
-		String[] shortestPath = new String[0];
-		int weight = 0;
 		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
 
 		for (WeightedEdge path : paths)
 		{
-			String[] potentialPath = shortestPath(paths.get(0).getTo().toString(), to);
+			if (!path.getTo().visited)
+			{
+				String[] potentialPath = shortestPath(paths.get(0).getTo().toString(), to);
 
-			// Add paths
-			if (!Arrays.equals(potentialPath, new String[0]) && potentialPath[potentialPath.length - 1].equals(to))
-				successfulPaths.add(new PathWeights(potentialPath, calculatePathWeight(potentialPath)));
+				// Add paths
+				if (!Arrays.equals(potentialPath, new String[0]) && potentialPath[potentialPath.length - 1].equals(to))
+					successfulPaths.add(new PathWeights(potentialPath, calculatePathWeight(potentialPath)));
+				//path.getTo().visited = true;
+				getVertex(path.getTo().toString()).visited = true;
+			}
 		}
 
 		// Path does not exist
@@ -177,6 +234,7 @@ public class WeightedGraph extends Graph
 		// Return shortest path
 		return successfulPaths.remove().path;
 	}
+	*/
 
 	private int calculatePathWeight(String[] path)
 	{

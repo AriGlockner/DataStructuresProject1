@@ -327,6 +327,12 @@ public class Graph
 		return new String[0];
 	}
 
+	void setVisited(boolean visited)
+	{
+		for (String name : order)
+			vertices.get(name).visited = visited;
+	}
+
 	/**
 	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
 	 * equivalent length, you only need to return one of them. If the path does not exist, return an empty array.
