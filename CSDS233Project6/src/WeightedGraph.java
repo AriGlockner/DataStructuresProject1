@@ -150,6 +150,7 @@ public class WeightedGraph extends Graph
 			return new String[] {to};
 
 
+		/*
 		setVisited(false);
 		//return helpShortestPath(from, to);
 
@@ -167,9 +168,76 @@ public class WeightedGraph extends Graph
 			getVertex(name).visited = true;
 
 		PriorityQueue<Vertex> queue = new PriorityQueue<>(Collections.reverseOrder());
+		*/
+
+		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>();
+		for (String[] path : getPaths(from, to))
+			successfulPaths.add(new PathWeights(path, calculatePathWeight(path)));
+
+		return successfulPaths.remove().path;
+	}
+
+	private List<String[]> getPaths(String from, String to)
+	{
+		ArrayList<String[]> successfulPaths = new ArrayList<>();
+		//successfulPaths.add(BFS(from, to, "alphabetical"));
+
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Either from or to does not exist in graph
+		if (start == null || end == null)
+			return successfulPaths;
+
+		// Case start is the same as end
+		if (start == end)
+		{
+			successfulPaths.add(new String[] {from});
+			return successfulPaths;
+		}
+
+		ArrayList<Vertex> encountered = new ArrayList<>();
+		encountered.add(getVertex(from));
+
+		List<Vertex> nextVertices = start.getChildren();
+
+		for (Vertex next : nextVertices)
+		{
+			if (next != null)
+			{
+
+			}
+		}
+
+		/*
+		proceed as far as possible along a given path (via a neighbor)
+		before going to the next neighbor
+		 *
+
+		// Get children
+		LinkedList<Vertex> children = start.getChildren();
+
+		// Set children in order
+		Collections.sort(children);
+		// Search through all children in the order determined by parameter neighborOrder
+		for (Vertex v : children)
+			if (v != null)
+			{
+				// Search for this child's path for String to
+				String[] path = getPaths(v.toString(), to);
+				if (path[path.length - 1].equals(to))
+				{
+					// If to is found, return this method's from + the array from the path called recursively
+					String[] newPath = new String[path.length + 1];
+					newPath[0] = from;
+					System.arraycopy(path, 0, newPath, 1, path.length);
+					return newPath;
+				}
+			}
+		*/
 
 
-		return path;
+		return successfulPaths;
 	}
 
 	private String[] helpShortestPath(String from, String to)
@@ -258,8 +326,30 @@ public class WeightedGraph extends Graph
 	 */
 	public String[] secondShortestPath(String from, String to)
 	{
-		//TODO: Implement like shortestPath. Use a heap to store all paths and get the 2nd smallest min
-		return new String[0];
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Start or end do not exist
+		if (start == null || end == null)
+			return new String[0];
+
+		// start and end are same
+		if (from.equals(to))
+			return new String[] {to};
+
+		// Create a queue of successful paths
+		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>();
+		// Get each possible path and add it to the queue of successful paths
+		for (String[] path : getPaths(from, to))
+			successfulPaths.add(new PathWeights(path, calculatePathWeight(path)));
+
+		// If queue does not contain 2 or more possible paths, return an empty String array
+		if (successfulPaths.size() < 2)
+			return new String[0];
+
+		// Return 2nd shortest path
+		successfulPaths.remove();
+		return successfulPaths.remove().path;
 	}
 
 	static class PathWeights implements Comparable<PathWeights>
@@ -308,7 +398,7 @@ public class WeightedGraph extends Graph
 		@Override
 		public int compareTo(PathWeights o)
 		{
-			return Double.compare(weight, o.weight);
+			return -1 * Double.compare(weight, o.weight);
 		}
 	}
 

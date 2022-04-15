@@ -1,18 +1,36 @@
+/**
+ * A WeightedEdge is an Edge that also has a weight associated with it
+ *
+ * @author ari
+ */
 public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 {
 	private final int weight;
 
+	/**
+	 * Initializes a new WeightedEdge, which is an edge that has a weight
+	 *
+	 * @param from starting vertex
+	 * @param to ending vertex
+	 * @param weight cost associated with transversal across the edge
+	 */
 	public WeightedEdge(Vertex from, Vertex to, int weight)
 	{
 		super(from, to);
 		this.weight = weight;
 	}
 
+	/**
+	 * @return weight
+	 */
 	public int getWeight()
 	{
 		return weight;
 	}
 
+	/**
+	 * @return weight and destination separated by a single space
+	 */
 	@Override
 	public String toString()
 	{

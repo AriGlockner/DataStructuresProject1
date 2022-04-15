@@ -1,3 +1,8 @@
+/**
+ * An edge connects one vertex to another vertex
+ *
+ * @author ari
+ */
 public class Edge
 {
 	private final Vertex from;
@@ -23,6 +28,10 @@ public class Edge
 		return to;
 	}
 
+	/**
+	 * @param o other Object
+	 * @return true if o is an Edge and has the same from and to, otherwise returns false
+	 */
 	@Override
 	public boolean equals(Object o)
 	{

@@ -72,13 +72,20 @@ public class Vertex implements Comparable<Vertex>
 		return true;
 	}
 
-
+	/**
+	 * Removes this vertex's edge where this vertex is the start and the parameter v is the destination.
+	 * @param v vertex destination
+	 */
 	public void removeEdge(Vertex v)
 	{
 		edges.remove(new Edge(this, v));
 	}
 
-
+	/**
+	 *
+	 * @param parent
+	 * @return
+	 */
 	private boolean addParent(Vertex parent)
 	{
 		if (parents.contains(parent))
@@ -87,11 +94,17 @@ public class Vertex implements Comparable<Vertex>
 		return true;
 	}
 
+	/**
+	 * @return the list of vertices that have edges pointing towards this vertex
+	 */
 	public LinkedList<Vertex> getParents()
 	{
 		return parents;
 	}
 
+	/**
+	 * @return the list of vertices that this vertex points towards
+	 */
 	public LinkedList<Vertex> getChildren()
 	{
 		LinkedList<Vertex> children = new LinkedList<>();
@@ -100,12 +113,21 @@ public class Vertex implements Comparable<Vertex>
 		return children;
 	}
 
+	/**
+	 * @return the edges that this vertex has
+	 */
 	public LinkedList<Edge> getEdges()
 	{
 		return edges;
 	}
 
-	public WeightedEdge getWeightedEdge(Vertex to)
+	/**
+	 * Only called from WeightedGraph class
+	 *
+	 * @param to destination of edge
+	 * @return weighted edge from this vertex to the parameter to vertex
+	 */
+	WeightedEdge getWeightedEdge(Vertex to)
 	{
 		Edge e = new Edge(this, to);
 
@@ -118,6 +140,9 @@ public class Vertex implements Comparable<Vertex>
 		return null;
 	}
 
+	/**
+	 * @return all weighted edges that this vertex contains
+	 */
 	public LinkedList<WeightedEdge> getWeightedEdges()
 	{
 		LinkedList<WeightedEdge> weightedEdges = new LinkedList<>();

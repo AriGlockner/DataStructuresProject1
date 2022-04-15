@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 
 /**
+ * This class is a collection of vertices and edges forming a graph. 
+ *
  * @author ari
  */
 public class Graph
