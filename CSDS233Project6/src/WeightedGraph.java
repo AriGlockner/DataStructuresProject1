@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -8,6 +9,9 @@ import java.util.*;
  */
 public class WeightedGraph extends Graph
 {
+	private ArrayList<Vertex> encountered = new ArrayList<>();
+	int count = 0;
+
 	public WeightedGraph()
 	{
 		super();
@@ -138,6 +142,13 @@ public class WeightedGraph extends Graph
 	//TODO: Fix stack overflow error when path forms a circle
 	public String[] shortestPath(String from, String to)
 	{
+		String[] path = BFS(from, to, "alphabetical");
+		int weight = calculatePathWeight(path);
+
+
+		return path;
+
+		/*
 		Vertex start = getVertex(from);
 		Vertex end = getVertex(to);
 
@@ -149,32 +160,19 @@ public class WeightedGraph extends Graph
 		if (from.equals(to))
 			return new String[] {to};
 
+		encountered.clear();
 
-		/*
-		setVisited(false);
-		//return helpShortestPath(from, to);
-
-		// Start by getting the Breadth-First Traversal from x to y as the shortest path in terms of the number of edges
-		String[] path = BFS(from, to, "alphabetical");
-		double weight = calculatePathWeight(path);
-
-		// Return empty String array if no such path exists
-		if (Arrays.equals(path, new String[0]))
-			return path;
-
-		// Handle case where BFS is not the fastest path
-		// Set the vertices in path as encountered
-		for (String name : path)
-			getVertex(name).visited = true;
-
-		PriorityQueue<Vertex> queue = new PriorityQueue<>(Collections.reverseOrder());
-		*/
-
-		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>();
+		// Create a queue of successful paths
+		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
+		// Get each possible path and add it to the queue of successful paths
 		for (String[] path : getPaths(from, to))
 			successfulPaths.add(new PathWeights(path, calculatePathWeight(path)));
 
+		// If queue does not contain 2 or more possible paths, return an empty String array
+		if (successfulPaths.isEmpty())
+			return new String[0];
 		return successfulPaths.remove().path;
+		 */
 	}
 
 	private List<String[]> getPaths(String from, String to)
@@ -196,15 +194,27 @@ public class WeightedGraph extends Graph
 			return successfulPaths;
 		}
 
-		ArrayList<Vertex> encountered = new ArrayList<>();
-		encountered.add(getVertex(from));
+		if (!encountered.contains(getVertex(from)))
+			encountered.add(getVertex(from));
 
 		List<Vertex> nextVertices = start.getChildren();
 
 		for (Vertex next : nextVertices)
 		{
-			if (next != null)
+			if (next != null && !encountered.contains(next))
 			{
+				String[] possiblePath = BFS(next.toString(), to, "alphabetical");
+				if (possiblePath != null && possiblePath[possiblePath.length - 1].equals(to))
+				{
+					String[] path = new String[possiblePath.length + 1];
+					path[0] = from;
+					System.arraycopy(possiblePath, 0, path, 1, possiblePath.length);
+					successfulPaths.add(path);
+					for (int i = count; i < encountered.size(); i++)
+						encountered.remove(i--);
+				}
+
+				//
 
 			}
 		}
@@ -236,84 +246,50 @@ public class WeightedGraph extends Graph
 			}
 		*/
 
-
+		count++;
 		return successfulPaths;
 	}
 
-	private String[] helpShortestPath(String from, String to)
+	private String[] path(ArrayList<String> currentPath, String from, String to)
 	{
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
+		Vertex current = getVertex(from);
 
-		// Start or end do not exist
-		if (start == null || end == null)
+		if (current == null)
 			return new String[0];
 
-		// start and end are same
 		if (from.equals(to))
-			return new String[] {to};
+			return new String[] {from};
 
-
-		return null;
-	}
-
-	/*
-	private String[] helpShortestPath(String from, String to)
-	{
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
-
-		// Start or end do not exist
-		if (start == null || end == null)
-			return new String[0];
-
-		// start and end are same
-		if (from.equals(to))
-			return new String[] {to};
-
-		// Calculate path
-
-		// Check shortest path
-		List<WeightedEdge> paths = start.getWeightedEdges();
-		// Remove paths that loop back to from
-		paths.removeIf(we -> we.getTo().toString().equals(from));
-		// Error due to path forming a circle. Have to add in encountered variable
-		Collections.sort(paths);
-
-		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
-
-		for (WeightedEdge path : paths)
+		LinkedList<Vertex> children = current.getChildren();
+		for (Vertex v : children)
 		{
-			if (!path.getTo().visited)
+			if (v != null)
 			{
-				String[] potentialPath = shortestPath(paths.get(0).getTo().toString(), to);
 
-				// Add paths
-				if (!Arrays.equals(potentialPath, new String[0]) && potentialPath[potentialPath.length - 1].equals(to))
-					successfulPaths.add(new PathWeights(potentialPath, calculatePathWeight(potentialPath)));
-				//path.getTo().visited = true;
-				getVertex(path.getTo().toString()).visited = true;
 			}
 		}
 
-		// Path does not exist
-		if (successfulPaths.isEmpty())
-			return new String[0];
-		// Return shortest path
-		return successfulPaths.remove().path;
+		/*
+		for (Vertex v : current.getChildren())
+			if (currentPath == null || !currentPath.contains(v.toString()))
+			{
+				// check child
+				if (currentPath == null)
+					currentPath = new ArrayList<>();
+
+				currentPath.add(from);
+				String[] newPath = path(currentPath, v.toString(), to);
+			}
+		*/
+		return new String[0];
 	}
-	*/
 
 	private int calculatePathWeight(String[] path)
 	{
 		int weight = 0;
 
 		for (int i = 0; i < path.length - 1; i++)
-		{
-			Vertex start = getVertex(path[i]);
-			WeightedEdge weightedEdge = start.getWeightedEdge(getVertex(path[i + 1]));
-			weight += weightedEdge.getWeight();
-		}
+			weight += getVertex(path[i]).getWeightedEdge(getVertex(path[i + 1])).getWeight();
 
 		return weight;
 	}
@@ -337,11 +313,15 @@ public class WeightedGraph extends Graph
 		if (from.equals(to))
 			return new String[] {to};
 
+		encountered.clear();
+
 		// Create a queue of successful paths
-		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>();
+		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
 		// Get each possible path and add it to the queue of successful paths
 		for (String[] path : getPaths(from, to))
 			successfulPaths.add(new PathWeights(path, calculatePathWeight(path)));
+
+		printPaths(successfulPaths);
 
 		// If queue does not contain 2 or more possible paths, return an empty String array
 		if (successfulPaths.size() < 2)
@@ -352,12 +332,30 @@ public class WeightedGraph extends Graph
 		return successfulPaths.remove().path;
 	}
 
+	private void printPaths(PriorityQueue<PathWeights> successfulPaths)
+	{
+		System.out.println("\nPaths:");
+		while (!successfulPaths.isEmpty())
+			System.out.println(successfulPaths.remove());
+		System.out.println();
+	}
+
+	/*
+	ABDCF
+	ABDEGF
+	ABDF
+	ABEGF
+	ADCF
+	ADEGF
+	ADGF
+	 */
+
 	static class PathWeights implements Comparable<PathWeights>
 	{
 		private final String[] path;
-		private final double weight;
+		private final int weight;
 
-		public PathWeights(String[] path, double weight)
+		public PathWeights(String[] path, int weight)
 		{
 			this.path = path;
 			this.weight = weight;
@@ -400,12 +398,27 @@ public class WeightedGraph extends Graph
 		{
 			return -1 * Double.compare(weight, o.weight);
 		}
+
+		/**
+		 * @return weight and path separated by a single space
+		 */
+		@Override
+		public String toString()
+		{
+			return weight + " " + Arrays.toString(path);
+		}
 	}
 
 	public static void main(String[] args)
 	{
 		WeightedGraph g = WeightedGraph.readWeightedGraph("weightedgraph.txt");
 		g.printWeightedGraph();
-		System.out.println(Arrays.toString(g.shortestPath("A", "F")));
+		System.out.println();
+		String[] shortestPath = g.shortestPath("A", "F");
+		System.out.println(Arrays.toString(shortestPath));
+		System.out.println(g.calculatePathWeight(shortestPath));
+		String[] secondShortestPath = g.secondShortestPath("A", "F");
+		System.out.println(Arrays.toString(secondShortestPath));
+		System.out.println(g.calculatePathWeight(secondShortestPath));
 	}
 }

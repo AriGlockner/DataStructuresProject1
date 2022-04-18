@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * This class is a collection of vertices and edges forming a graph. 
+ * This class is a collection of vertices and edges forming a graph.
  *
  * @author ari
  */
@@ -288,8 +288,9 @@ public class Graph
 	 */
 	public String[] BFS(String from, String to, String neighborOrder)
 	{
-		Vertex start = vertices.get(from); //getVertex(from);
-		Vertex end = vertices.get(to); //getVertex(to);
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
 		// Either from or to does not exist in graph
 		if (start == null || end == null)
 			return new String[0];
@@ -329,48 +330,75 @@ public class Graph
 		return new String[0];
 	}
 
+	/**
+	 * @param from starting node
+	 * @param to destination node
+	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
+	 */
+	public String[] secondShortestPath(String from, String to)
+	{
+		if (getVertex(from) == null || getVertex(to) == null)
+			return new String[0];
+		if (from.equals(to))
+			return new String[] {from};
+		return helpSecondShortestPath(from, to, false);
+	}
+
+	/**
+	 * Uses a BFS algorithm to find the 2nd shortest path
+	 * @param from starting node
+	 * @param to destination node
+	 * @param foundShortestPath lets method know that it can return the next possible path
+	 * @return 2nd shortest path between nodes from and to
+	 */
+	private String[] helpSecondShortestPath(String from, String to, boolean foundShortestPath)
+	{
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Either from or to does not exist in graph
+		if (start == null || end == null)
+			return new String[0];
+
+		// Case start is the same as end
+		if (start.equals(end))
+			return new String[] {from};
+
+		// Get children
+		List<Vertex> children = start.getChildren();
+
+		// search if to is in edge of current vertex
+		for (Vertex c : children)
+			if (c.toString().equals(to))
+				return new String[] {from, to};
+
+		Collections.sort(children);
+
+		// Recursively call to find to
+		for (Vertex c : children)
+		{
+			String[] path = helpSecondShortestPath(c.toString(), to, foundShortestPath);
+			if (path[path.length - 1].equals(to))
+				if (foundShortestPath)
+				{
+					String[] newPath = new String[path.length + 1];
+					newPath[0] = from;
+					System.arraycopy(path, 0, newPath, 1, path.length);
+					return newPath;
+				}
+				else
+					foundShortestPath = true;
+		}
+
+		// Return an empty String array if to does not exist in this path
+		return new String[0];
+	}
+
+
 	void setVisited(boolean visited)
 	{
 		for (String name : order)
 			vertices.get(name).visited = visited;
-	}
-
-	/**
-	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
-	 * equivalent length, you only need to return one of them. If the path does not exist, return an empty array.
-	 *
-	 * @param from starting point
-	 * @param to   end point
-	 * @return shortest path if it exists, otherwise return an empty array
-	 */
-	public String[] shortestPath(String from, String to)
-	{
-		Vertex start = vertices.get(from);
-		Vertex end = vertices.get(to);
-
-		// Start or end do not exist
-		if (start == null || end == null)
-			return new String[0];
-
-		// start and end are same
-		if (from.equals(to))
-			return new String[] {to};
-
-		// Calculate path
-
-		// Path does not exist
-		return new String[0];
-	}
-
-	/**
-	 * @param from starting point
-	 * @param to   end point
-	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
-	 * equivalent results
-	 */
-	public String[] secondShortestPath(String from, String to)
-	{
-		return new String[0];
 	}
 
 	/**
@@ -408,6 +436,10 @@ public class Graph
 		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
 		System.out.println();
 
+		// 2nd Shortest Path
+		System.out.println(Arrays.toString(g2.secondShortestPath("A", "D")));
+		System.out.println(Arrays.toString(g2.BFS("A", "D", "alphabetical")));
+		System.out.println();
 		// Remove
 		/*
 		System.out.println();
