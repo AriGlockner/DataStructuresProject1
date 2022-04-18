@@ -8,7 +8,9 @@ import java.util.*;
  */
 public class Graph
 {
+	// All Vertices in Graph
 	private Hashtable<String, Vertex> vertices;
+	// Order that the vertices were placed
 	private ArrayList<String> order;
 
 	/**
@@ -356,6 +358,7 @@ public class Graph
 	 * @param to   destination node
 	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
 	 */
+	//TODO: Write Method
 	public String[] secondShortestPath(String from, String to)
 	{
 		/*
@@ -382,7 +385,7 @@ public class Graph
 	 * @param to                destination node
 	 * @param foundShortestPath lets method know that it can return the next possible path
 	 * @return 2nd shortest path between nodes from and to
-	 */
+	 *
 	private String[] helpSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
 		/*
@@ -432,7 +435,7 @@ public class Graph
 				}
 			}
 		}
-			 */
+			 *
 		return null;
 
 
@@ -474,13 +477,18 @@ public class Graph
 				else
 					foundShortestPath = true;
 		}
-		*/
+		*
 
 		// Return an empty String array if to does not exist in this path
 		//return new String[0];
 	}
+	*/
 
 
+	/**
+	 * Helper method for Graph Transversal Methods in Weighted Graph class that sets the distances from start to
+	 * Integer.MAX_VALUE and sets their paths to null
+	 */
 	void setVisitedFalse()
 	{
 		for (String name : order)

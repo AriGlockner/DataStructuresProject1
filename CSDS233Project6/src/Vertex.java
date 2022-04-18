@@ -11,14 +11,17 @@ public class Vertex implements Comparable<Vertex>
 {
 	// ID belonging to this specific Vertex
 	private final String name;
-	private LinkedList<Edge> edges; // adjacency list
+	// List of edges that this vertex can travel to
+	private LinkedList<Edge> edges;
+	// List of vertices that can transverse to this vertex
 	private LinkedList<Vertex> parents;
 	// Used for calculating distances in Weighted Graph class
-	public int distanceFromStart; // = Integer.MAX_VALUE;
+	public int distanceFromStart;
 	public String[] path;
 
 	/**
 	 * Initializes a new Vertex
+	 *
 	 * @param name of vertex
 	 */
 	public Vertex(String name)
@@ -78,6 +81,7 @@ public class Vertex implements Comparable<Vertex>
 
 	/**
 	 * Removes this vertex's edge where this vertex is the start and the parameter v is the destination.
+	 *
 	 * @param v vertex destination
 	 */
 	public void removeEdge(Vertex v)
@@ -86,9 +90,8 @@ public class Vertex implements Comparable<Vertex>
 	}
 
 	/**
-	 *
-	 * @param parent
-	 * @return
+	 * @param parent vertex to add to this vertex's parents list
+	 * @return true if successful, otherwise returns false
 	 */
 	private boolean addParent(Vertex parent)
 	{
@@ -113,7 +116,7 @@ public class Vertex implements Comparable<Vertex>
 	{
 		LinkedList<Vertex> children = new LinkedList<>();
 		for (Edge e : edges)
-			children.add(e.getTo());
+			children.add(e.to);
 		return children;
 	}
 
@@ -216,13 +219,21 @@ public class Vertex implements Comparable<Vertex>
 		return false;
 	}
 
+	/**
+	 * @param o other vertex
+	 * @return this vertex's distance from start - o's distance from start
+	 */
 	public int compareByDistance(Vertex o)
 	{
 		return distanceFromStart - o.distanceFromStart;
 	}
 
+	/**
+	 * @param o other vertex
+	 * @return distance from start to vertex o
+	 */
 	public int getWeight(Vertex o)
 	{
-		return getWeightedEdge(o).getWeight() + distanceFromStart;
+		return getWeightedEdge(o).weight + distanceFromStart;
 	}
 }

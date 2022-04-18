@@ -5,7 +5,7 @@
  */
 public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 {
-	private final int weight;
+	public final int weight;
 
 	/**
 	 * Initializes a new WeightedEdge, which is an edge that has a weight
@@ -18,14 +18,6 @@ public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 	{
 		super(from, to);
 		this.weight = weight;
-	}
-
-	/**
-	 * @return weight
-	 */
-	public int getWeight()
-	{
-		return weight;
 	}
 
 	/**

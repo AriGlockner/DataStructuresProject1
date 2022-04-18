@@ -5,8 +5,8 @@
  */
 public class Edge
 {
-	private final Vertex from;
-	private final Vertex to;
+	public final Vertex from;
+	public final Vertex to;
 
 	/**
 	 * Initializes a new Edge
@@ -18,14 +18,6 @@ public class Edge
 	{
 		this.from = from;
 		this.to = to;
-	}
-
-	/**
-	 * @return destination of this Edge
-	 */
-	public Vertex getTo()
-	{
-		return to;
 	}
 
 	/**

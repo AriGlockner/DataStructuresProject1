@@ -1,22 +1,14 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
- * The WeightedGraph class works for both weighted and directed graphs. The weight applies a value
+ * The WeightedGraph class works for both weighted and directed graphs. The weight applies a cost to the transversal
+ * from one vertex to another vertex
  *
  * @author ari
  */
 public class WeightedGraph extends Graph
 {
-	private ArrayList<Vertex> encountered = new ArrayList<>();
-	int count = 0;
-
-	public WeightedGraph()
-	{
-		super();
-	}
-
 	/**
 	 * Adds an weighted edge from node from to
 	 * node to. Note that for simplicity, we will only consider integer weights.
@@ -96,6 +88,7 @@ public class WeightedGraph extends Graph
 	 */
 	public static WeightedGraph readWeightedGraph(String filename)
 	{
+		// Create Scanner to read file
 		Scanner scanner;
 		try
 		{
@@ -105,31 +98,35 @@ public class WeightedGraph extends Graph
 			scanner = new Scanner(filename);
 			e.printStackTrace();
 		}
+		// Create list of lines
 		ArrayList<String> lines = new ArrayList<>();
 
+		// Add everything from file into lines ArrayList
 		while (scanner.hasNextLine())
 			lines.add(scanner.nextLine());
 
+		// Create graph
 		WeightedGraph graph = new WeightedGraph();
 
-		String[][] nodes = new String[lines.size()][];
+		// Create list of vertices
+		String[][] vertices = new String[lines.size()][];
 
+		// Separate vertices and weights
 		for (int i = 0; i < lines.size(); i++)
-			nodes[i] = lines.get(i).split(" ");
+			vertices[i] = lines.get(i).split(" ");
 
-		// Add Nodes
-		for (String[] strArray : nodes)
+		// Add vertices to Weighted Graph
+		for (String[] strArray : vertices)
 			graph.addNode(strArray[0]);
 
 		// Add Edges
-		for (String[] strArray : nodes)
-			for (int i = 2; i < strArray.length; i += 2) //String[] strArray : nodes)
+		for (String[] strArray : vertices)
+			for (int i = 2; i < strArray.length; i += 2)
 				graph.addWeightedEdge(strArray[0], strArray[i], Integer.parseInt(strArray[i - 1]));
 
+		// return the newly created Weighted Graph
 		return graph;
 	}
-
-	/* Part 2 */
 
 	/**
 	 * Uses Dijkstra’s algorithm to find the shortest path from node from to node to. If there are multiple paths of
@@ -139,26 +136,8 @@ public class WeightedGraph extends Graph
 	 * @param to   end point
 	 * @return shortest path if it exists, otherwise return an empty array
 	 */
-	//TODO
 	public String[] shortestPath(String from, String to)
 	{
-		/*
-		Steps:
-		1. Mark Vertices as unvisited
-		2. All nodes must be initialized with "infinite" distance.
-		3. Mark Starting node as current node
-		4. From current node, analyze all of its neighbors that are not visited yet, and compute their distances by
-		adding the weight of the edge, which establishes the connection between the current node and neighbor node to
-		the current distance of the current node
-		5. Now compare the recently computed distance with the distance allotted to the neighboring node and neighbor
-		node to the neighboring, and treat it as the current distance of the neighboring node,
-		6. After that, the surrounding neighbors of the current node, which has not been visited, are considered, and
-		the current nodes are marked as visited.
-		7. When the ending node is marked as visited, then the algorithm has done its job, otherwise pick the unvisited
-		node which has been allotted the minimum distance and treat it as the new current node. After that, start again
-		from step 4
-		 */
-
 		// Get first and last vertices
 		Vertex start = getVertex(from);
 		Vertex end = getVertex(to);
@@ -175,26 +154,37 @@ public class WeightedGraph extends Graph
 		// Set start as visited and distance as 0
 		start.distanceFromStart = 0;
 
-		//
+		// Create Min Heap of vertices that is sorted by distance from start
 		PriorityQueue<Vertex> vertices = new PriorityQueue<>(Vertex::compareByDistance);
+		// Add the starting vertex into the heap
 		vertices.add(start);
 
+		// Remove the vertex that has the shortest distance to get to from the starting point in the heap. Set the
+		// distances to its possible paths. Repeat this process until there are no more vertices to be reaching
 		while (!vertices.isEmpty())
 		{
+			// Remove the smallest distance to start from the heap
 			Vertex current = vertices.remove();
 
+			// Iterate through all possible paths of current, calculate their weight, and if their weight is less than
+			// the weight of the prior path to them, set the new path
 			for (Vertex next : current.getChildren())
 			{
-				int newWeight = current.getWeight(next);
-				if (newWeight < next.distanceFromStart)
+				// Get distance
+				int newDistance = current.getWeight(next);
+				// If the new distance to get to the next vertex is less than the current distance, change the path
+				if (newDistance < next.distanceFromStart)
 				{
-					next.distanceFromStart = newWeight;
+					// Add vertex to heap after setting its distance
+					next.distanceFromStart = newDistance;
 					vertices.add(next);
+					// If there is not yet a path to the node
 					if (current.path == null)
 					{
 						current.path = new String[] {from};
 						next.path = new String[] {from, current.toString()};
 					}
+					// If the path to the node already exists
 					else
 					{
 						next.path = new String[current.path.length + 1];
@@ -205,128 +195,19 @@ public class WeightedGraph extends Graph
 			}
 		}
 
+		// Return the path to get to the end. If it doesn't exist, return an empty array
+		if (end.path == null)
+			return new String[0];
 		return end.path;
 	}
 
-
-	private List<String[]> getPaths(String from, String to)
-	{
-		ArrayList<String[]> successfulPaths = new ArrayList<>();
-
-		// Get from/to vertices
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
-
-		// Either from or to does not exist in graph
-		if (start == null || end == null)
-			return successfulPaths;
-
-		// Case start is the same as end
-		if (start == end)
-		{
-			successfulPaths.add(new String[] {from});
-			return successfulPaths;
-		}
-
-
-
-		/*
-		if (!encountered.contains(getVertex(from)))
-			encountered.add(getVertex(from));
-
-		List<Vertex> nextVertices = start.getChildren();
-
-		for (Vertex next : nextVertices)
-		{
-			if (next != null && !encountered.contains(next))
-			{
-				String[] possiblePath = BFS(next.toString(), to, "alphabetical");
-				if (possiblePath != null && possiblePath[possiblePath.length - 1].equals(to))
-				{
-					String[] path = new String[possiblePath.length + 1];
-					path[0] = from;
-					System.arraycopy(possiblePath, 0, path, 1, possiblePath.length);
-					successfulPaths.add(path);
-					for (int i = count; i < encountered.size(); i++)
-						encountered.remove(i--);
-				}
-
-				//
-
-			}
-		}
-
-		/*
-		proceed as far as possible along a given path (via a neighbor)
-		before going to the next neighbor
-		 *
-
-		// Get children
-		LinkedList<Vertex> children = start.getChildren();
-
-		// Set children in order
-		Collections.sort(children);
-		// Search through all children in the order determined by parameter neighborOrder
-		for (Vertex v : children)
-			if (v != null)
-			{
-				// Search for this child's path for String to
-				String[] path = getPaths(v.toString(), to);
-				if (path[path.length - 1].equals(to))
-				{
-					// If to is found, return this method's from + the array from the path called recursively
-					String[] newPath = new String[path.length + 1];
-					newPath[0] = from;
-					System.arraycopy(path, 0, newPath, 1, path.length);
-					return newPath;
-				}
-			}
-		*/
-
-		//count++;
-		return successfulPaths;
-	}
-
-	private String[] path(ArrayList<String> currentPath, String from, String to)
-	{
-		Vertex current = getVertex(from);
-
-		if (current == null)
-			return new String[0];
-
-		if (from.equals(to))
-			return new String[] {from};
-
-		LinkedList<Vertex> children = current.getChildren();
-		for (Vertex v : children)
-		{
-			if (v != null)
-			{
-
-			}
-		}
-
-		/*
-		for (Vertex v : current.getChildren())
-			if (currentPath == null || !currentPath.contains(v.toString()))
-			{
-				// check child
-				if (currentPath == null)
-					currentPath = new ArrayList<>();
-
-				currentPath.add(from);
-				String[] newPath = path(currentPath, v.toString(), to);
-			}
-		*/
-		return new String[0];
-	}
-
+	//TODO: Maybe remove this
 	private int calculatePathWeight(String[] path)
 	{
 		int weight = 0;
 
 		for (int i = 0; i < path.length - 1; i++)
-			weight += getVertex(path[i]).getWeightedEdge(getVertex(path[i + 1])).getWeight();
+			weight += getVertex(path[i]).getWeightedEdge(getVertex(path[i + 1])).weight;
 
 		return weight;
 	}
@@ -337,52 +218,20 @@ public class WeightedGraph extends Graph
 	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
 	 * equivalent results
 	 */
+	//TODO: Write method
 	public String[] secondShortestPath(String from, String to)
 	{
-		/*
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
+		String[] shortestPath = shortestPath(from, to);
+		String[] secondShortestPath = BFS(from, to, "alphabetical");
 
-		// Start or end do not exist
-		if (start == null || end == null)
-			return new String[0];
-
-		// start and end are same
-		if (from.equals(to))
-			return new String[] {to};
-
-		encountered.clear();
-
-		// Create a queue of successful paths
-		PriorityQueue<PathWeights> successfulPaths = new PriorityQueue<>(Collections.reverseOrder());
-		// Get each possible path and add it to the queue of successful paths
-		for (String[] path : getPaths(from, to))
-			successfulPaths.add(new PathWeights(path, calculatePathWeight(path)));
-
-		printPaths(successfulPaths);
-
-		// If queue does not contain 2 or more possible paths, return an empty String array
-		if (successfulPaths.size() < 2)
-			return new String[0];
-
-		// Return 2nd shortest path
-		successfulPaths.remove();
-		return successfulPaths.remove().path;
-
-		 */
-		return BFS(from, to, "alphabetical");
+		return shortestPath;
 	}
 
-	/*
-	ABDCF
-	ABDEGF
-	ABDF
-	ABEGF
-	ADCF
-	ADEGF
-	ADGF
+	/**
+	 * Demo
+	 *
+	 * @param args arguments
 	 */
-
 	public static void main(String[] args)
 	{
 		WeightedGraph g = WeightedGraph.readWeightedGraph("weightedgraph.txt");
@@ -395,5 +244,6 @@ public class WeightedGraph extends Graph
 		String[] secondShortestPath = g.secondShortestPath("A", "F");
 		System.out.println(Arrays.toString(secondShortestPath));
 		System.out.println(g.calculatePathWeight(secondShortestPath));
+
 	}
 }
