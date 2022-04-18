@@ -73,6 +73,9 @@ public class Graph
 	 */
 	public boolean addEdge(String from, String to)
 	{
+		if (from == null || to == null)
+			return false;
+
 		// Get Vertex to add to
 		Vertex start = vertices.get(from);
 		Vertex destination = vertices.get(to);
@@ -148,24 +151,40 @@ public class Graph
 	 */
 	public void printGraph()
 	{
+		System.out.println(this);
+	}
+
+	/**
+	 * @return graph as a String in the same format as the read method
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+
 		// Iterate through each vertex by order created
-		//for (int i = 0; i < vertexOrderCreated; i++)
 		for (String s : order)
 		{
 			// Get current vertex
 			Vertex v = vertices.get(s); //orderCreated.get(i));
+
 			// Do nothing if vertex does not exist
 			if (v != null)
 			{
-				// Add parents
-				StringBuilder sb = new StringBuilder(v + " ");
-				// Add children
+				// Add current vertex
+				sb.append(v).append(" ");
+
+				// Add vertices that this vertex can travel to
 				for (Edge next : v.getEdges())
 					sb.append(next).append(" ");
-				// print everything out
-				System.out.println(sb.substring(0, sb.length() - 1));
+
+				// Remove space at end of line
+				sb.deleteCharAt(sb.length() - 1);
+				// Go to next line
+				sb.append("\n");
 			}
 		}
+		return sb.substring(0, sb.length() - 1);
 	}
 
 	/* Part 2 */
@@ -195,9 +214,9 @@ public class Graph
 		while (scanner.hasNextLine())
 			lines.add(scanner.nextLine());
 
-		String[][] nodes = new String[lines.size()][];
-
 		Graph graph = new Graph();
+
+		String[][] nodes = new String[lines.size()][];
 
 		for (int i = 0; i < lines.size(); i++)
 			nodes[i] = lines.get(i).split(" ");
@@ -207,13 +226,15 @@ public class Graph
 			graph.addNode(strArray[0]);
 
 		// Add Edges
+		/*
+		for (String[] strArray : nodes)
+			for (int i = 2; i < strArray.length; i += 2) //String[] strArray : nodes)
+				//graph.addWeightedEdge(strArray[0], strArray[i], Integer.parseInt(strArray[i - 1]));
+		*/
 		for (String[] strArray : nodes)
 			graph.addEdges(strArray[0], Arrays.copyOfRange(strArray, 1, nodes.length));
-
 		return graph;
 	}
-
-	/* Part 3 */
 
 	/**
 	 * Visits a vertex, then make recursive calls on all of its yet-to-be-visited neighbors
@@ -332,27 +353,90 @@ public class Graph
 
 	/**
 	 * @param from starting node
-	 * @param to destination node
+	 * @param to   destination node
 	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
 	 */
 	public String[] secondShortestPath(String from, String to)
 	{
+		/*
 		if (getVertex(from) == null || getVertex(to) == null)
 			return new String[0];
 		if (from.equals(to))
 			return new String[] {from};
 		return helpSecondShortestPath(from, to, false);
+		 */
+		// Get fastest path
+		String[] path = BFS(from, to, "alphabetical");
+
+		for (int i = path.length - 2; i >= 0; i++)
+		{
+
+		}
+		return path;
 	}
 
 	/**
 	 * Uses a BFS algorithm to find the 2nd shortest path
-	 * @param from starting node
-	 * @param to destination node
+	 *
+	 * @param from              starting node
+	 * @param to                destination node
 	 * @param foundShortestPath lets method know that it can return the next possible path
 	 * @return 2nd shortest path between nodes from and to
 	 */
 	private String[] helpSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
+		/*
+		if (from == null || to == null)
+			return new String[0];
+
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		if (start == null || to == null)
+			return new String[0];
+
+		if (from.equals(to))
+		{
+			if (foundShortestPath)
+				return new String[] {from};
+			else
+				return new String[0];
+		}
+
+		List<Vertex> nextVertices = start.getChildren();
+
+		for (Vertex v : nextVertices)
+		{
+			String[] path = helpSecondShortestPath(v.toString(), to, foundShortestPath);
+			if (path[path.length - 1].equals(to))
+			{
+				if (foundShortestPath)
+				{
+					String[] newPath = new String[path.length + 1];
+					newPath[0] = from;
+					System.arraycopy(path, 0, newPath, 1, path.length);
+					return newPath;
+				}
+				else
+					foundShortestPath = true;
+			}
+			/*
+			if (v != null)
+			{
+				if (v.toString().equals(to))
+				{
+					if (foundShortestPath)
+						return new String[] {from, to};
+					else
+						foundShortestPath = true;
+				}
+			}
+		}
+			 */
+		return null;
+
+
+		/*
 		Vertex start = getVertex(from);
 		Vertex end = getVertex(to);
 
@@ -372,6 +456,7 @@ public class Graph
 			if (c.toString().equals(to))
 				return new String[] {from, to};
 
+		// Sort children by alphabetical order
 		Collections.sort(children);
 
 		// Recursively call to find to
@@ -389,16 +474,21 @@ public class Graph
 				else
 					foundShortestPath = true;
 		}
+		*/
 
 		// Return an empty String array if to does not exist in this path
-		return new String[0];
+		//return new String[0];
 	}
 
 
-	void setVisited(boolean visited)
+	void setVisitedFalse()
 	{
 		for (String name : order)
-			vertices.get(name).visited = visited;
+		{
+			Vertex v = vertices.get(name);
+			v.distanceFromStart = Integer.MAX_VALUE;
+			v.path = null;
+		}
 	}
 
 	/**
@@ -408,12 +498,13 @@ public class Graph
 	 */
 	public static void main(String[] args)
 	{
-		/*
-		Graph g1 = new Graph(0).read("graph.txt");
+
+		Graph g1 = Graph.read("graph.txt");
 		g1.printGraph();
 		System.out.println();
-		*/
 
+
+		/*
 		Graph g2 = new Graph();
 		g2.addNodes(new String[] {"A", "B", "C", "D"});
 		g2.addEdges("A", new String[] {"B", "C"});

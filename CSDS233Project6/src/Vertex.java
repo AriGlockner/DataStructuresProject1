@@ -1,7 +1,11 @@
 import java.util.LinkedList;
 
 /**
- * This class represents a vertex in the graph class. A vertex contains a String name,
+ * This class represents a vertex in the Graph and WeightedGraph classes. A vertex contains a String name, a Linked
+ * List of vertices that this vertex can go to, a Linked List of vertices that can travel to this vertex, and variables
+ * for helping calculate the distances in the WeightedGraph class.
+ *
+ * @author ari
  */
 public class Vertex implements Comparable<Vertex>
 {
@@ -9,8 +13,9 @@ public class Vertex implements Comparable<Vertex>
 	private final String name;
 	private LinkedList<Edge> edges; // adjacency list
 	private LinkedList<Vertex> parents;
-	public boolean visited;
-	//private boolean done;
+	// Used for calculating distances in Weighted Graph class
+	public int distanceFromStart; // = Integer.MAX_VALUE;
+	public String[] path;
 
 	/**
 	 * Initializes a new Vertex
@@ -21,7 +26,6 @@ public class Vertex implements Comparable<Vertex>
 		this.name = name;
 		edges = new LinkedList<>();
 		parents = new LinkedList<>();
-		visited = false;
 	}
 
 	/**
@@ -210,5 +214,15 @@ public class Vertex implements Comparable<Vertex>
 		if (o instanceof Vertex v)
 			return name.equals(v.name);
 		return false;
+	}
+
+	public int compareByDistance(Vertex o)
+	{
+		return distanceFromStart - o.distanceFromStart;
+	}
+
+	public int getWeight(Vertex o)
+	{
+		return getWeightedEdge(o).getWeight() + distanceFromStart;
 	}
 }
