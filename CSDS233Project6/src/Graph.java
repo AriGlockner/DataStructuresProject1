@@ -298,11 +298,12 @@ public class Graph
 		{
 			if (!v.encountered)
 			{
+				v.encountered = true;
 				if (v.toString().equals(to))
 					return new String[] {from, to};
 
 				String[] possiblePath = helpDFS(v.toString(), to, "alphabetical");
-				if (possiblePath[possiblePath.length - 1].equals(to))
+				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
 				{
 					String[] path = new String[possiblePath.length + 1];
 					path[0] = from;

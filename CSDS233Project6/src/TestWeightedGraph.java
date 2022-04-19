@@ -102,6 +102,28 @@ public class TestWeightedGraph
 
 		// BFS
 
-		// DFS
+		// DFS Alphabetical
+		Assert.assertEquals("[Seattle, Denver, Chicago, Atlanta, Miami]",
+				Arrays.toString(graph.DFS("Seattle", "Miami", "alphabetical")));
+		Assert.assertEquals("[Boston, New York, Cleveland, Atlanta, Houston, Dallas, Chicago, Denver, Los Angeles]",
+				Arrays.toString(graph.DFS("Boston", "Los Angeles", "alphabetical")));
+		Assert.assertEquals("[San Francisco, Los Angeles, Denver, Chicago, Atlanta, Washington DC]",
+				Arrays.toString(graph.DFS("San Francisco", "Washington DC", "alphabetical")));
+		Assert.assertEquals("[Cleveland, Atlanta, Houston]",
+				Arrays.toString(graph.DFS("Cleveland", "Houston", "alphabetical")));
+		Assert.assertEquals("[Denver, Chicago, Atlanta]",
+				Arrays.toString(graph.DFS("Denver", "Atlanta", "alphabetical")));
+
+		// DFS Reverse Alphabetical
+		Assert.assertEquals("[Seattle, San Francisco, Los Angeles, Denver, Chicago, Atlanta, Miami]",
+				Arrays.toString(graph.DFS("Seattle", "Miami", "reverse")));
+		Assert.assertEquals("[Boston, New York, Cleveland, Atlanta, Houston, Dallas, Chicago, Denver, Los Angeles]",
+				Arrays.toString(graph.DFS("Boston", "Los Angeles", "reverse")));
+		Assert.assertEquals("[San Francisco, Seattle, Denver, Chicago, Atlanta, Washington DC]",
+				Arrays.toString(graph.DFS("San Francisco", "Washington DC", "reverse")));
+		Assert.assertEquals("[Cleveland, Washington DC, Atlanta, Houston]",
+				Arrays.toString(graph.DFS("Cleveland", "Houston", "reverse")));
+		Assert.assertEquals("[Denver, Seattle, Denver, Chicago, Atlanta]",
+				Arrays.toString(graph.DFS("Denver", "Atlanta", "reverse")));
 	}
 }
