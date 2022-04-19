@@ -37,11 +37,14 @@ public class TestGraph
 		Assert.assertFalse(graph.addNode("D"));
 		Assert.assertFalse(graph.addEdge("C", "F"));
 		graph.printGraph();
-		//TODO: Fix. BFS and DFS should not produce the same result
-		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
-		Assert.assertEquals("[A, D, E, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+
+		// DFS
 		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
 		Assert.assertEquals("[A, D, E, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
+
+		//TODO: Fix BFS
+		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, D, E, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
 		System.out.println(Arrays.toString(graph.DFS("A", "F", "alphabetical")));
 		System.out.println(Arrays.toString(graph.DFS("A", "F", "reverse")));
 	}

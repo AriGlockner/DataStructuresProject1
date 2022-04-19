@@ -258,6 +258,32 @@ public class Graph
 		before going to the next neighbor
 		 */
 
+		// Set all vertices encountered as false
+		for (String name : order)
+			getVertex(name).encountered = false;
+
+
+		return helpDFS(from, to, neighborOrder);
+	}
+
+	private String[] helpDFS(String from, String to, String neighborOrder)
+	{
+		Vertex start = vertices.get(from);
+		Vertex end = vertices.get(to);
+
+		// Either from or to does not exist in graph
+		if (start == null || end == null)
+			return new String[0];
+
+		// Case start is the same as end
+		if (start == end)
+			return new String[] {from};
+
+		/*
+		proceed as far as possible along a given path (via a neighbor)
+		before going to the next neighbor
+		 */
+
 		// Get children
 		LinkedList<Vertex> children = start.getChildren();
 
@@ -267,21 +293,24 @@ public class Graph
 		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
 			children.sort(Collections.reverseOrder());
 
-		// Search through all children in the order determined by parameter neighborOrder
+
 		for (Vertex v : children)
-			if (v != null)
+		{
+			if (!v.encountered)
 			{
-				// Search for this child's path for String to
-				String[] path = BFS(v.toString(), to, neighborOrder);
-				if (path[path.length - 1].equals(to))
+				if (v.toString().equals(to))
+					return new String[] {from, to};
+
+				String[] possiblePath = helpDFS(v.toString(), to, "alphabetical");
+				if (possiblePath[possiblePath.length - 1].equals(to))
 				{
-					// If to is found, return this method's from + the array from the path called recursively
-					String[] newPath = new String[path.length + 1];
-					newPath[0] = from;
-					System.arraycopy(path, 0, newPath, 1, path.length);
-					return newPath;
+					String[] path = new String[possiblePath.length + 1];
+					path[0] = from;
+					System.arraycopy(possiblePath, 0, path, 1, path.length - 1);
+					return path;
 				}
 			}
+		}
 
 		return new String[0];
 	}
@@ -403,8 +432,7 @@ public class Graph
 					newPath[0] = from;
 					System.arraycopy(path, 0, newPath, 1, path.length);
 					return newPath;
-				}
-				else
+				} else
 					foundShortestPath = true;
 			}
 		}
@@ -464,7 +492,8 @@ public class Graph
 
 		// 2nd Shortest Path
 		System.out.println(Arrays.toString(g2.secondShortestPath("A", "D")));
-		System.out.println(Arrays.toString(g2.BFS("A", "D", "alphabetical")));
+		System.out.println(Arrays.toString(g2.BFS("A", "D", "reverse")));
+		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
 		System.out.println();
 		// Remove
 		/*

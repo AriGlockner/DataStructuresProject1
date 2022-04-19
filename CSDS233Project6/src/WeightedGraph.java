@@ -163,7 +163,7 @@ public class WeightedGraph extends Graph
 					if (current.path == null)
 					{
 						current.path = new String[] {from};
-						next.path = new String[] {from}; //, current.toString()};
+						next.path = new String[] {from};
 					}
 					// If the path to the node already exists
 					else

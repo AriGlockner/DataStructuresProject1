@@ -15,6 +15,9 @@ public class Vertex implements Comparable<Vertex>
 	private LinkedList<Edge> edges;
 	// List of vertices that can transverse to this vertex
 	private LinkedList<Vertex> parents;
+	// Used for DFS/BFS
+	public boolean encountered;
+
 	// Used for calculating distances in Weighted Graph class
 	public int distanceFromStart;
 	public String[] path;

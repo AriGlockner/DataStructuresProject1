@@ -91,12 +91,17 @@ public class TestWeightedGraph
 				Arrays.toString(graph.shortestPath("Denver", "Atlanta")));
 
 		// Second-Shortest Path
+		// TODO: Write method, then implement these tests:
+		/*
 		System.out.println(Arrays.toString(graph.secondShortestPath("Seattle", "Miami")));
-		/*System.out.println(Arrays.toString(graph.secondShortestPath("Boston", "Los Angeles")));
+		System.out.println(Arrays.toString(graph.secondShortestPath("Boston", "Los Angeles")));
 		System.out.println(Arrays.toString(graph.secondShortestPath("San Francisco", "Washington DC")));
 		System.out.println(Arrays.toString(graph.secondShortestPath("Cleveland", "Houston")));
 		System.out.println(Arrays.toString(graph.secondShortestPath("Denver", "Atlanta")));
-
 		 */
+
+		// BFS
+
+		// DFS
 	}
 }
