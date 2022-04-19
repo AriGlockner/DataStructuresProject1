@@ -490,17 +490,6 @@ public class Graph
 			v.path = null;
 			v.encountered = false;
 		}
-
-		/*
-		for (Vertex v : vertices.values())
-		{
-			//Vertex v = vertices.get(name);
-			v.distanceFromStart = Integer.MAX_VALUE;
-			v.path = null;
-		}
-
-		 */
-
 	}
 
 	/**
