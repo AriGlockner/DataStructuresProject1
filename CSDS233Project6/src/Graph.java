@@ -44,7 +44,6 @@ public class Graph
 			return false;
 		// Add a new vertex
 		vertices.put(name, new Vertex(name));
-		//orderCreated.put(vertexOrderCreated++, name);
 		order.add(name);
 		return true;
 	}
@@ -189,8 +188,6 @@ public class Graph
 		return sb.substring(0, sb.length() - 1);
 	}
 
-	/* Part 2 */
-
 	/**
 	 * Constructs a graph from a text file using the following format:
 	 * <nodename1> <nodename1> <nodename2> ...
@@ -228,11 +225,6 @@ public class Graph
 			graph.addNode(strArray[0]);
 
 		// Add Edges
-		/*
-		for (String[] strArray : nodes)
-			for (int i = 2; i < strArray.length; i += 2) //String[] strArray : nodes)
-				//graph.addWeightedEdge(strArray[0], strArray[i], Integer.parseInt(strArray[i - 1]));
-		*/
 		for (String[] strArray : nodes)
 			graph.addEdges(strArray[0], Arrays.copyOfRange(strArray, 1, nodes.length));
 		return graph;
@@ -362,84 +354,21 @@ public class Graph
 	public String[] secondShortestPath(String from, String to)
 	{
 		/*
-		if (getVertex(from) == null || getVertex(to) == null)
-			return new String[0];
-		if (from.equals(to))
-			return new String[] {from};
-		return helpSecondShortestPath(from, to, false);
-		 */
+		String[] shortestPath = BFS(from, to, "alphabetical");
+
+
 		// Get fastest path
 		String[] path = BFS(from, to, "alphabetical");
 
-		for (int i = path.length - 2; i >= 0; i++)
-		{
 
-		}
 		return path;
+
+		 */
+		return getSecondShortestPath(from, to, false); //BFS(from, to, "alphabetical"));
 	}
 
-	/**
-	 * Uses a BFS algorithm to find the 2nd shortest path
-	 *
-	 * @param from              starting node
-	 * @param to                destination node
-	 * @param foundShortestPath lets method know that it can return the next possible path
-	 * @return 2nd shortest path between nodes from and to
-	 *
-	private String[] helpSecondShortestPath(String from, String to, boolean foundShortestPath)
+	private String[] getSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
-		/*
-		if (from == null || to == null)
-			return new String[0];
-
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
-
-		if (start == null || to == null)
-			return new String[0];
-
-		if (from.equals(to))
-		{
-			if (foundShortestPath)
-				return new String[] {from};
-			else
-				return new String[0];
-		}
-
-		List<Vertex> nextVertices = start.getChildren();
-
-		for (Vertex v : nextVertices)
-		{
-			String[] path = helpSecondShortestPath(v.toString(), to, foundShortestPath);
-			if (path[path.length - 1].equals(to))
-			{
-				if (foundShortestPath)
-				{
-					String[] newPath = new String[path.length + 1];
-					newPath[0] = from;
-					System.arraycopy(path, 0, newPath, 1, path.length);
-					return newPath;
-				}
-				else
-					foundShortestPath = true;
-			}
-			/*
-			if (v != null)
-			{
-				if (v.toString().equals(to))
-				{
-					if (foundShortestPath)
-						return new String[] {from, to};
-					else
-						foundShortestPath = true;
-				}
-			}
-		}
-			 *
-		return null;
-
-
-		/*
 		Vertex start = getVertex(from);
 		Vertex end = getVertex(to);
 
@@ -459,14 +388,15 @@ public class Graph
 			if (c.toString().equals(to))
 				return new String[] {from, to};
 
-		// Sort children by alphabetical order
+		// sort children according to order
 		Collections.sort(children);
 
 		// Recursively call to find to
 		for (Vertex c : children)
 		{
-			String[] path = helpSecondShortestPath(c.toString(), to, foundShortestPath);
+			String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
 			if (path[path.length - 1].equals(to))
+			{
 				if (foundShortestPath)
 				{
 					String[] newPath = new String[path.length + 1];
@@ -476,14 +406,12 @@ public class Graph
 				}
 				else
 					foundShortestPath = true;
+			}
 		}
-		*
 
 		// Return an empty String array if to does not exist in this path
-		//return new String[0];
+		return new String[0];
 	}
-	*/
-
 
 	/**
 	 * Helper method for Graph Transversal Methods in Weighted Graph class that sets the distances from start to
@@ -507,12 +435,11 @@ public class Graph
 	public static void main(String[] args)
 	{
 
+		/*
 		Graph g1 = Graph.read("graph.txt");
 		g1.printGraph();
 		System.out.println();
-
-
-		/*
+		*/
 		Graph g2 = new Graph();
 		g2.addNodes(new String[] {"A", "B", "C", "D"});
 		g2.addEdges("A", new String[] {"B", "C"});
