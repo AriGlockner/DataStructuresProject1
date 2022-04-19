@@ -1,2 +1,10 @@
 10% Log (~3 hours):
 For once, I spent a little time writing the theory out on pencil and paper before I actually started coding. This kind of felt necessary for me even though I am not a theory sort of person. Since I took the time to draw out adding/removing, it was pretty easy to write.
+
+50% Log (~30 hours):
+addNode/addNodes/removeNode/removeNodes/addEdge/addEdges were pretty easy and straightforward to implement in Graph class.
+read/printGraph took me a little time to figure out how I wanted to implement it, but once I realized I needed to add in the nodes before adding the edges, things were pretty simple to write.
+DFS/BFS were pretty easy to write once I wrote it out on pencil and paper
+addWeightedEdge/addWeightedEdges/printWeightedGraph/readWeighted were pretty simple to write after already implementing similar methods in the Graph class
+
+Dijkstra's algorithm took me so long to implement. I ran into issues with infinite loops. I couldn't easily use a boolean to mark it as set/not set since if it was set, it might not be the shortest distance. After a lot of writing out on paper and trial and error, I eventually realized that I could use a conditional to determine if I have to recalculate the path. Once I figured this out, writing the algorithm was pretty simple, but it took a while to get to this point.
