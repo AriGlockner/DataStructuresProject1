@@ -40,7 +40,7 @@ public class Graph
 	boolean addNode(String name)
 	{
 		// Can't add new vertex
-		if (vertices.contains(name))
+		if (order.contains(name))
 			return false;
 		// Add a new vertex
 		vertices.put(name, new Vertex(name));

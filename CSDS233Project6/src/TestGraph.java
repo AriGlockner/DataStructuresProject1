@@ -27,13 +27,15 @@ public class TestGraph
 	public void testEmpty()
 	{
 		Graph graph = new Graph();
-		graph.addNodes(new String[]{"A", "B", "C", "D", "E", "F"});
-		graph.addEdges("A", new String[] {"B", "C", "D"});
-		graph.addEdge("B", "E");
-		graph.addEdge("C", "F");
-		graph.addEdge("D", "E");
-		graph.addEdge("E", "F");
-		graph.addEdges("F", new String[] {"A", "C", "E"});
+		Assert.assertTrue(graph.addNodes(new String[]{"A", "B", "C", "D", "E", "F"}));
+		Assert.assertTrue(graph.addEdges("A", new String[] {"B", "C", "D"}));
+		Assert.assertTrue(graph.addEdge("B", "E"));
+		Assert.assertTrue(graph.addEdge("C", "F"));
+		Assert.assertTrue(graph.addEdge("D", "E"));
+		Assert.assertTrue(graph.addEdge("E", "F"));
+		Assert.assertTrue(graph.addEdges("F", new String[] {"A", "C", "E"}));
+		Assert.assertFalse(graph.addNode("D"));
+		Assert.assertFalse(graph.addEdge("C", "F"));
 		graph.printGraph();
 		//TODO: Fix. BFS and DFS should not produce the same result
 		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));

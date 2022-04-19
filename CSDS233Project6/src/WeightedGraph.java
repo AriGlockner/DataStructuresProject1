@@ -56,25 +56,6 @@ public class WeightedGraph extends Graph
 	public void printWeightedGraph()
 	{
 		printGraph();
-		/*
-		// Iterate through each vertex by order created
-		for (int i = 0; i < vertexOrderCreated; i++)
-		{
-			// Get current vertex
-			Vertex v = vertices.get(orderCreated.get(i));
-			// Do nothing if vertex does not exist
-			if (v != null)
-			{
-				// Add parents
-				StringBuilder sb = new StringBuilder(v + " ");
-				// Add children
-				for (Edge next : v.getEdges())
-					sb.append(next).append(" ");
-				// print everything out
-				System.out.println(sb.substring(0, sb.length() - 1));
-			}
-		}
-		 */
 	}
 
 	/**
@@ -182,7 +163,7 @@ public class WeightedGraph extends Graph
 					if (current.path == null)
 					{
 						current.path = new String[] {from};
-						next.path = new String[] {from, current.toString()};
+						next.path = new String[] {from}; //, current.toString()};
 					}
 					// If the path to the node already exists
 					else
