@@ -242,8 +242,8 @@ public class Graph
 	 */
 	public String[] DFS(String from, String to, String neighborOrder)
 	{
-		Vertex start = vertices.get(from); //getVertex(from);
-		Vertex end = vertices.get(to); //getVertex(to);
+		Vertex start = vertices.get(from);
+		Vertex end = vertices.get(to);
 
 		// Either from or to does not exist in graph
 		if (start == null || end == null)
@@ -253,19 +253,25 @@ public class Graph
 		if (start == end)
 			return new String[] {from};
 
-		/*
-		proceed as far as possible along a given path (via a neighbor)
-		before going to the next neighbor
-		 */
-
 		// Set all vertices encountered as false
 		for (String name : order)
 			getVertex(name).encountered = false;
 
-
+		// Once preconditions are checked, call helpDFS that will do the actual searching
 		return helpDFS(from, to, neighborOrder);
 	}
 
+	/**
+	 * Helper method that does the recursive part of DFS. This method is used so that vertices encountered is set to
+	 * false only at the start of the algorithm, not at each recursive call.
+	 *
+	 * @param from          starting point
+	 * @param to            end point
+	 * @param neighborOrder either alphabetical or reverse order
+	 * @return the path or a list of node names, of depth-first search between nodes from and to. The order in which
+	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
+	 * alphabetical order. It should return an empty String if no path exists
+	 */
 	private String[] helpDFS(String from, String to, String neighborOrder)
 	{
 		Vertex start = vertices.get(from);
@@ -279,32 +285,32 @@ public class Graph
 		if (start == end)
 			return new String[] {from};
 
-		/*
-		proceed as far as possible along a given path (via a neighbor)
-		before going to the next neighbor
-		 */
-
-		// Get children
+		// Get vertices that this vertex can travel to
 		LinkedList<Vertex> children = start.getChildren();
 
-		// Set children in order
+		// Set children in order according to neighborOrder
 		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
 			Collections.sort(children);
 		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
 			children.sort(Collections.reverseOrder());
 
-
+		// Proceed as far as possible along a given path before going to the next neighbor
 		for (Vertex v : children)
 		{
+			// Only check vertices that have not been encountered so far
 			if (!v.encountered)
 			{
 				v.encountered = true;
+				// If final destination, return path
 				if (v.toString().equals(to))
 					return new String[] {from, to};
 
+				// Get the next possible path
 				String[] possiblePath = helpDFS(v.toString(), to, "alphabetical");
+				// Check to see if the possible path ends at the target destination
 				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
 				{
+					// If this path is successful, add the current vertex to the front of the path and then return the path
 					String[] path = new String[possiblePath.length + 1];
 					path[0] = from;
 					System.arraycopy(possiblePath, 0, path, 1, path.length - 1);
@@ -313,6 +319,7 @@ public class Graph
 			}
 		}
 
+		// Default Condition: Return an empty String array
 		return new String[0];
 	}
 
@@ -353,11 +360,65 @@ public class Graph
 				return new String[] {from, to};
 
 		// sort children according to alphabetical or reverse order
-		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
-			Collections.sort(children);
-		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
-			children.sort(Collections.reverseOrder());
+		boolean sortReverseOrder = neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse");
 
+		// Set encountered as false for all vertices
+		setVisitedFalse();
+
+		// Order to search the vertices in
+		Queue<Vertex> bfsVertexOrder = new ArrayDeque<>();
+
+		// Add start vertex to the queue
+		bfsVertexOrder.add(start);
+		start.encountered = true;
+		start.path = new String[] {from};
+
+		while (!bfsVertexOrder.isEmpty())
+		{
+			//System.out.println(bfsVertexOrder);
+			Vertex current = bfsVertexOrder.remove();
+			//System.out.println(current.getChildren());
+
+			// Found Vertex
+			if (current.toString().equals(to))
+				return current.path;
+			// Otherwise, add its non-encountered possible paths to the list
+			else
+			{
+				// Get vertices to add
+				LinkedList<Vertex> nextList = current.getChildren();
+
+				// Sort next nodes to add according to neighborOrder
+				if (sortReverseOrder)
+					nextList.sort(Collections.reverseOrder());
+				else
+					Collections.sort(nextList);
+
+				for (Vertex next : nextList)
+				{
+					//System.out.println(next + " " + next.encountered);
+					if (!next.encountered)
+					{
+						// Set as encountered
+						next.encountered = true;
+						// Set path
+						String[] path = new String[current.path.length + 1];
+						System.arraycopy(current.path, 0, path, 0, current.path.length);
+						path[path.length - 1] = next.toString();
+						next.path = path;
+
+						if (next.toString().equals(to))
+							return path;
+						// Add next to the path
+						bfsVertexOrder.add(next);
+					}
+				}
+			}
+		}
+
+
+
+		/*
 		// Recursively call to find to
 		for (Vertex c : children)
 		{
@@ -370,7 +431,14 @@ public class Graph
 				return newPath;
 			}
 		}
+		 */
 
+		// Return an empty String array if to does not exist in this path
+		return new String[0];
+	}
+
+	private String[] helpBFS(String from, String to, String neighborOrder)
+	{
 		// Return an empty String array if to does not exist in this path
 		return new String[0];
 	}
@@ -448,12 +516,25 @@ public class Graph
 	 */
 	void setVisitedFalse()
 	{
+
 		for (String name : order)
 		{
 			Vertex v = vertices.get(name);
 			v.distanceFromStart = Integer.MAX_VALUE;
 			v.path = null;
+			v.encountered = false;
 		}
+
+		/*
+		for (Vertex v : vertices.values())
+		{
+			//Vertex v = vertices.get(name);
+			v.distanceFromStart = Integer.MAX_VALUE;
+			v.path = null;
+		}
+
+		 */
+
 	}
 
 	/**

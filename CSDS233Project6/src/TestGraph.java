@@ -35,15 +35,15 @@ public class TestGraph
 		Assert.assertFalse(graph.addNode("D"));
 		Assert.assertFalse(graph.addEdge("C", "F"));
 		graph.printGraph();
+		System.out.println();
 
 		// DFS
 		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
 		Assert.assertEquals("[A, D, E, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
 
-		//TODO: Fix BFS. Should output ACF or ADF
-		Assert.assertEquals("[A, B, E, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
-		Assert.assertEquals("[A, D, E, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
-		System.out.println(Arrays.toString(graph.DFS("A", "F", "alphabetical")));
-		System.out.println(Arrays.toString(graph.DFS("A", "F", "reverse")));
+		// BFS
+		Assert.assertEquals("[A, C, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, C, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+
 	}
 }
