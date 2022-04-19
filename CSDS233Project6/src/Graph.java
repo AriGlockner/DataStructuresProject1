@@ -351,18 +351,10 @@ public class Graph
 		if (start.equals(end))
 			return new String[] {from};
 
-		// Get children
-		List<Vertex> children = start.getChildren();
-
-		// search if to is in edge of current vertex
-		for (Vertex c : children)
-			if (c.toString().equals(to))
-				return new String[] {from, to};
-
 		// sort children according to alphabetical or reverse order
 		boolean sortReverseOrder = neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse");
 
-		// Set encountered as false for all vertices
+		// Set encountered as false and reset the path for all vertices
 		setVisitedFalse();
 
 		// Order to search the vertices in
@@ -373,72 +365,46 @@ public class Graph
 		start.encountered = true;
 		start.path = new String[] {from};
 
+		// Remove the top vertex from the queue. If a possible path is the destination, return the path to get to it
+		// Otherwise, add its possible paths that have yet to be encountered.
 		while (!bfsVertexOrder.isEmpty())
 		{
-			//System.out.println(bfsVertexOrder);
 			Vertex current = bfsVertexOrder.remove();
-			//System.out.println(current.getChildren());
 
-			// Found Vertex
-			if (current.toString().equals(to))
-				return current.path;
-			// Otherwise, add its non-encountered possible paths to the list
+			// Get vertices to add
+			LinkedList<Vertex> nextList = current.getChildren();
+
+			// Sort next nodes to add according to neighborOrder
+			if (sortReverseOrder)
+				nextList.sort(Collections.reverseOrder());
 			else
+				Collections.sort(nextList);
+
+			// Add all vertices that haven't been encountered
+			for (Vertex next : nextList)
 			{
-				// Get vertices to add
-				LinkedList<Vertex> nextList = current.getChildren();
-
-				// Sort next nodes to add according to neighborOrder
-				if (sortReverseOrder)
-					nextList.sort(Collections.reverseOrder());
-				else
-					Collections.sort(nextList);
-
-				for (Vertex next : nextList)
+				// If vertex has not been encountered yet, add it to the queue
+				if (!next.encountered)
 				{
-					//System.out.println(next + " " + next.encountered);
-					if (!next.encountered)
-					{
-						// Set as encountered
-						next.encountered = true;
-						// Set path
-						String[] path = new String[current.path.length + 1];
-						System.arraycopy(current.path, 0, path, 0, current.path.length);
-						path[path.length - 1] = next.toString();
-						next.path = path;
+					// Set path
+					String[] path = new String[current.path.length + 1];
+					System.arraycopy(current.path, 0, path, 0, current.path.length);
+					path[path.length - 1] = next.toString();
+					next.path = path;
 
-						if (next.toString().equals(to))
-							return path;
-						// Add next to the path
-						bfsVertexOrder.add(next);
-					}
+					// If the vertex to add is the destination, return that vertex's path
+					if (next.toString().equals(to))
+						return path;
+
+					// Set as encountered
+					next.encountered = true;
+
+					// Add next to the path
+					bfsVertexOrder.add(next);
 				}
 			}
 		}
 
-
-
-		/*
-		// Recursively call to find to
-		for (Vertex c : children)
-		{
-			String[] path = BFS(c.toString(), to, neighborOrder);
-			if (path[path.length - 1].equals(to))
-			{
-				String[] newPath = new String[path.length + 1];
-				newPath[0] = from;
-				System.arraycopy(path, 0, newPath, 1, path.length);
-				return newPath;
-			}
-		}
-		 */
-
-		// Return an empty String array if to does not exist in this path
-		return new String[0];
-	}
-
-	private String[] helpBFS(String from, String to, String neighborOrder)
-	{
 		// Return an empty String array if to does not exist in this path
 		return new String[0];
 	}
