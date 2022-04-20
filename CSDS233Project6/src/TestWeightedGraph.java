@@ -7,6 +7,7 @@ public class TestWeightedGraph
 	/**
 	 * Tests reading from a file. Also tests adding and removing
 	 */
+	//TODO: Maybe fix error if time where out of order weighted edges cannot be added
 	@Test
 	public void testFile()
 	{

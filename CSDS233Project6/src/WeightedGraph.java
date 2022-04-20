@@ -286,36 +286,136 @@ public class WeightedGraph extends Graph
 	 */
 	public static void main(String[] args)
 	{
+		System.out.println("Demo:");
 		WeightedGraph g = WeightedGraph.readWeightedGraph("weightedgraph.txt");
+		System.out.println("""
+				Read:
+				Expected:
+				A 2 B 1 D
+				B 3 D 10 E
+				C 4 A 5 F
+				D 2 C 2 E 8 F 4 G
+				E 6 G
+				F
+				G 1 F
+				Actual:""");
 		g.printWeightedGraph();
-		System.out.println();
 
+		// Shortest Path
+		System.out.println("\nShortest Path:");
+		System.out.println("Expected:\n[A, D, G, F]\nActual:\n" + Arrays.toString(g.shortestPath("A", "F")));
+		System.out.println("Expected:\n[D, C, A, B]\nActual:\n" + Arrays.toString(g.shortestPath("D", "B")));
+		System.out.println("Expected:\n[C, F]\nActual:\n" + Arrays.toString(g.shortestPath("C", "F")));
+		System.out.println("Expected:\n[B, D, E]\nActual:\n" + Arrays.toString(g.shortestPath("B", "E")));
 
-		/*
-		String[] shortestPath = g.shortestPath("A", "F");
-		System.out.println(Arrays.toString(shortestPath));
-		System.out.println(g.calculatePathWeight(shortestPath));
-		System.out.println();
+		// 2nd Shortest Path
+		//TODO: Fix when path goes in loop
+		System.out.println("\nSecond Shortest Path:");
+		System.out.println("Expected:\n[A, D, F]\nActual:\n" + Arrays.toString(g.secondShortestPath("A", "F")));
+		//TODO: Fix?
+		System.out.println("Expected:\n[D, C, A, D, C, A, B]\nActual:\n" + Arrays.toString(g.secondShortestPath("D", "B")));
+		System.out.println("Expected:\n[C, A, D, G, F]\nActual:\n" + Arrays.toString(g.secondShortestPath("C", "F")));
+		//TODO: Fix?
+		System.out.println("Expected:\n[B, D, C, A, D, E]\nActual:\n" + Arrays.toString(g.secondShortestPath("B", "E")));
 
-		String[] secondShortestPath = g.secondShortestPath("A", "F");
-		System.out.println(Arrays.toString(secondShortestPath));
-		System.out.println(g.calculatePathWeight(secondShortestPath));
+		// DFS alphabetical
+		System.out.println("\nDFS Alphabetical:");
+		System.out.println("Expected:\n[A, B, D, C, F]\nActual:\n" + Arrays.toString(g.DFS("A", "F", "alphabetical")));
+		System.out.println("Expected:\n[D, C, A, B]\nActual:\n" + Arrays.toString(g.DFS("D", "B", "alphabetical")));
+		System.out.println("Expected:\n[C, A, B, D, E, G, F]\nActual:\n" + Arrays.toString(g.DFS("C", "F", "alphabetical")));
+		System.out.println("Expected:\n[B, D, E]\nActual:\n" + Arrays.toString(g.DFS("B", "E", "alphabetical")));
 
-		 */
+		// DFS reverse
+		System.out.println("\nDFS Reverse:");
+		System.out.println("Expected:\n[A, D, G, F]\nActual:\n" + Arrays.toString(g.DFS("A", "F", "reverse")));
+		System.out.println("Expected:\n[D, C, A, B]\nActual:\n" + Arrays.toString(g.DFS("D", "B", "reverse")));
+		System.out.println("Expected:\n[C, F]\nActual:\n" + Arrays.toString(g.DFS("C", "F", "reverse")));
+		System.out.println("Expected:\n[B, E]\nActual:\n" + Arrays.toString(g.DFS("B", "E", "reverse")));
 
-		System.out.println(Arrays.toString(g.shortestPath("B", "G")));
-		System.out.println(Arrays.toString(g.shortestPath("A", "F")));
-		System.out.println(Arrays.toString(g.shortestPath("A", "B")));
-		System.out.println(Arrays.toString(g.shortestPath("C", "E")));
+		// BFS alphabetical
+		System.out.println("\nBFS Alphabetical:");
+		System.out.println("Expected:\n[A, D, F]\nActual:\n" + Arrays.toString(g.BFS("A", "F", "alphabetical")));
+		System.out.println("Expected:\n[D, C, A, B]\nActual:\n" + Arrays.toString(g.BFS("D", "B", "alphabetical")));
+		System.out.println("Expected:\n[C, F]\nActual:\n" + Arrays.toString(g.BFS("C", "F", "alphabetical")));
+		System.out.println("Expected:\n[B, E]\nActual:\n" + Arrays.toString(g.BFS("B", "E", "alphabetical")));
 
-		System.out.println();
+		// BFS reverse
+		System.out.println("\nBFS Reverse:");
+		System.out.println("Expected:\n[A, D, F]\nActual:\n" + Arrays.toString(g.BFS("A", "F", "reverse")));
+		System.out.println("Expected:\n[D, C, A, B]\nActual:\n" + Arrays.toString(g.BFS("D", "B", "reverse")));
+		System.out.println("Expected:\n[C, F]\nActual:\n" + Arrays.toString(g.BFS("C", "F", "reverse")));
+		System.out.println("Expected:\n[B, E]\nActual:\n" + Arrays.toString(g.BFS("B", "E", "reverse")));
 
-		System.out.println(Arrays.toString(g.secondShortestPath("B", "G")));
-		System.out.println(Arrays.toString(g.secondShortestPath("A", "F")));
-		System.out.println(Arrays.toString(g.secondShortestPath("A", "B")));
-		System.out.println(Arrays.toString(g.secondShortestPath("C", "E")));
+		// Add Node
+		System.out.println("\nAdd Node:");
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addNode("B"));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addNode("H"));
 
+		// Add Nodes
+		System.out.println("\nAdd Nodes:");
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addNodes(new String[] {"I", "J", "K"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addNodes(new String[] {"A", "B", "C", "L", "I", "K", "E"}));
 
-		//System.out.println(Arrays.equals(shortestPath, secondShortestPath));
+		// Add Weighted Edge
+		System.out.println("\nAdd Weighted Edge:");
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("I", "J", 1));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("J", "K", 2));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("K", "F", 4));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdge("K", "F", 4));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdge("K", "F", 2));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("A", "L", 1));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("D", "L", 2));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("G", "L", 3));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdge("F", "L", 4));
+
+		// Add Weighted Edges
+		System.out.println("\nAdd Weighted Edges:");
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {1, 2, 3, 4}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {0, 0, 0, 0}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("H", new String[]{"K", "A"}, new int[] {5, 25}));
+
+		// print graph
+		System.out.println("\nPost Adding:");
+		System.out.println("""
+				Expected:
+				A 2 B 1 D 1 L
+				B 3 D 10 E
+				C 4 A 5 F
+				D 2 C 2 E 8 F 4 G 2 L
+				E 6 G
+				F 4 L
+				G 1 F 3 L
+				H 5 K 25 A
+				I 1 J
+				J 2 K
+				K 4 F
+				L 1 A 2 D 3 G 4 F
+				Actual:""");
+		g.printWeightedGraph();
+
+		// Remove Nodes
+		System.out.println("\nRemove Nodes:");
+		System.out.println("Expected:\ntrue\nActual:\n" + g.removeNodes(new String[]{"L", "I", "J"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.removeNodes(new String[]{"K", "J"}));
+
+		// Remove Node
+		System.out.println("\nRemove Node:");
+		System.out.println("Expected:\ntrue\nActual:\n" + g.removeNode("H"));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.removeNode("H"));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.removeNode("K"));
+
+		// Post Removing
+		System.out.println("""
+				Post Removing:
+				Expected:
+				A 2 B 1 D
+				B 3 D 10 E
+				C 4 A 5 F
+				D 2 C 2 E 8 F 4 G
+				E 6 G
+				F
+				G 1 F
+				Actual:""");
+		g.printWeightedGraph();
 	}
 }
