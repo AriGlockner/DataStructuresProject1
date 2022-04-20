@@ -117,7 +117,6 @@ public class WeightedGraph extends Graph
 	 * @param to   end point
 	 * @return shortest path if it exists, otherwise return an empty array
 	 */
-	//TODO: Fix error from B to G where it does not stop through D
 	public String[] shortestPath(String from, String to)
 	{
 		// Get first and last vertices
