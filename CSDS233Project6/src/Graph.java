@@ -31,6 +31,12 @@ public class Graph
 		return vertices.get(name);
 	}
 
+	void addToOrderAndTable(Vertex vertex)
+	{
+		vertices.put(vertex.toString(), vertex);
+		order.add(vertex.toString());
+	}
+
 	/**
 	 * Adds a node to the graph and checks for duplicates
 	 *
@@ -185,7 +191,8 @@ public class Graph
 				sb.append("\n");
 			}
 		}
-		return sb.substring(0, sb.length() - 1);
+
+		return sb.substring(0, Math.max(0, sb.length() - 1));
 	}
 
 	/**
@@ -254,8 +261,6 @@ public class Graph
 			return new String[] {from};
 
 		// Set all vertices encountered as false
-		//for (String name : order)
-		//	getVertex(name).encountered = false;
 		setVisitedFalse();
 
 		// Once preconditions are checked, call helpDFS that will do the actual searching

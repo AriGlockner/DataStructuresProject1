@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 public class TestWeightedGraph
 {
+	/**
+	 * Tests reading from a file. Also tests adding and removing
+	 */
 	@Test
 	public void testFile()
 	{
@@ -11,15 +14,63 @@ public class TestWeightedGraph
 		graph.printWeightedGraph();
 		Assert.assertEquals("A 2 B 1 D\nB 3 D 10 E\nC 4 A 5 F\nD 2 C 2 E 8 F 4 G\nE 6 G\nF\nG 1 F", graph.toString());
 
+		// Test before
 		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
 		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
 		Assert.assertEquals("[A, B, D, C, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
 		Assert.assertEquals("[A, D, G, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, D, G, F]", Arrays.toString(graph.shortestPath("A", "F")));
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.secondShortestPath("A", "F")));
+
+		// Remove a node
+		Assert.assertTrue(graph.removeNode("D"));
+
+		// Test after removal - the only path from A to F is [A, B, E, G, F]
+		Assert.assertEquals("[A, B, E, G, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, B, E, G, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, B, E, G, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, B, E, G, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, B, E, G, F]", Arrays.toString(graph.shortestPath("A", "F")));
+		Assert.assertEquals("[]", Arrays.toString(graph.secondShortestPath("A", "F")));
+
+		// Remove multiple nodes - no path exists from A to F
+		Assert.assertTrue(graph.removeNodes(new String[] {"B", "E", "G"}));
+		Assert.assertEquals("[]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+		Assert.assertEquals("[]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[]", Arrays.toString(graph.DFS("A", "F", "reverse")));
+		Assert.assertEquals("[]", Arrays.toString(graph.shortestPath("A", "F")));
+		Assert.assertEquals("[]", Arrays.toString(graph.secondShortestPath("A", "F")));
+
+		// Remove should fail
+		Assert.assertFalse(graph.removeNode("E"));
+		Assert.assertFalse(graph.removeNodes(new String[] {"B", "C", "F", "G", "A"}));
+
+		// Add Nodes
+		Assert.assertTrue(graph.addNodes(new String[] {"A", "B", "C", "D", "E", "F", "G"}));
+		Assert.assertFalse(graph.addNodes(new String[] {"A", "B", "D", "E", "G"}));
+		Assert.assertFalse(graph.addNode("B"));
+
+		// Add Edges
+		Assert.assertTrue(graph.addWeightedEdges("A", new String[] {"B", "D"}, new int[] {2, 1}));
+		Assert.assertTrue(graph.addWeightedEdges("B", new String[] {"D", "E"}, new int[] {3, 10}));
+		Assert.assertTrue(graph.addWeightedEdges("C", new String[] {"A", "F"}, new int[] {4, 5}));
+		Assert.assertTrue(graph.addWeightedEdges("D", new String[] {"C", "E", "F", "G"}, new int[] {2, 2, 8, 4}));
+		Assert.assertTrue(graph.addWeightedEdge("E", "G", 6));
+		Assert.assertTrue(graph.addWeightedEdge("G", "F", 1));
+
+		// Check after add
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, B, D, C, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, D, G, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, D, G, F]", Arrays.toString(graph.shortestPath("A", "F")));
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.secondShortestPath("A", "F")));
 	}
 
 	/**
-	 * Tests a custom real world graph. This graph has a bunch of cities in the USA and time travel time, in minutes,
-	 * to get from one city to another connected city.
+	 * Tests a custom real world graph. This graph has a bunch of cities in the USA and time travel time at one point
+	 * int time, in minutes, to get from one city to another connected city.
 	 */
 	@Test
 	public void testRealWorldExample()
