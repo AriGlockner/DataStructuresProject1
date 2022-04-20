@@ -31,12 +31,6 @@ public class Graph
 		return vertices.get(name);
 	}
 
-	void addToOrderAndTable(Vertex vertex)
-	{
-		vertices.put(vertex.toString(), vertex);
-		order.add(vertex.toString());
-	}
-
 	/**
 	 * Adds a node to the graph and checks for duplicates
 	 *
@@ -500,31 +494,27 @@ public class Graph
 	 * @param to   destination node
 	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
 	 */
-	//TODO: Write Method
 	public String[] secondShortestPath(String from, String to)
 	{
-		/*
-		String[] shortestPath = BFS(from, to, "alphabetical");
+		// Return an empty array if to/from does not exist
+		if (getVertex(from) == null || getVertex(to) == null)
+			return new String[0];
 
-
-		// Get fastest path
-		String[] path = BFS(from, to, "alphabetical");
-
-
-		return path;
-
-		 */
-		return getSecondShortestPath(from, to, false); //BFS(from, to, "alphabetical"));
+		return getSecondShortestPath(from, to, false);
 	}
 
+	/**
+	 * Helper method for secondShortestPath that calculates the 2nd shortest path
+	 *
+	 * @param from              starting node
+	 * @param to                destination node
+	 * @param foundShortestPath boolean to determine if the shortest path has already been found
+	 * @return 2nd shortest path
+	 */
 	private String[] getSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
 		Vertex start = getVertex(from);
 		Vertex end = getVertex(to);
-
-		// Either from or to does not exist in graph
-		if (start == null || end == null)
-			return new String[0];
 
 		// Case start is the same as end
 		if (start.equals(end))
@@ -568,7 +558,6 @@ public class Graph
 	 */
 	void setVisitedFalse()
 	{
-
 		for (String name : order)
 		{
 			Vertex v = vertices.get(name);
@@ -607,7 +596,6 @@ public class Graph
 	 */
 	public static void main(String[] args)
 	{
-
 		/*
 		Graph g1 = Graph.read("graph.txt");
 		g1.printGraph();
@@ -640,11 +628,10 @@ public class Graph
 		System.out.println(Arrays.toString(g2.BFS("A", "D", "reverse")));
 		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
 		System.out.println();
+
 		// Remove
-		/*
 		System.out.println();
 		g2.removeNode("B");
 		g2.printGraph();
-		 */
 	}
 }
