@@ -193,23 +193,27 @@ public class WeightedGraph extends Graph
 	 * @return the second-shortest path between nodes from and to. Only returns one path in the case of multiple
 	 * equivalent results
 	 */
-	//TODO: Write method
 	public String[] secondShortestPath(String from, String to)
 	{
+		// Get the shortest path. Will be used to compare alternate routes from the shortest path
 		final String[] shortestPath = shortestPath(from, to);
 
+		// If there exists no path, return an empty array
 		if (Arrays.equals(shortestPath, new String[0]))
 			return new String[0];
 
+		// Set the 2nd shortest path as an empty String array
 		String[] secondShortestPath = new String[0];
 		int secondShortestWeight = 0;
 
+		// Compare deviations off the shortest path
 		for (int i = 0; i < shortestPath.length - 1; i++)
 		{
 			// Current vertex in the shortest path
 			Vertex current = getVertex(shortestPath[i]);
 			String[] currentPath = Arrays.copyOf(shortestPath, i + 1);
 
+			// Compare deviations off the current vertex
 			for (Vertex next : current.getChildren())
 			{
 				// Check if next vertex is not the next vertex in the shortest path
@@ -234,7 +238,6 @@ public class WeightedGraph extends Graph
 				}
 			}
 		}
-
 		return secondShortestPath;
 	}
 
