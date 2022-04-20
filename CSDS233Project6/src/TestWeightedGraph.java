@@ -8,10 +8,13 @@ public class TestWeightedGraph
 	public void testFile()
 	{
 		WeightedGraph graph = WeightedGraph.readWeightedGraph("weightedgraph.txt");
-		//graph.printGraph();
-		//System.out.println();
 		graph.printWeightedGraph();
 		Assert.assertEquals("A 2 B 1 D\nB 3 D 10 E\nC 4 A 5 F\nD 2 C 2 E 8 F 4 G\nE 6 G\nF\nG 1 F", graph.toString());
+
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, D, F]", Arrays.toString(graph.BFS("A", "F", "reverse")));
+		Assert.assertEquals("[A, B, D, C, F]", Arrays.toString(graph.DFS("A", "F", "alphabetical")));
+		Assert.assertEquals("[A, D, G, F]", Arrays.toString(graph.DFS("A", "F", "reverse")));
 	}
 
 	/**
@@ -119,15 +122,15 @@ public class TestWeightedGraph
 				Arrays.toString(graph.DFS("Denver", "Atlanta", "alphabetical")));
 
 		// DFS Reverse Alphabetical
-		Assert.assertEquals("[Seattle, San Francisco, Los Angeles, Denver, Chicago, Atlanta, Miami]",
+		Assert.assertEquals("[Seattle, San Francisco, Los Angeles, Denver, Dallas, Houston, Atlanta, Miami]",
 				Arrays.toString(graph.DFS("Seattle", "Miami", "reverse")));
-		Assert.assertEquals("[Boston, New York, Cleveland, Atlanta, Chicago, Dallas, Denver, Los Angeles]",
+		Assert.assertEquals("[Boston, New York, Washington DC, Cleveland, Chicago, Denver, Seattle, San Francisco, Los Angeles]",
 				Arrays.toString(graph.DFS("Boston", "Los Angeles", "reverse")));
-		Assert.assertEquals("[San Francisco, Seattle, Denver, Chicago, Atlanta, Cleveland, New York, Washington DC]",
+		Assert.assertEquals("[San Francisco, Seattle, Denver, Dallas, Houston, Atlanta, Washington DC]",
 				Arrays.toString(graph.DFS("San Francisco", "Washington DC", "reverse")));
-		Assert.assertEquals("[Cleveland, Washington DC, Atlanta, Chicago, Dallas, Houston]",
+		Assert.assertEquals("[Cleveland, Washington DC, Atlanta, Houston]",
 				Arrays.toString(graph.DFS("Cleveland", "Houston", "reverse")));
-		Assert.assertEquals("[Denver, Seattle, Denver, Chicago, Atlanta]",
+		Assert.assertEquals("[Denver, Dallas, Houston, Atlanta]",
 				Arrays.toString(graph.DFS("Denver", "Atlanta", "reverse")));
 
 		// Shortest Path

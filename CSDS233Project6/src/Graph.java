@@ -254,11 +254,12 @@ public class Graph
 			return new String[] {from};
 
 		// Set all vertices encountered as false
-		for (String name : order)
-			getVertex(name).encountered = false;
+		//for (String name : order)
+		//	getVertex(name).encountered = false;
+		setVisitedFalse();
 
 		// Once preconditions are checked, call helpDFS that will do the actual searching
-		return helpDFS(from, to, neighborOrder);
+		return helpDFS(from, to, neighborOrder, new Stack<>());
 	}
 
 	/**
@@ -272,19 +273,83 @@ public class Graph
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
 	 * alphabetical order. It should return an empty String if no path exists
 	 */
-	private String[] helpDFS(String from, String to, String neighborOrder)
+	private String[] helpDFS(String from, String to, String neighborOrder, Stack<Vertex> stack)
 	{
 		Vertex start = vertices.get(from);
 		Vertex end = vertices.get(to);
 
+		//TODO: Remove these 2 if statements since they do nothing
 		// Either from or to does not exist in graph
 		if (start == null || end == null)
 			return new String[0];
 
 		// Case start is the same as end
-		if (start == end)
+		if (from.equals(to))
 			return new String[] {from};
 
+		//Stack<Vertex> stack = new Stack<>();
+		//ArrayList<String> order = new ArrayList<>();
+
+		start.encountered = true;
+		stack.add(start);
+
+
+		LinkedList<Vertex> children = start.getChildren();
+
+		// Set children in order according to neighborOrder
+		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
+			Collections.sort(children);
+		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
+			children.sort(Collections.reverseOrder());
+
+		for (Vertex v : children)
+		{
+			if (!v.encountered)
+			{
+				String[] possiblePath = helpDFS(v.toString(), to, neighborOrder, stack);
+				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
+				{
+					return combineArrays(new String[] {from}, possiblePath);
+				}
+			}
+		}
+
+
+		//stack.add(start);
+
+		/*
+		while (!stack.isEmpty())
+		{
+			Vertex current = stack.pop();
+			order.add(current.toString());
+
+			if (current.toString().equals(to))
+				return order.toArray(new String[0]);
+
+			if (!current.encountered)
+			{
+				current.encountered = true;
+
+
+				LinkedList<Vertex> children = start.getChildren();
+
+				// Set children in order according to neighborOrder
+				if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
+					Collections.sort(children);
+				else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
+					children.sort(Collections.reverseOrder());
+
+				for (Vertex next : children)
+				{
+					stack.push(next);
+					if (!next.encountered)
+						helpDFS(next.toString(), to, neighborOrder);
+				}
+			}
+		}
+
+
+		/*
 		// Get vertices that this vertex can travel to
 		LinkedList<Vertex> children = start.getChildren();
 
@@ -294,6 +359,21 @@ public class Graph
 		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
 			children.sort(Collections.reverseOrder());
 
+		for (Vertex current : children)
+		{
+			if (current != null && !current.encountered)
+			{
+				//
+				current.encountered = true;
+				String[] possiblePath = helpDFS(current.toString(), to, neighborOrder);
+
+				// Return when found destination
+				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
+					return combineArrays(new String[] {from}, possiblePath);
+			}
+		}
+
+		/*
 		// Proceed as far as possible along a given path before going to the next neighbor
 		for (Vertex v : children)
 		{
@@ -306,7 +386,7 @@ public class Graph
 					return new String[] {from, to};
 
 				// Get the next possible path
-				String[] possiblePath = helpDFS(v.toString(), to, "alphabetical");
+				String[] possiblePath = helpDFS(v.toString(), to, neighborOrder);
 				// Check to see if the possible path ends at the target destination
 				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
 				{
@@ -318,6 +398,7 @@ public class Graph
 				}
 			}
 		}
+		 */
 
 		// Default Condition: Return an empty String array
 		return new String[0];
@@ -490,6 +571,28 @@ public class Graph
 			v.path = null;
 			v.encountered = false;
 		}
+	}
+
+	/**
+	 * Helper method that combines two arrays into one
+	 *
+	 * @param a first array
+	 * @param b second array
+	 * @return a + b as 1 array
+	 */
+	private static String[] combineArrays(String[] a, String[] b)
+	{
+		if (a == null)
+			return b;
+		if (b == null)
+			return a;
+
+		String[] newArray = new String[a.length + b.length];
+
+		System.arraycopy(a, 0, newArray, 0, a.length);
+		System.arraycopy(b, 0, newArray, a.length, b.length);
+
+		return newArray;
 	}
 
 	/**
