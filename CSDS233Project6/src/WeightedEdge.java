@@ -66,4 +66,12 @@ public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 	{
 		return weight - o.weight;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof WeightedEdge)
+			return to.equals(((WeightedEdge) o).to) && from.equals(((WeightedEdge) o).from);
+		return false;
+	}
 }

@@ -372,7 +372,7 @@ public class WeightedGraph extends Graph
 		System.out.println("\nAdd Weighted Edges:");
 		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {1, 2, 3, 4}));
 		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {0, 0, 0, 0}));
-		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("H", new String[]{"K", "A"}, new int[] {5, 25}));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("H", new String[]{"K", "A"}, new int[] {5, 25}));
 
 		// print graph
 		System.out.println("\nPost Adding:");
