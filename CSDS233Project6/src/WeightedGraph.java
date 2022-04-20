@@ -217,153 +217,113 @@ public class WeightedGraph extends Graph
 	public String[] secondShortestPath(String from, String to)
 	{
 		final String[] shortestPath = shortestPath(from, to);
-		//List<String> shortestPathList = Arrays.asList(shortestPath);
 
 		if (Arrays.equals(shortestPath, new String[0]))
 			return new String[0];
 
-		/*
-		String[] secondShortestPath = null;
+		String[] secondShortestPath = new String[0];
 		int secondShortestWeight = 0;
 
-		//for (String name : shortestPath)
-		// Iterate through all vertices in the shortest path
+		//
+		/*
 		for (int i = 0; i < shortestPath.length; i++)
 		{
-			// Get the vertex
+			// Current
 			Vertex current = getVertex(shortestPath[i]);
+			if (current.toString().equals(to))
+				break;
+			String[] currentPath = shortestPath(from, current.toString());
+			System.out.println(i + 1 + " " + Arrays.toString(shortestPath(from, current.toString())) + " " + Arrays.toString(secondShortestPath));
 
-			//
-			String[] currentVertexShortestPath = null;
-			int currentVertexShortestWeight = 0;
-
-			// Search for each path of current that are not the shortest path
-			for (Vertex next : current.getChildren())
-			{
-				if (next.equals(getVertex(shortestPath[i+1])))
-				{
-					//
-					String[] possiblePath = combineArrays(shortestPath(from, current.toString()), shortestPath(next.toString(), to)); //shortestPath(next.toString(), to);
-					if (possiblePath != null && possiblePath.length > 0)
-					{
-						int possibleWeight = calculatePathWeight(possiblePath);
-						if (currentVertexShortestPath == null || currentVertexShortestWeight > possibleWeight)
-						{
-							currentVertexShortestPath = possiblePath;
-							currentVertexShortestWeight = possibleWeight;
-						}
-					}
-				}
-			}
-
-			// Compare current's 2nd shortest path with overall 2nd shortest path
-			if (secondShortestPath == null || secondShortestWeight > currentVertexShortestWeight)
-			{
-				secondShortestPath = currentVertexShortestPath;
-				secondShortestWeight = currentVertexShortestWeight;
-			}
-		}
-
-		return secondShortestPath;
-		 */
-
-		String[] secondShortestPath = new String[0];
-		int secondShortestPathWeight = 0;
-
-		for (int i = 0; i < shortestPath.length; i++)
-		{
-			Vertex current = getVertex(shortestPath[i]);
-			String[] currentPath = current.path;
+			String[] successfulPath = new String[0];
+			int successfulPathWeight = 0;
 
 			for (Vertex next : current.getChildren())
 			{
+				// Make sure vertex isn't the next vertex in the shortest path
 				if (!next.toString().equals(shortestPath[i + 1]))
 				{
-					//System.out.println(true + " " + next + " " + Arrays.toString(shortestPath(next.toString(), to)));
-					String[] possiblePath = combineArrays(currentPath, shortestPath(next.toString(), to));
-					//System.out.println(Arrays.toString(possiblePath));
-					if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
+					// Calculate the new possible path
+					String[] possiblePath = shortestPath(next.toString(), to);
+					System.out.println(Arrays.toString(currentPath) + " " + Arrays.toString(possiblePath));
+
+					// Make sure possible path is successful
+					if (possiblePath.length > 0 && !Arrays.equals(possiblePath, shortestPath))
 					{
-						// Path is successful
+						//System.out.println(current + " " + next + " " + Arrays.toString(possiblePath));
+						int possibleWeight = calculatePathWeight(possiblePath);
+						// Set as successful path if it's shorter than the current successful path
 
-						System.out.println(calculatePathWeight(possiblePath));
+						if (Arrays.equals(successfulPath, new String[0]) || successfulPathWeight > possibleWeight)
+						{
+							successfulPath = possiblePath;
+							successfulPathWeight = possibleWeight;
+						}
 					}
-				} else
-				{
-					//System.out.println(false + " " + next + " " + Arrays.toString(shortestPath(next.toString(), to)));
 				}
-
-				//System.out.println(next.toString().equals(shortestPath[i + 1]));
 			}
-			//System.out.println();
+
+			//System.out.println(Arrays.toString(successfulPath) + " " + successfulPathWeight);
+			successfulPath = combineArrays(current.path, successfulPath);
+
+			successfulPathWeight = calculatePathWeight(shortestPath);
+
+			//
+			if (Arrays.equals(secondShortestPath, new String[0]) || secondShortestWeight > successfulPathWeight)
+			{
+				secondShortestPath = successfulPath;
+				secondShortestWeight = successfulPathWeight;
+			}
 		}
 
-		/*
-		// Search each vertex in shortestPath for another possible path
-		for (int i = 0; i < shortestPath.length; i++)
+		*/
+
+		System.out.println("Testing: " + from + " " + to + " " + Arrays.toString(shortestPath));
+		for (int i = 0; i < shortestPath.length - 1; i++)
 		{
-			// Current Vertex
+			// Current vertex in the shortest path
 			Vertex current = getVertex(shortestPath[i]);
-
-			// Path and Weight to get to current vertex
-			String[] currentPath = shortestPath(from, current.toString());
-
-			// Minimum possible path after current
-			String[] possibleNextPath = new String[0];
-			int possibleNextWeight = 0;
+			String[] currentPath = Arrays.copyOf(shortestPath, i + 1);
+			//System.out.println(current + " " + Arrays.toString(currentPath));
 
 			for (Vertex next : current.getChildren())
 			{
-				if (!shortestPath[i + 1].equals(next.toString()))
+				// Check if next vertex is not the next vertex in the shortest path
+				if (!next.toString().equals(shortestPath[i + 1]))
 				{
-					// Test path
-
 					String[] possiblePath = shortestPath(next.toString(), to);
-					System.out.println(Arrays.toString(possiblePath));
-					if (!Arrays.equals(possiblePath, new String[0]) && !Arrays.equals(possiblePath, shortestPath))
+					//System.out.println("Test: " + Arrays.toString(possiblePath));
+
+					//TODO: Everything works above this. Check below this
+
+					// Make sure possiblePath is a succesful path
+					if (possiblePath.length > 0)
 					{
-						int possibleWeight = calculatePathWeight(possiblePath);
+						//System.out.println(Arrays.toString(currentPath) + " " + Arrays.toString(possiblePath));
+						String[] successfulPath = combineArrays(currentPath, possiblePath);
+						//System.out.println(Arrays.toString(successfulPath));
+						int weight = calculatePathWeight(successfulPath);
+						//System.out.println(weight);
 
-						/*
 						//
-						if (Arrays.equals(possibleNextPath, new String[0]) || possibleNextWeight > possibleWeight)
+						if (!Arrays.equals(shortestPath, new String[0]) || secondShortestWeight > weight)
 						{
-							//TODO: Might need to add next into array
-							possibleNextPath = possiblePath;
-							//possibleNextPath = combineArrays(new String[] {next.toString()}, possiblePath);
-							possibleNextWeight = possibleWeight;
+							secondShortestPath = successfulPath;
+							secondShortestWeight = weight;
 						}
-
-						 *
 					}
 				}
 			}
-
-			currentPath = combineArrays(currentPath, possibleNextPath);
-
-			/*
-			System.out.println(Arrays.toString(secondShortestPath));
-			System.out.println(Arrays.toString(currentPath));
-			System.out.println(Arrays.toString(possibleNextPath));
-			*
-
-			if (!Arrays.equals(currentPath, new String[0]))
-			{
-				int currentWeight = calculatePathWeight(currentPath);
-
-				if (Arrays.equals(possibleNextPath, new String[0]) || secondShortestPathWeight > currentWeight)
-				{
-					secondShortestPath = possibleNextPath;
-					secondShortestPathWeight = possibleNextWeight;
-				}
-			}
 		}
-		*/
+
 		return secondShortestPath;
 	}
 
 	private static String[] combineArrays(String[] a, String[] b)
 	{
+		if (a == null)
+			return b;
+
 		String[] newArray = new String[a.length + b.length];
 
 		System.arraycopy(a, 0, newArray, 0, a.length);
@@ -398,6 +358,15 @@ public class WeightedGraph extends Graph
 		System.out.println(Arrays.toString(g.shortestPath("A", "F")));
 		System.out.println(Arrays.toString(g.shortestPath("A", "B")));
 		System.out.println(Arrays.toString(g.shortestPath("C", "E")));
-		 */
+		*/
+
+		/*
+		System.out.println(Arrays.toString(g.secondShortestPath("B", "G")));
+		System.out.println(Arrays.toString(g.secondShortestPath("A", "F")));
+		System.out.println(Arrays.toString(g.secondShortestPath("A", "B")));
+		System.out.println(Arrays.toString(g.secondShortestPath("C", "E")));
+		*/
+
+		System.out.println(Arrays.equals(shortestPath, secondShortestPath));
 	}
 }
