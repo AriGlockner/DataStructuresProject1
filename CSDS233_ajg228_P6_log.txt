@@ -1,10 +1,17 @@
 10% Log (~3 hours):
 For once, I spent a little time writing the theory out on pencil and paper before I actually started coding. This kind of felt necessary for me even though I am not a theory sort of person. Since I took the time to draw out adding/removing, it was pretty easy to write.
 
-50% Log (~30 hours):
+50% Log (~20 hours):
 addNode/addNodes/removeNode/removeNodes/addEdge/addEdges were pretty easy and straightforward to implement in Graph class.
 read/printGraph took me a little time to figure out how I wanted to implement it, but once I realized I needed to add in the nodes before adding the edges, things were pretty simple to write.
 DFS/BFS were pretty easy to write once I wrote it out on pencil and paper
 addWeightedEdge/addWeightedEdges/printWeightedGraph/readWeighted were pretty simple to write after already implementing similar methods in the Graph class
 
 Dijkstra's algorithm took me so long to implement. I ran into issues with infinite loops. I couldn't easily use a boolean to mark it as set/not set since if it was set, it might not be the shortest distance. After a lot of writing out on paper and trial and error, I eventually realized that I could use a conditional to determine if I have to recalculate the path. Once I figured this out, writing the algorithm was pretty simple, but it took a while to get to this point.
+
+90% Log (~10 hours):
+When I was cleaning up my code for shortest path, I deleted part of the algorithm without realizing it. I thought it was working at first cause it was working properly for most cases, but a couple cases when working on the 2nd shortest path made me realize it was wrong. It took me a while to find where it was.
+I realized there were mistakes in DFS/BFS as well so I had to fix that. It wasn't too bad to fix it.
+I implemented 2nd shortest path in the Graph class using basically the BFS algorithm with a boolean.
+
+The 2nd shortest path in the Weighted Graph class was very difficult to implement. I spent so much time trying and failing at implementing this by jumping straight into it. After struggling on this for a while, I brainstormed together with a friend on pencil and paper to draw out various potential ideas for how to go about possibly implementing it and together we realized that a good solution could be to start off by taking the output from the shortest path method, and then using that to get all of the paths we were testing. The algorithm we came up with checked each vertex in the shortest path and compared the paths of changing the path at each vertex. This way we could get the 2nd shortest path without having to test each and every single possible path combination. After talking it over with my friend, I went back and implemented our idea and it worked pretty well.
