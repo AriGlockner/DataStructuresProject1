@@ -426,42 +426,88 @@ public class Graph
 	private String[] getSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
 		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
 
 		// Case start is the same as end
-		if (start.equals(end))
+		if (from.equals(to))
 			return new String[] {from};
 
+		
+
+		/*
+		Queue<Vertex> order = new ArrayDeque<>();
+		start.encountered = true;
+		start.path = new String[] {from};
+		order.add(start);
+
+		//TODO: Unable to use queue because queue is only able to get shortest path
+		while (!order.isEmpty())
+		{
+			Vertex current = order.remove();
+
+			// Path is successful
+			if (current.path[current.path.length - 1].equals(to))
+			{
+				if (foundShortestPath)
+				{
+					return combineArrays(new String[] {current.toString()}, current.path);
+				}
+				else
+					foundShortestPath = true;
+			}
+
+			if (!current.encountered)
+			{
+				current.encountered = true;
+
+				for (Vertex next : current.getChildren())
+				{
+					order.add(next);
+				}
+			}
+		}
+
+
+		/*
 		// Get children
 		List<Vertex> children = start.getChildren();
 
-		// search if to is in edge of current vertex
-		for (Vertex c : children)
-			if (c.toString().equals(to))
-				return new String[] {from, to};
+		// sort children in order
+		children.sort(Vertex::compareTo);
 
-		// sort children according to order
-		Collections.sort(children);
+
+		for (Vertex current : children)
+		{
+			if (!current.encountered)
+			{
+
+			}
+		}
+
+		/*
+		// search if to is in edge of current vertex
+		if (foundShortestPath && children.contains(getVertex(to)))
+			return new String[] {from, to};
 
 		// Recursively call to find to
 		for (Vertex c : children)
 		{
-			String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
-
-			// If path is successful
-			if (path.length > 0 && path[path.length - 1].equals(to))
+			if (!c.encountered)
 			{
-				// Already found the shortest path
-				if (foundShortestPath)
+				c.encountered = true;
+				String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
+
+				System.out.println(Arrays.toString(path));
+				// If path is successful
+				if (path.length > 0 && path[path.length - 1].equals(to))
 				{
-					String[] newPath = new String[path.length + 1];
-					newPath[0] = from;
-					System.arraycopy(path, 0, newPath, 1, path.length);
-					return newPath;
-				} else
-				{
-					System.out.println(from + " " + Arrays.toString(path));
-					foundShortestPath = true;
+					// Already found the shortest path
+					if (foundShortestPath)
+						return combineArrays(new String[] {from}, path);
+					else
+					{
+						System.out.println(from + " " + Arrays.toString(path));
+						foundShortestPath = true;
+					}
 				}
 			}
 		}
@@ -507,6 +553,7 @@ public class Graph
 		// Return an empty String array if to does not exist in this path
 		return new String[0];
 		 */
+		return new String[0];
 	}
 
 	/**
@@ -578,7 +625,8 @@ public class Graph
 
 		// 2nd Shortest Path
 		System.out.println("\n2nd Shortest Path:");
-		System.out.println("Expected:\n\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "D")));
+		System.out.println("Expected:\n[]\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "D")));
+		System.out.println("Expected:\n[A, B, C]\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "C")));
 
 		/*
 		// Add Node
