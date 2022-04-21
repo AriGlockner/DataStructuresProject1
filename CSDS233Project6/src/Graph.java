@@ -241,7 +241,6 @@ public class Graph
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
 	 * alphabetical order. It should return an empty String if no path exists
 	 */
-	//TODO: Fix
 	public String[] DFS(String from, String to, String neighborOrder)
 	{
 		Vertex start = vertices.get(from);
@@ -286,7 +285,7 @@ public class Graph
 
 		// Set start as encountered
 		start.encountered = true;
-		// 
+		// add possible paths from current vertex
 		LinkedList<Vertex> vertices = start.getChildren();
 
 		// Sort order according to parameter order
@@ -295,6 +294,7 @@ public class Graph
 		else
 			vertices.sort(Comparator.comparing(Vertex::toString).reversed());
 
+		// For each vertex in vertices, check to see if it has been encountered. If it hasn't, try to find the path
 		for (Vertex next : vertices)
 		{
 			// Check to see that vertex has not been encountered yet
@@ -447,6 +447,51 @@ public class Graph
 		for (Vertex c : children)
 		{
 			String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
+
+			// If path is successful
+			if (path.length > 0 && path[path.length - 1].equals(to))
+			{
+				// Already found the shortest path
+				if (foundShortestPath)
+				{
+					String[] newPath = new String[path.length + 1];
+					newPath[0] = from;
+					System.arraycopy(path, 0, newPath, 1, path.length);
+					return newPath;
+				} else
+				{
+					System.out.println(from + " " + Arrays.toString(path));
+					foundShortestPath = true;
+				}
+			}
+		}
+		// Return an empty String array if to does not exist in this path
+		return new String[0];
+
+
+		/*
+		Vertex start = getVertex(from);
+		Vertex end = getVertex(to);
+
+		// Case start is the same as end
+		if (start.equals(end))
+			return new String[] {from};
+
+		// Get children
+		List<Vertex> children = start.getChildren();
+
+		// search if to is in edge of current vertex
+		for (Vertex c : children)
+			if (c.toString().equals(to))
+				return new String[] {from, to};
+
+		// sort children according to order
+		Collections.sort(children);
+
+		// Recursively call to find to
+		for (Vertex c : children)
+		{
+			String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
 			if (path[path.length - 1].equals(to))
 			{
 				if (foundShortestPath)
@@ -459,9 +504,9 @@ public class Graph
 					foundShortestPath = true;
 			}
 		}
-
 		// Return an empty String array if to does not exist in this path
 		return new String[0];
+		 */
 	}
 
 	/**
@@ -525,7 +570,7 @@ public class Graph
 		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "reverse")));
 		System.out.println("Expected:\n[A, B, C]\nActual:\n" + Arrays.toString(graph.DFS("A", "C", "alphabetical")));
 		System.out.println("Expected:\n[A, C]\nActual:\n" + Arrays.toString(graph.DFS("A", "C", "reverse")));
-		/*
+
 		// BFS
 		System.out.println("\nBFS:");
 		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "alphabetical")));
@@ -535,6 +580,7 @@ public class Graph
 		System.out.println("\n2nd Shortest Path:");
 		System.out.println("Expected:\n\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "D")));
 
+		/*
 		// Add Node
 		System.out.println("\nAdd Node:");
 		System.out.println("Expected:\ntrue\nActual:\n" + graph.addNode("E"));
