@@ -241,6 +241,7 @@ public class Graph
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
 	 * alphabetical order. It should return an empty String if no path exists
 	 */
+	//TODO: Fix
 	public String[] DFS(String from, String to, String neighborOrder)
 	{
 		Vertex start = vertices.get(from);
@@ -257,8 +258,8 @@ public class Graph
 		// Set all vertices encountered as false
 		setVisitedFalse();
 
-		// Once preconditions are checked, call helpDFS that will do the actual searching
-		return helpDFS(from, to, neighborOrder, new Stack<>());
+		// Get return path if it exists, otherwise an empty array
+		return helpDFS(from, to, !(neighborOrder.trim().equalsIgnoreCase("reverse")));
 	}
 
 	/**
@@ -267,137 +268,47 @@ public class Graph
 	 *
 	 * @param from          starting point
 	 * @param to            end point
-	 * @param neighborOrder either alphabetical or reverse order
+	 * @param order either alphabetical or reverse order
 	 * @return the path or a list of node names, of depth-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
 	 * alphabetical order. It should return an empty String if no path exists
 	 */
-	private String[] helpDFS(String from, String to, String neighborOrder, Stack<Vertex> stack)
+	private String[] helpDFS(String from, String to, boolean order)
 	{
 		Vertex start = vertices.get(from);
-		Vertex end = vertices.get(to);
 
-		//TODO: Remove these 2 if statements since they do nothing
-		// Either from or to does not exist in graph
-		if (start == null || end == null)
+		// Return an empty array if start or end does not exist
+		if (start == null ||  vertices.get(to) == null)
 			return new String[0];
 
-		// Case start is the same as end
 		if (from.equals(to))
 			return new String[] {from};
 
-		//Stack<Vertex> stack = new Stack<>();
-		//ArrayList<String> order = new ArrayList<>();
-
+		// Set start as encountered
 		start.encountered = true;
-		stack.add(start);
+		// 
+		LinkedList<Vertex> vertices = start.getChildren();
 
+		// Sort order according to parameter order
+		if (order)
+			vertices.sort(Comparator.comparing(Vertex::toString));
+		else
+			vertices.sort(Comparator.comparing(Vertex::toString).reversed());
 
-		LinkedList<Vertex> children = start.getChildren();
-
-		// Set children in order according to neighborOrder
-		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
-			Collections.sort(children);
-		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
-			children.sort(Collections.reverseOrder());
-
-		for (Vertex v : children)
+		for (Vertex next : vertices)
 		{
-			if (!v.encountered)
+			// Check to see that vertex has not been encountered yet
+			if (!next.encountered)
 			{
-				String[] possiblePath = helpDFS(v.toString(), to, neighborOrder, stack);
-				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
-				{
-					return combineArrays(new String[] {from}, possiblePath);
-				}
+				// Set vertex as encountered and get path from vertex to destination
+				next.encountered = true;
+				String[] path = helpDFS(next.toString(), to, order);
+
+				// Return path if it exists
+				if (path.length > 0 && path[path.length - 1].equals(to))
+					return combineArrays(new String[] {from}, path);
 			}
 		}
-
-
-		//stack.add(start);
-
-		/*
-		while (!stack.isEmpty())
-		{
-			Vertex current = stack.pop();
-			order.add(current.toString());
-
-			if (current.toString().equals(to))
-				return order.toArray(new String[0]);
-
-			if (!current.encountered)
-			{
-				current.encountered = true;
-
-
-				LinkedList<Vertex> children = start.getChildren();
-
-				// Set children in order according to neighborOrder
-				if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
-					Collections.sort(children);
-				else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
-					children.sort(Collections.reverseOrder());
-
-				for (Vertex next : children)
-				{
-					stack.push(next);
-					if (!next.encountered)
-						helpDFS(next.toString(), to, neighborOrder);
-				}
-			}
-		}
-
-
-		/*
-		// Get vertices that this vertex can travel to
-		LinkedList<Vertex> children = start.getChildren();
-
-		// Set children in order according to neighborOrder
-		if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("alphabetical"))
-			Collections.sort(children);
-		else if (neighborOrder.toLowerCase(Locale.ROOT).trim().equals("reverse"))
-			children.sort(Collections.reverseOrder());
-
-		for (Vertex current : children)
-		{
-			if (current != null && !current.encountered)
-			{
-				//
-				current.encountered = true;
-				String[] possiblePath = helpDFS(current.toString(), to, neighborOrder);
-
-				// Return when found destination
-				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
-					return combineArrays(new String[] {from}, possiblePath);
-			}
-		}
-
-		/*
-		// Proceed as far as possible along a given path before going to the next neighbor
-		for (Vertex v : children)
-		{
-			// Only check vertices that have not been encountered so far
-			if (!v.encountered)
-			{
-				v.encountered = true;
-				// If final destination, return path
-				if (v.toString().equals(to))
-					return new String[] {from, to};
-
-				// Get the next possible path
-				String[] possiblePath = helpDFS(v.toString(), to, neighborOrder);
-				// Check to see if the possible path ends at the target destination
-				if (possiblePath.length > 0 && possiblePath[possiblePath.length - 1].equals(to))
-				{
-					// If this path is successful, add the current vertex to the front of the path and then return the path
-					String[] path = new String[possiblePath.length + 1];
-					path[0] = from;
-					System.arraycopy(possiblePath, 0, path, 1, path.length - 1);
-					return path;
-				}
-			}
-		}
-		 */
 
 		// Default Condition: Return an empty String array
 		return new String[0];
@@ -511,6 +422,7 @@ public class Graph
 	 * @param foundShortestPath boolean to determine if the shortest path has already been found
 	 * @return 2nd shortest path
 	 */
+	//TODO: Fix
 	private String[] getSecondShortestPath(String from, String to, boolean foundShortestPath)
 	{
 		Vertex start = getVertex(from);
@@ -596,42 +508,70 @@ public class Graph
 	 */
 	public static void main(String[] args)
 	{
+		// Read Graph
+		Graph graph = Graph.read("graph.txt");
+		System.out.println("""
+				Expected:
+				A B C D
+				B A C
+				C A B
+				D A
+				Actual:""");
+		graph.printGraph();
+
+		// DFS
+		System.out.println("\nDFS:");
+		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "alphabetical")));
+		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "reverse")));
+		System.out.println("Expected:\n[A, B, C]\nActual:\n" + Arrays.toString(graph.DFS("A", "C", "alphabetical")));
+		System.out.println("Expected:\n[A, C]\nActual:\n" + Arrays.toString(graph.DFS("A", "C", "reverse")));
 		/*
-		Graph g1 = Graph.read("graph.txt");
-		g1.printGraph();
-		System.out.println();
-		*/
-		Graph g2 = new Graph();
-		g2.addNodes(new String[] {"A", "B", "C", "D"});
-		g2.addEdges("A", new String[] {"B", "C"});
-		g2.addEdges("B", new String[] {"D"});
-		g2.addEdges("C", new String[] {"B", "D"});
-		g2.printGraph();
-		System.out.println();
-
 		// BFS
-		System.out.println(Arrays.toString(g2.BFS("A", "D", "alphabetical")));
-		System.out.println(Arrays.toString(g2.BFS("D", "A", "alphabetical")));
-		System.out.println(Arrays.toString(g2.BFS("DoesNotExist", "DoesNotExist", "alphabetical")));
-		System.out.println(Arrays.toString(g2.BFS("A", "D", "reverse")));
-		System.out.println();
-
-		// BDS
-		System.out.println(Arrays.toString(g2.DFS("A", "D", "alphabetical")));
-		System.out.println(Arrays.toString(g2.DFS("D", "A", "alphabetical")));
-		System.out.println(Arrays.toString(g2.DFS("DoesNotExist", "DoesNotExist", "alphabetical")));
-		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
-		System.out.println();
+		System.out.println("\nBFS:");
+		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "alphabetical")));
+		System.out.println("Expected:\n[A, D]\nActual:\n" + Arrays.toString(graph.DFS("A", "D", "alphabetical")));
 
 		// 2nd Shortest Path
-		System.out.println(Arrays.toString(g2.secondShortestPath("A", "D")));
-		System.out.println(Arrays.toString(g2.BFS("A", "D", "reverse")));
-		System.out.println(Arrays.toString(g2.DFS("A", "D", "reverse")));
-		System.out.println();
+		System.out.println("\n2nd Shortest Path:");
+		System.out.println("Expected:\n\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "D")));
 
-		// Remove
-		System.out.println();
-		g2.removeNode("B");
-		g2.printGraph();
+		// Add Node
+		System.out.println("\nAdd Node:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.addNode("E"));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.addNode("E"));
+
+		// Add Nodes
+		System.out.println("\nAdd Nodes:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.addNodes(new String[]{"F", "G"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.addNodes(new String[]{"D", "H"}));
+
+		// Add Edge
+		System.out.println("\nAdd Edge:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.addEdge("D", "E"));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.addEdge("A", "D"));
+
+		// Add Edges
+		System.out.println("\nAdd Edges:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.addEdges("E", new String[] {"F", "G", "H"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.addEdges("H", new String[] {"A", "G", "A"}));
+
+		// Print out graph to show added nodes/edges
+		System.out.println("\nGraph:");
+		graph.printGraph();
+
+		// Remove Node
+		System.out.println("\nRemove Node:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.removeNode("H"));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.removeNode("H"));
+
+		// Remove Nodes
+		System.out.println("\nRemove Nodes:");
+		System.out.println("Expected:\ntrue\nActual:\n" + graph.removeNodes(new String[]{"F", "G"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + graph.removeNodes(new String[]{"E", "G"}));
+
+		// Print out graph to show removed nodes
+		System.out.println("\nGraph:");
+		graph.printGraph();
+		*/
 	}
 }

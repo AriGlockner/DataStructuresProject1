@@ -239,4 +239,10 @@ public class Vertex implements Comparable<Vertex>
 	{
 		return getWeightedEdge(o).weight + distanceFromStart;
 	}
+
+	public int compareByName(Vertex o)
+	{
+		//System.out.println(name + " " + o.name + " " + name.compareTo(o.name));
+		return name.compareTo(o.name);
+	}
 }
