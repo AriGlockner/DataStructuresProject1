@@ -1,28 +1,30 @@
 import org.junit.*;
 import java.util.Arrays;
 
+/**
+ * Tests the graph class
+ *
+ * @author ari
+ */
 public class TestGraph
 {
 
-
+	/**
+	 * Tests the Graph read method
+	 */
 	@Test
-	public void testFile()
+	public void testRead()
 	{
 		Graph graph = Graph.read("graph.txt");
 		Assert.assertEquals("A B C D\nB A C\nC A B\nD A", graph.toString());
 		graph.printGraph();
-
-		//String s = "A B C D\nB A C\nC A B\nD A";
-
-		//Assert.assertEquals("<A> <B> C D>\nB A C\nC A B\nD A", ps); //graph.printGraph());
-		Assert.assertEquals("[B, A, C]", Arrays.toString(graph.DFS("B", "C", "alphabetical")));
-		Assert.assertEquals("[B, C]", Arrays.toString(graph.BFS("B", "C", "alphabetical")));
-		Assert.assertEquals("[]", Arrays.toString(graph.secondShortestPath("D", "C")));
-		System.out.println(Arrays.toString(graph.secondShortestPath("B", "C")));
 	}
 
+	/**
+	 * Tests the graph for all test cases except read
+	 */
 	@Test
-	public void testEmpty()
+	public void test()
 	{
 		Graph graph = new Graph();
 		Assert.assertTrue(graph.addNodes(new String[]{"A", "B", "C", "D", "E", "F"}));
