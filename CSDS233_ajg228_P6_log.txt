@@ -15,3 +15,6 @@ I realized there were mistakes in DFS/BFS as well so I had to fix that. It wasn'
 I implemented 2nd shortest path in the Graph class using basically the BFS algorithm with a boolean.
 
 The 2nd shortest path in the Weighted Graph class was very difficult to implement. I spent so much time trying and failing at implementing this by jumping straight into it. After struggling on this for a while, I brainstormed together with a friend on pencil and paper to draw out various potential ideas for how to go about possibly implementing it and together we realized that a good solution could be to start off by taking the output from the shortest path method, and then using that to get all of the paths we were testing. The algorithm we came up with checked each vertex in the shortest path and compared the paths of changing the path at each vertex. This way we could get the 2nd shortest path without having to test each and every single possible path combination. After talking it over with my friend, I went back and implemented our idea and it worked pretty well.
+
+100% Log (~5 hours):
+I cleaned up my code. Found my mistakes in my code. It took time, but there's not much to say here
