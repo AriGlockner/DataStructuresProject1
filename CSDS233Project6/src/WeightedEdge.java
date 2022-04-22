@@ -10,8 +10,8 @@ public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 	/**
 	 * Initializes a new WeightedEdge, which is an edge that has a weight
 	 *
-	 * @param from starting vertex
-	 * @param to ending vertex
+	 * @param from   starting vertex
+	 * @param to     ending vertex
 	 * @param weight cost associated with transversal across the edge
 	 */
 	public WeightedEdge(Vertex from, Vertex to, int weight)

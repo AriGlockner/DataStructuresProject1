@@ -367,9 +367,9 @@ public class WeightedGraph extends Graph
 
 		// Add Weighted Edges
 		System.out.println("\nAdd Weighted Edges:");
-		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {1, 2, 3, 4}));
-		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("L", new String[]{"A", "D", "G", "F"}, new int[] {0, 0, 0, 0}));
-		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("H", new String[]{"K", "A"}, new int[] {5, 25}));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("L", new String[] {"A", "D", "G", "F"}, new int[] {1, 2, 3, 4}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.addWeightedEdges("L", new String[] {"A", "D", "G", "F"}, new int[] {0, 0, 0, 0}));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.addWeightedEdges("H", new String[] {"K", "A"}, new int[] {5, 25}));
 
 		// print graph
 		System.out.println("\nPost Adding:");
@@ -392,8 +392,8 @@ public class WeightedGraph extends Graph
 
 		// Remove Nodes
 		System.out.println("\nRemove Nodes:");
-		System.out.println("Expected:\ntrue\nActual:\n" + g.removeNodes(new String[]{"L", "I", "J"}));
-		System.out.println("Expected:\nfalse\nActual:\n" + g.removeNodes(new String[]{"K", "J"}));
+		System.out.println("Expected:\ntrue\nActual:\n" + g.removeNodes(new String[] {"L", "I", "J"}));
+		System.out.println("Expected:\nfalse\nActual:\n" + g.removeNodes(new String[] {"K", "J"}));
 
 		// Remove Node
 		System.out.println("\nRemove Node:");
@@ -403,7 +403,7 @@ public class WeightedGraph extends Graph
 
 		// Post Removing
 		System.out.println("""
-				
+								
 				Post Removing:
 				Expected:
 				A 2 B 1 D

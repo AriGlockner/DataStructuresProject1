@@ -1,4 +1,5 @@
 import org.junit.*;
+
 import java.util.Arrays;
 
 /**
@@ -27,7 +28,7 @@ public class TestGraph
 	public void test()
 	{
 		Graph graph = new Graph();
-		Assert.assertTrue(graph.addNodes(new String[]{"A", "B", "C", "D", "E", "F"}));
+		Assert.assertTrue(graph.addNodes(new String[] {"A", "B", "C", "D", "E", "F"}));
 		Assert.assertTrue(graph.addEdges("A", new String[] {"B", "C", "D"}));
 		Assert.assertTrue(graph.addEdge("B", "E"));
 		Assert.assertTrue(graph.addEdge("C", "F"));
@@ -62,14 +63,14 @@ public class TestGraph
 		Assert.assertEquals("[F, A, B, E]", Arrays.toString(graph.secondShortestPath("F", "E")));
 
 		// Add Node/Nodes -> add nodes calls add node, so no need to test separately
-		Assert.assertTrue(graph.addNodes(new String[]{"G", "H"}));
-		Assert.assertFalse(graph.addNodes(new String[]{"G", "H", "I"}));
+		Assert.assertTrue(graph.addNodes(new String[] {"G", "H"}));
+		Assert.assertFalse(graph.addNodes(new String[] {"G", "H", "I"}));
 
 		// Add edges
 		Assert.assertTrue(graph.addEdge("E", "G"));
-		Assert.assertTrue(graph.addEdges("G", new String[]{"H", "I"}));
+		Assert.assertTrue(graph.addEdges("G", new String[] {"H", "I"}));
 		Assert.assertTrue(graph.addEdge("H", "I"));
-		Assert.assertTrue(graph.addEdges("I", new String[]{"B", "G"}));
+		Assert.assertTrue(graph.addEdges("I", new String[] {"B", "G"}));
 		Assert.assertFalse(graph.addEdge("H", "I"));
 
 		// Print graph
@@ -77,8 +78,8 @@ public class TestGraph
 		System.out.println();
 
 		// Remove
-		Assert.assertTrue(graph.removeNodes(new String[]{"G", "H"}));
-		Assert.assertFalse(graph.removeNodes(new String[]{"G", "H", "I"}));
+		Assert.assertTrue(graph.removeNodes(new String[] {"G", "H"}));
+		Assert.assertFalse(graph.removeNodes(new String[] {"G", "H", "I"}));
 
 		// Print graph
 		graph.printGraph();

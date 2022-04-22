@@ -556,7 +556,6 @@ public class Graph
 		System.out.println("Expected:\n[]\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "D")));
 		System.out.println("Expected:\n[A, B, C]\nActual\n" + Arrays.toString(graph.secondShortestPath("A", "C")));
 
-		/*
 		// Add Node
 		System.out.println("\nAdd Node:");
 		System.out.println("Expected:\ntrue\nActual:\n" + graph.addNode("E"));
@@ -594,6 +593,5 @@ public class Graph
 		// Print out graph to show removed nodes
 		System.out.println("\nGraph:");
 		graph.printGraph();
-		*/
 	}
 }
