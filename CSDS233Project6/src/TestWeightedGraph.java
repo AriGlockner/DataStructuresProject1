@@ -203,13 +203,13 @@ public class TestWeightedGraph
 				Arrays.toString(graph.shortestPath("Denver", "Atlanta")));
 
 		// 2nd Shortest Path
-		Assert.assertEquals("[Seattle, Denver, Chicago, Atlanta, Cleveland, Atlanta, Miami]",
+		Assert.assertEquals("[Seattle, Denver, Chicago, Cleveland, Atlanta, Miami]",
 				Arrays.toString(graph.secondShortestPath("Seattle", "Miami")));
-		Assert.assertEquals("[Boston, New York, Cleveland, Chicago, Denver, Chicago, Denver, Los Angeles]",
+		Assert.assertEquals("[Boston, New York, Cleveland, Chicago, Denver, Seattle, San Francisco, Los Angeles]",
 				Arrays.toString(graph.secondShortestPath("Boston", "Los Angeles")));
 		Assert.assertEquals("[San Francisco, Los Angeles, Denver, Chicago, Cleveland, Atlanta, Washington DC]",
 				Arrays.toString(graph.secondShortestPath("San Francisco", "Washington DC")));
-		Assert.assertEquals("[Cleveland, Atlanta, Cleveland, Atlanta, Houston]",
+		Assert.assertEquals("[Cleveland, Atlanta, Chicago, Dallas, Houston]",
 				Arrays.toString(graph.secondShortestPath("Cleveland", "Houston")));
 		Assert.assertEquals("[Denver, Chicago, Cleveland, Atlanta]",
 				Arrays.toString(graph.secondShortestPath("Denver", "Atlanta")));
