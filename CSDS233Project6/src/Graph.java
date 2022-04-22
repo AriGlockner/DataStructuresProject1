@@ -265,8 +265,8 @@ public class Graph
 	 * Helper method that does the recursive part of DFS. This method is used so that vertices encountered is set to
 	 * false only at the start of the algorithm, not at each recursive call.
 	 *
-	 * @param from          starting point
-	 * @param to            end point
+	 * @param from  starting point
+	 * @param to    end point
 	 * @param order either alphabetical or reverse order
 	 * @return the path or a list of node names, of depth-first search between nodes from and to. The order in which
 	 * neighbors are considered is specified by neighborOrder, which can be "alphabetical" or "reverse" for reverse
@@ -277,7 +277,7 @@ public class Graph
 		Vertex start = vertices.get(from);
 
 		// Return an empty array if start or end does not exist
-		if (start == null ||  vertices.get(to) == null)
+		if (start == null || vertices.get(to) == null)
 			return new String[0];
 
 		if (from.equals(to))
@@ -405,155 +405,84 @@ public class Graph
 	 * @param to   destination node
 	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
 	 */
+	// TODO: Check with test cases if this doesn't always return the 2nd shortest path
 	public String[] secondShortestPath(String from, String to)
 	{
 		// Return an empty array if to/from does not exist
 		if (getVertex(from) == null || getVertex(to) == null)
 			return new String[0];
 
-		return getSecondShortestPath(from, to, false);
-	}
+		//return getSecondShortestPath(from, to);
 
-	/**
-	 * Helper method for secondShortestPath that calculates the 2nd shortest path
-	 *
-	 * @param from              starting node
-	 * @param to                destination node
-	 * @param foundShortestPath boolean to determine if the shortest path has already been found
-	 * @return 2nd shortest path
-	 */
-	//TODO: Fix
-	private String[] getSecondShortestPath(String from, String to, boolean foundShortestPath)
-	{
-		Vertex start = getVertex(from);
+		// Get the shortest path. Will be used to compare alternate routes from the shortest path
+		final String[] shortestPath = BFS(from, to, "alphabetical");
 
-		// Case start is the same as end
-		if (from.equals(to))
-			return new String[] {from};
+		// Set the 2nd shortest path as an empty String array
+		String[] secondShortestPath = new String[0];
+		int secondShortestWeight = 0;
 
-		
+		// If there exists no path, return an empty array
+		if (Arrays.equals(shortestPath, secondShortestPath))
+			return secondShortestPath;
 
-		/*
-		Queue<Vertex> order = new ArrayDeque<>();
-		start.encountered = true;
-		start.path = new String[] {from};
-		order.add(start);
-
-		//TODO: Unable to use queue because queue is only able to get shortest path
-		while (!order.isEmpty())
+		// Check each vertex off of the
+		for (int i = 0; i < shortestPath.length - 1; i++)
 		{
-			Vertex current = order.remove();
+			// Current vertex in the shortest path
+			Vertex current = getVertex(shortestPath[i]);
+			String[] currentPath1 = BFS(from, current.toString(), "alphabetical");
 
-			// Path is successful
-			if (current.path[current.path.length - 1].equals(to))
+			// Path and Weight to get to current vertex
+			String[] currentMinPath = new String[0];
+			int currentMin = 0;
+
+			// Check each possible vertex that could be traveled to from the current vertex
+			for (Vertex next : current.getChildren())
 			{
-				if (foundShortestPath)
+				// If vertex is not the next vertex
+				if (!next.equals(getVertex(shortestPath[i + 1])))
 				{
-					return combineArrays(new String[] {current.toString()}, current.path);
-				}
-				else
-					foundShortestPath = true;
-			}
+					// Get path and path length for the possible path from next to the destination
+					String[] path = BFS(next.toString(), to, "alphabetical");
+					int pathLength = path.length;
 
-			if (!current.encountered)
-			{
-				current.encountered = true;
-
-				for (Vertex next : current.getChildren())
-				{
-					order.add(next);
-				}
-			}
-		}
-
-
-		/*
-		// Get children
-		List<Vertex> children = start.getChildren();
-
-		// sort children in order
-		children.sort(Vertex::compareTo);
-
-
-		for (Vertex current : children)
-		{
-			if (!current.encountered)
-			{
-
-			}
-		}
-
-		/*
-		// search if to is in edge of current vertex
-		if (foundShortestPath && children.contains(getVertex(to)))
-			return new String[] {from, to};
-
-		// Recursively call to find to
-		for (Vertex c : children)
-		{
-			if (!c.encountered)
-			{
-				c.encountered = true;
-				String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
-
-				System.out.println(Arrays.toString(path));
-				// If path is successful
-				if (path.length > 0 && path[path.length - 1].equals(to))
-				{
-					// Already found the shortest path
-					if (foundShortestPath)
-						return combineArrays(new String[] {from}, path);
-					else
+					// Path is successful
+					if (path.length > 0 && path[pathLength - 1].equals(to) && containsNoDuplicates(currentPath1, path))
 					{
-						System.out.println(from + " " + Arrays.toString(path));
-						foundShortestPath = true;
+						// Set current min path and weight as the path and path length
+						if (currentMinPath.length == 0 || shortestPath.length >= pathLength + i && currentMin > pathLength)
+						{
+							currentMinPath = path;
+							currentMin = pathLength;
+						}
 					}
 				}
 			}
+
+			// Return the 2nd shortest path if it exists
+			if (currentMinPath.length > 0)
+				return combineArrays(new String[] {from},
+						combineArrays(Arrays.copyOfRange(shortestPath, 0, i), currentMinPath));
 		}
-		// Return an empty String array if to does not exist in this path
-		return new String[0];
 
+		// Return an empty array when no 2nd shortest path exists
+		return secondShortestPath;
+	}
 
-		/*
-		Vertex start = getVertex(from);
-		Vertex end = getVertex(to);
-
-		// Case start is the same as end
-		if (start.equals(end))
-			return new String[] {from};
-
-		// Get children
-		List<Vertex> children = start.getChildren();
-
-		// search if to is in edge of current vertex
-		for (Vertex c : children)
-			if (c.toString().equals(to))
-				return new String[] {from, to};
-
-		// sort children according to order
-		Collections.sort(children);
-
-		// Recursively call to find to
-		for (Vertex c : children)
-		{
-			String[] path = getSecondShortestPath(c.toString(), to, foundShortestPath);
-			if (path[path.length - 1].equals(to))
-			{
-				if (foundShortestPath)
-				{
-					String[] newPath = new String[path.length + 1];
-					newPath[0] = from;
-					System.arraycopy(path, 0, newPath, 1, path.length);
-					return newPath;
-				} else
-					foundShortestPath = true;
-			}
-		}
-		// Return an empty String array if to does not exist in this path
-		return new String[0];
-		 */
-		return new String[0];
+	/**
+	 * Helper method for 2nd shortest path
+	 *
+	 * @param array1 first array
+	 * @param array2 second array
+	 * @return true if no elements in array2 appear in array1, otherwise return false
+	 */
+	private boolean containsNoDuplicates(String[] array1, String[] array2)
+	{
+		for (String key : array2)
+			for (String str : array1)
+				if (str.equals(key))
+					return false;
+		return true;
 	}
 
 	/**
