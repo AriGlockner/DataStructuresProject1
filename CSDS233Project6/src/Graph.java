@@ -405,7 +405,6 @@ public class Graph
 	 * @param to   destination node
 	 * @return 2nd shortest path between nodes from and to. Returns one path in the case of multiple equivalent results.
 	 */
-	// TODO: Check with test cases if this doesn't always return the 2nd shortest path
 	public String[] secondShortestPath(String from, String to)
 	{
 		// Return an empty array if to/from does not exist
@@ -476,7 +475,7 @@ public class Graph
 	 * @param array2 second array
 	 * @return true if no elements in array2 appear in array1, otherwise return false
 	 */
-	private boolean containsNoDuplicates(String[] array1, String[] array2)
+	boolean containsNoDuplicates(String[] array1, String[] array2)
 	{
 		for (String key : array2)
 			for (String str : array1)

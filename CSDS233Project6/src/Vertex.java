@@ -151,19 +151,6 @@ public class Vertex implements Comparable<Vertex>
 	}
 
 	/**
-	 * @return all weighted edges that this vertex contains
-	 */
-	public LinkedList<WeightedEdge> getWeightedEdges()
-	{
-		LinkedList<WeightedEdge> weightedEdges = new LinkedList<>();
-		for (Edge e : edges)
-			if (e instanceof WeightedEdge)
-				weightedEdges.add((WeightedEdge) e);
-		return weightedEdges;
-	}
-
-
-	/**
 	 * @return name of this Vertex
 	 */
 	@Override
@@ -238,11 +225,5 @@ public class Vertex implements Comparable<Vertex>
 	public int getWeight(Vertex o)
 	{
 		return getWeightedEdge(o).weight + distanceFromStart;
-	}
-
-	public int compareByName(Vertex o)
-	{
-		//System.out.println(name + " " + o.name + " " + name.compareTo(o.name));
-		return name.compareTo(o.name);
 	}
 }

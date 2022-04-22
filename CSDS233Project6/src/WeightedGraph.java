@@ -242,22 +242,6 @@ public class WeightedGraph extends Graph
 	}
 
 	/**
-	 * Helper method for 2nd shortest path
-	 *
-	 * @param array1 first array
-	 * @param array2 second array
-	 * @return true if no elements in array2 appear in array1, otherwise return false
-	 */
-	private boolean containsNoDuplicates(String[] array1, String[] array2)
-	{
-		for (String key : array2)
-			for (String str : array1)
-				if (str.equals(key))
-					return false;
-		return true;
-	}
-
-	/**
 	 * Helper method for 2nd shortest path class
 	 *
 	 * @param path array of vertices to calculate the weight of

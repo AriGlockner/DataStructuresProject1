@@ -67,6 +67,10 @@ public class WeightedEdge extends Edge implements Comparable<WeightedEdge>
 		return weight - o.weight;
 	}
 
+	/**
+	 * @param o other Object
+	 * @return from and to are equal to each other
+	 */
 	@Override
 	public boolean equals(Object o)
 	{
