@@ -222,7 +222,7 @@ public class WeightedGraph extends Graph
 					String[] possiblePath = shortestPath(next.toString(), to);
 
 					// Make sure possiblePath is a successful path
-					if (possiblePath.length > 0)
+					if (possiblePath.length > 0 && containsNoDuplicates(currentPath, possiblePath))
 					{
 						// Get full possible path and calculate its weight
 						possiblePath = combineArrays(currentPath, possiblePath);
@@ -239,6 +239,22 @@ public class WeightedGraph extends Graph
 			}
 		}
 		return secondShortestPath;
+	}
+
+	/**
+	 * Helper method for 2nd shortest path
+	 *
+	 * @param array1 first array
+	 * @param array2 second array
+	 * @return true if no elements in array2 appear in array1, otherwise return false
+	 */
+	private boolean containsNoDuplicates(String[] array1, String[] array2)
+	{
+		for (String key : array2)
+			for (String str : array1)
+				if (str.equals(key))
+					return false;
+		return true;
 	}
 
 	/**
@@ -309,14 +325,11 @@ public class WeightedGraph extends Graph
 		System.out.println("Expected:\n[B, D, E]\nActual:\n" + Arrays.toString(g.shortestPath("B", "E")));
 
 		// 2nd Shortest Path
-		//TODO: Fix when path goes in loop
 		System.out.println("\nSecond Shortest Path:");
 		System.out.println("Expected:\n[A, D, F]\nActual:\n" + Arrays.toString(g.secondShortestPath("A", "F")));
-		//TODO: Fix?
-		System.out.println("Expected:\n[D, C, A, D, C, A, B]\nActual:\n" + Arrays.toString(g.secondShortestPath("D", "B")));
+		System.out.println("Expected:\n[]\nActual:\n" + Arrays.toString(g.secondShortestPath("D", "B")));
 		System.out.println("Expected:\n[C, A, D, G, F]\nActual:\n" + Arrays.toString(g.secondShortestPath("C", "F")));
-		//TODO: Fix?
-		System.out.println("Expected:\n[B, D, C, A, D, E]\nActual:\n" + Arrays.toString(g.secondShortestPath("B", "E")));
+		System.out.println("Expected:\n[B, E]\nActual:\n" + Arrays.toString(g.secondShortestPath("B", "E")));
 
 		// DFS alphabetical
 		System.out.println("\nDFS Alphabetical:");
@@ -406,6 +419,7 @@ public class WeightedGraph extends Graph
 
 		// Post Removing
 		System.out.println("""
+				
 				Post Removing:
 				Expected:
 				A 2 B 1 D

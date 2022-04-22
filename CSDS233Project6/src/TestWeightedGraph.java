@@ -70,12 +70,17 @@ public class TestWeightedGraph
 	}
 
 	/**
-	 * Tests a custom real world graph. This graph has a bunch of cities in the USA and time travel time at one point
-	 * int time, in minutes, to get from one city to another connected city.
+	 * Extra credit portion of the assignment that tests a custom real world graph. This graph has a bunch of cities in
+	 * the USA and time travel time at one point int time, in minutes, to get from one city to another connected city.
+	 * Due to some cities that are being added having spaces in their names, the read method will not work for it, so
+	 * they must be added manually through addNode/addNodes/addWeightedEdge/addWeightedEdges
 	 */
 	@Test
 	public void testRealWorldExample()
 	{
+		// Due to some cities that are being added having spaces in their names, the read method will not work for it,
+		// so they must be added manually through addNode/addNodes/addWeightedEdge/addWeightedEdges
+
 		// Create Weighted Graph
 		WeightedGraph graph = new WeightedGraph();
 
@@ -120,7 +125,7 @@ public class TestWeightedGraph
 				new String[] {"Miami", "Houston", "Washington DC", "Chicago", "Cleveland"},
 				new int[] {549, 665, 585, 632, 598}));
 
-		//
+		// Test print weighted graph / toString
 		graph.printWeightedGraph();
 		Assert.assertEquals("""
 				Los Angeles 323 San Francisco 878 Denver
@@ -136,6 +141,7 @@ public class TestWeightedGraph
 				Houston 199 Dallas 665 Atlanta
 				Denver 1099 Seattle 878 Los Angeles 696 Dallas 826 Chicago
 				Atlanta 549 Miami 665 Houston 585 Washington DC 632 Chicago 598 Cleveland""", graph.toString());
+
 
 		// BFS Alphabetical
 		Assert.assertEquals("[Seattle, Denver, Chicago, Atlanta, Miami]",
